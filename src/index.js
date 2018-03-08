@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Top from './Top.vue'
 import Menu from './Menu.vue'
 import Auth from './Auth.vue'
 import Sales from './Sales.vue'
@@ -23,15 +22,13 @@ document.addEventListener('DOMContentLoaded', () => {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         let router = new VueRouter({routes: [
-          { path: 'sales', component: Sales },
-          { path: 'inventory', component: Inventory },
-          { path: 'settings', component: Settings }
+          { name: 'sales', path: '/sales', component: Sales },
+          { name: 'inventory', path: '/inventory', component: Inventory },
+          { name: 'settings', path: '/settings', component: Settings }
         ]
         })
         Vue.use(VueRouter)
         let app = new Vue({
-          components: {Top},
-          template: '<Top></Top>',
           router
         })
         app.$mount('#main')
