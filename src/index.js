@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Top from './Top.vue'
+import Menu from './Menu.vue'
 import Auth from './Auth.vue'
 import Sales from './Sales.vue'
 import Inventory from './Inventory.vue'
@@ -21,24 +22,31 @@ document.addEventListener('DOMContentLoaded', () => {
   try {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        let router = new VueRouter({routes: [
+          { path: 'sales', component: Sales },
+          { path: 'inventory', component: Inventory },
+          { path: 'settings', component: Settings }
+        ]
+        })
         Vue.use(VueRouter)
         let app = new Vue({
           components: {Top},
           template: '<Top></Top>',
-          router: new VueRouter({routes: [
-            { path: 'sales', component: Sales },
-            { path: 'inventory', component: Inventory },
-            { path: 'settings', component: Settings }
-          ]
-          })
+          router
         })
-        app.$mount('#top')
+        app.$mount('#main')
+        let menu = new Vue({
+          components: {Menu},
+          template: '<Menu></Menu>',
+          router
+        })
+        menu.$mount('#menu')
       } else {
         let app = new Vue({
           components: {Auth},
           template: '<Auth></Auth>'
         })
-        app.$mount('#top')
+        app.$mount('#main')
       }
     })
   } catch (e) {

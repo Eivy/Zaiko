@@ -1,24 +1,13 @@
 <template>
-  <div id='top' class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer">
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
     <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
-    <div class="mdl-layout__drawer">
-      <span class="mdl-layout-title">Zaiko</span>
-      <nav class="mdl-navigation">
-      </nav>
-    </div>
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        <span class="mdl-layout-title">ログイン</span>
+      </div>
+    </header>
     <main class="mdl-layout__content">
-
-    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-      <header class="mdl-layout__header">
-        <div class="mdl-layout__header-row">
-          <span class="mdl-layout-title">ログイン</span>
-        </div>
-      </header>
-      <main class="mdl-layout__content">
-      <div id='firebase-auth-container'></div>
-      </main>
-    </div>
-
+    <div id='firebase-auth-container'></div>
     </main>
   </div>
 </template>
