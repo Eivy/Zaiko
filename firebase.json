@@ -12,6 +12,12 @@
       "package.json",
       "package-lock.json",
       "src"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   },
   "storage": {
