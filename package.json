@@ -1,0 +1,22 @@
+{
+  "name": "zaiko",
+  "version": "1.0.0",
+  "description": "Firebase app for inventory control and sales management",
+  "main": "index.js",
+  "scripts": {
+    "test": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eivy/Zaiko.git"
+  },
+  "author": "Eivy",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Eivy/Zaiko/issues"
+  },
+  "homepage": "https://github.com/Eivy/Zaiko#readme",
+  "devDependencies": {
+    "firebase-tools": "^3.17.5"
+  }
+}
