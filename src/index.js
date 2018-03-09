@@ -43,7 +43,9 @@ document.addEventListener('DOMContentLoaded', () => {
           router
         })
         menu.$mount('#menu')
-        router.push('/sales')
+        if (window.location.pathname === '/') {
+          router.push('/sales')
+        }
       } else {
         let app = new Vue({
           components: {Auth},
