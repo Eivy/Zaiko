@@ -33,7 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         Vue.use(VueRouter)
         let app = new Vue({
-          router
+          router,
+          template: '<router-view></router-view>'
         })
         app.$mount('#main')
         let menu = new Vue({
@@ -42,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
           router
         })
         menu.$mount('#menu')
+        router.push('/sales')
       } else {
         let app = new Vue({
           components: {Auth},
