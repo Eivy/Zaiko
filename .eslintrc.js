@@ -18,6 +18,7 @@ module.exports = {
     'indent': ['error', 2, { 'SwitchCase': 1 }]
   },
   globals: {
-    'firebase': true
+    'firebase': true,
+    'componentHandler': true
   }
 }
