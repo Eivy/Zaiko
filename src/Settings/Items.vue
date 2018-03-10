@@ -29,7 +29,7 @@
           </form>
         </div>
         <div class='mdl-card__actions'>
-          <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored'>登録</button>
+          <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
         </div>
       </div>
     </div>
@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import path from 'path'
 export default {
   mounted: function () {
     componentHandler.upgradeDom()
@@ -71,6 +72,25 @@ export default {
         document.getElementById('preview').style.backgroundImage = 'url(' + r.result + ')'
       }
       r.readAsDataURL(f)
+    },
+    submit: function (e) {
+      e.target.disabled = true
+      setTimeout(() => {
+        let user = firebase.auth().currentUser
+        console.log(user.uid)
+        let file = document.getElementById('image').files[0]
+        if (file) {
+          let r = firebase.storage().ref()
+          let fileRef = r.child(path.join(user.uid, file.name))
+          fileRef.put(file).then(snapshot => {
+            e.target.disabled = false
+          }).catch(err => {
+            alert(err)
+          })
+        } else {
+          e.target.disabled = false
+        }
+      }, 200, e)
     }
   }
 }
