@@ -5,8 +5,9 @@
         <div class='mdl-card__supporting-text'>
           <form>
             <div class='mdl-textfield mdl-js-textfield'>
-              <input id='name' class='mdl-textfield__input' type='text'>
+              <input id='name' class='mdl-textfield__input' type='text' required>
               <label class='mdl-textfield__label' for='name'>名前</label>
+              <label class='mdl-textfield__error' for='name'>必須です</label>
             </div>
             <div class='mdl-textfield mdl-js-textfield'>
               <input id='price' class='mdl-textfield__input' type='number'>
@@ -77,7 +78,31 @@ export default {
       e.target.disabled = true
       setTimeout(() => {
         let user = firebase.auth().currentUser
-        console.log(user.uid)
+        // data set
+        let name = document.getElementById('name')
+        if (!name || name.value === '') {
+          e.target.disabled = false
+          name.focus()
+          return
+        }
+        let price = document.getElementById('price')
+        let count = document.getElementById('count')
+        let saller = document.getElementById('saller')
+        let data = {}
+        data.price = Number(price.value)
+        data.count = Number(count.value)
+        data.saller = saller.value
+        const store = firebase.firestore()
+        let collect = store.collection(path.join('Ziko', user.uid, 'items'))
+        let ref = collect.doc(name.value)
+        ref.set(data).then(() => {
+          price.value = ''
+          count.value = ''
+          saller.value = ''
+        }).catch((err) => {
+          alert(err.e)
+        })
+        // file upload
         let file = document.getElementById('image').files[0]
         if (file) {
           let r = firebase.storage().ref()
