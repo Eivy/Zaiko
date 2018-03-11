@@ -108,6 +108,7 @@ export default {
           let r = firebase.storage().ref()
           let fileRef = r.child(path.join(user.uid, file.name))
           fileRef.put(file).then(snapshot => {
+            ref.set({image: snapshot.metadata.downloadURLs[0]}, {merge: true})
             e.target.disabled = false
           }).catch(err => {
             alert(err)
