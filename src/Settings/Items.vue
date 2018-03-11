@@ -5,7 +5,7 @@
         <div class='mdl-card__supporting-text'>
           <form id='form'>
             <div class='mdl-textfield mdl-js-textfield'>
-              <input id='name' class='mdl-textfield__input' type='text' required>
+              <input id='name' v-model='name' class='mdl-textfield__input' type='text' required>
               <label class='mdl-textfield__label' for='name'>名前</label>
               <label class='mdl-textfield__error' for='name'>必須です</label>
             </div>
@@ -16,6 +16,12 @@
             <div class='mdl-textfield mdl-js-textfield'>
               <input id='count' class='mdl-textfield__input' type='number'>
               <label class='mdl-textfield__label' for='count'>個数</label>
+            </div>
+            <div class='mdl-textfield mdl-js-textfield'>
+              <select id='category' class='mdl-textfield__input' name=''>
+                <option value='' v-for=''></option>
+              </select>
+              <label class='mdl-textfield__label' for='category'>カテゴリー</label>
             </div>
             <div class='mdl-textfield mdl-js-textfield'>
               <select id='saller' class='mdl-textfield__input' name=''>
@@ -31,6 +37,7 @@
         </div>
         <div class='mdl-card__actions'>
           <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
+          <button v-if='has_item(name)' class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click='delete_item'>削除</button>
         </div>
       </div>
     </div>
@@ -62,7 +69,7 @@
 <script>
 import path from 'path'
 export default {
-  data: function () { return { items: [] } },
+  data: function () { return { items: [], name: '' } },
   created: function () {
     let user = firebase.auth().currentUser
     console.log(path.join('Zaiko', user.uid, 'items'))
@@ -120,7 +127,7 @@ export default {
         let file = document.getElementById('image').files[0]
         if (file) {
           let r = firebase.storage().ref()
-          let fileRef = r.child(path.join(user.uid, file.name))
+          let fileRef = r.child(path.join(user.uid, name.value))
           fileRef.put(file).then(snapshot => {
             ref.set({image: snapshot.metadata.downloadURLs[0]}, {merge: true})
             document.getElementById('preview').style.backgroundImage = ''
@@ -133,11 +140,25 @@ export default {
         }
       }, 200, e)
     },
+    delete_item: function () {
+      let user = firebase.auth().currentUser
+      let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
+      firebase.storage().ref().child(path.join(user.uid, this.name)).delete()
+      collect.doc(this.name).delete()
+    },
     clear_form: function () {
       document.getElementById('name').parentNode.MaterialTextfield.change('')
       document.getElementById('price').parentNode.MaterialTextfield.change('')
       document.getElementById('count').parentNode.MaterialTextfield.change('')
       document.getElementById('saller').parentNode.MaterialTextfield.change('')
+    },
+    has_item: function (item) {
+      for (let i of this.items) {
+        if (i.name === item) {
+          return true
+        }
+      }
+      return false
     }
   }
 }
