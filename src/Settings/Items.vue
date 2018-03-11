@@ -72,15 +72,12 @@ export default {
   data: function () { return { items: [], name: '' } },
   created: function () {
     let user = firebase.auth().currentUser
-    console.log(path.join('Zaiko', user.uid, 'items'))
     let ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
     ref.onSnapshot((s) => {
       this.items.splice(0, this.items.length)
       s.forEach((d) => {
-        console.log(d.data())
         this.items.push(d.data())
       })
-      console.log(this.items)
     })
   },
   mounted: function () {
