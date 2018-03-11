@@ -3,7 +3,7 @@
     <div class='mdl-layout mdl-js-layout'>
       <div id='submit' class='mdl-card mdl-shadow--2dp'>
         <div class='mdl-card__supporting-text'>
-          <form>
+          <form id='form'>
             <div class='mdl-textfield mdl-js-textfield'>
               <input id='name' class='mdl-textfield__input' type='text' required>
               <label class='mdl-textfield__label' for='name'>名前</label>
@@ -46,12 +46,12 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for='i in [1,2,3]'>
-            <td class='mdl-data-table__cell--non-numeric'><img src=''></img></td>
-            <td class='mdl-data-table__cell--non-numeric'>{{i}}</td>
-            <td>{{i}}</td>
-            <td>{{i}}</td>
-            <td class='mdl-data-table__cell--non-numeric'></td>
+          <tr v-for='i in items'>
+            <td class='mdl-data-table__cell--non-numeric'><img class='item_image' :src='i.image'></img></td>
+            <td class='mdl-data-table__cell--non-numeric'>{{i.name}}</td>
+            <td>{{i.price}}</td>
+            <td>{{i.count}}</td>
+            <td class='mdl-data-table__cell--non-numeric'>{{i.saller}}</td>
           </tr>
         </tbody>
       </table>
@@ -62,6 +62,20 @@
 <script>
 import path from 'path'
 export default {
+  data: function () { return { items: [] } },
+  created: function () {
+    let user = firebase.auth().currentUser
+    console.log(path.join('Zaiko', user.uid, 'items'))
+    let ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
+    ref.onSnapshot((s) => {
+      this.items.splice(0, this.items.length)
+      s.forEach((d) => {
+        console.log(d.data())
+        this.items.push(d.data())
+      })
+      console.log(this.items)
+    })
+  },
   mounted: function () {
     componentHandler.upgradeDom()
   },
@@ -89,18 +103,18 @@ export default {
         let count = document.getElementById('count')
         let saller = document.getElementById('saller')
         let data = {}
+        data.name = name.value
         data.price = Number(price.value)
         data.count = Number(count.value)
         data.saller = saller.value
+        data.time = new Date()
         const store = firebase.firestore()
-        let collect = store.collection(path.join('Ziko', user.uid, 'items'))
+        let collect = store.collection(path.join('Zaiko', user.uid, 'items'))
         let ref = collect.doc(name.value)
         ref.set(data).then(() => {
-          price.value = ''
-          count.value = ''
-          saller.value = ''
+          this.clear_form()
         }).catch((err) => {
-          alert(err.e)
+          console.log(err)
         })
         // file upload
         let file = document.getElementById('image').files[0]
@@ -109,14 +123,21 @@ export default {
           let fileRef = r.child(path.join(user.uid, file.name))
           fileRef.put(file).then(snapshot => {
             ref.set({image: snapshot.metadata.downloadURLs[0]}, {merge: true})
+            document.getElementById('preview').style.backgroundImage = ''
             e.target.disabled = false
           }).catch(err => {
-            alert(err)
+            console.log(err)
           })
         } else {
           e.target.disabled = false
         }
       }, 200, e)
+    },
+    clear_form: function () {
+      document.getElementById('name').parentNode.MaterialTextfield.change('')
+      document.getElementById('price').parentNode.MaterialTextfield.change('')
+      document.getElementById('count').parentNode.MaterialTextfield.change('')
+      document.getElementById('saller').parentNode.MaterialTextfield.change('')
     }
   }
 }
@@ -141,5 +162,8 @@ export default {
 }
 table {
   width: 100%;
+  .item_image {
+    max-height: 100%;
+  }
 }
 </style>
