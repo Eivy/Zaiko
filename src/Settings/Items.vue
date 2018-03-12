@@ -173,7 +173,6 @@ export default {
       this.load_value()
     },
     load_value: function () {
-      console.log('hoge')
       let i
       for (i = 0; i < this.items.length; i++) {
         if (this.items[i].name === this.name) {
