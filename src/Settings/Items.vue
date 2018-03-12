@@ -5,7 +5,7 @@
         <div class='mdl-card__supporting-text'>
           <form id='form'>
             <div class='mdl-textfield mdl-js-textfield'>
-              <input id='name' v-model='name' class='mdl-textfield__input' type='text' required>
+              <input id='name' v-model='name' class='mdl-textfield__input' type='text' required @change='load_value()'>
               <label class='mdl-textfield__label' for='name'>名前</label>
               <label class='mdl-textfield__error' for='name'>必須です</label>
             </div>
@@ -162,6 +162,28 @@ export default {
     set_name: function (nameValue) {
       this.name = nameValue
       document.getElementById('name').parentNode.MaterialTextfield.change(this.name)
+      this.load_value()
+    },
+    load_value: function () {
+      console.log('hoge')
+      let i
+      for (i = 0; i < this.items.length; i++) {
+        if (this.items[i].name === this.name) {
+          break
+        }
+      }
+      let o = this.items[i]
+      if (o) {
+        document.getElementById('price').parentNode.MaterialTextfield.change(o.price)
+        document.getElementById('count').parentNode.MaterialTextfield.change(o.count)
+        document.getElementById('saller').parentNode.MaterialTextfield.change(o.saller)
+        document.getElementById('preview').style.backgroundImage = 'url(' + o.image + ')'
+      } else {
+        document.getElementById('price').parentNode.MaterialTextfield.change('')
+        document.getElementById('count').parentNode.MaterialTextfield.change('')
+        document.getElementById('saller').parentNode.MaterialTextfield.change('')
+        document.getElementById('preview').style.backgroundImage = ''
+      }
     }
   }
 }
