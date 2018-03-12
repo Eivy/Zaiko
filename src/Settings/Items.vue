@@ -25,7 +25,8 @@
             </div>
             <div class='mdl-textfield mdl-js-textfield'>
               <select id='saller' class='mdl-textfield__input' name=''>
-                <option value='' v-for=''></option>
+                <option value=''></option>
+                <option v-for='v in saller' :value='v'>{{v}}</option>
               </select>
               <label class='mdl-textfield__label' for='saller'>仕入先</label>
             </div>
@@ -69,7 +70,7 @@
 <script>
 import path from 'path'
 export default {
-  data: function () { return { items: [], name: '' } },
+  data: function () { return { items: [], saller: [], name: '' } },
   created: function () {
     let user = firebase.auth().currentUser
     let ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
@@ -77,6 +78,13 @@ export default {
       this.items.splice(0, this.items.length)
       s.forEach((d) => {
         this.items.push(d.data())
+      })
+    })
+    ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'saller'))
+    ref.onSnapshot((s) => {
+      this.saller.splice(0, this.saller.length)
+      s.forEach((d) => {
+        this.saller.push(d.id)
       })
     })
   },
