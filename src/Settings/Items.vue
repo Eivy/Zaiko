@@ -1,47 +1,5 @@
 <template>
   <div>
-    <div class='mdl-layout mdl-js-layout'>
-      <div id='submit' class='mdl-card mdl-shadow--2dp'>
-        <div class='mdl-card__supporting-text'>
-          <form id='form'>
-            <div class='mdl-textfield mdl-js-textfield'>
-              <input id='name' v-model='name' class='mdl-textfield__input' type='text' required @change='load_value()'>
-              <label class='mdl-textfield__label' for='name'>名前</label>
-              <label class='mdl-textfield__error' for='name'>必須です</label>
-            </div>
-            <div class='mdl-textfield mdl-js-textfield'>
-              <input id='price' class='mdl-textfield__input' type='number'>
-              <label class='mdl-textfield__label' for='price'>値段</label>
-            </div>
-            <div class='mdl-textfield mdl-js-textfield'>
-              <input id='count' class='mdl-textfield__input' type='number'>
-              <label class='mdl-textfield__label' for='count'>個数</label>
-            </div>
-            <div class='mdl-textfield mdl-js-textfield'>
-              <select id='category' class='mdl-textfield__input' name=''>
-                <option value='' v-for=''></option>
-              </select>
-              <label class='mdl-textfield__label' for='category'>カテゴリー</label>
-            </div>
-            <div class='mdl-textfield mdl-js-textfield'>
-              <select id='saller' class='mdl-textfield__input' name=''>
-                <option value=''></option>
-                <option v-for='v in saller' :value='v'>{{v}}</option>
-              </select>
-              <label class='mdl-textfield__label' for='saller'>仕入先</label>
-            </div>
-            <label id='preview' class='mdl-button mdl-js-button mdl-button--fab' for='image'>
-              <i class='material-icons'>add_a_photo</i>
-              <input id='image' class='mdl-textfield__input' type='file' accept='image/*' @change='preview_image'>
-            </label>
-          </form>
-        </div>
-        <div class='mdl-card__actions'>
-          <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
-          <button v-if='has_item(name)' class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click='delete_item'>削除</button>
-        </div>
-      </div>
-    </div>
     <div>
       <table class='mdl-data-table mdl-js-data-table mdl-data-table--selectable  mdl-shadow--2dp'>
         <thead>
@@ -51,6 +9,7 @@
             <th>値段</th>
             <th>在庫数</th>
             <th class='mdl-data-table__cell--non-numeric'>仕入先</th>
+            <th class='mdl-data-table__cell--non-numeric'></th>
           </tr>
         </thead>
         <tbody>
@@ -60,6 +19,48 @@
             <td>{{i.price}}</td>
             <td>{{i.count}}</td>
             <td class='mdl-data-table__cell--non-numeric'>{{i.saller}}</td>
+            <td class='mdl-data-table__cell--non-numeric'>
+              <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click.stop='delete_item(i.name)'>削除</button>
+            </td>
+          </tr>
+          <tr>
+            <td class='mdl-data-table__cell--non-numeric'>
+              <label id='preview' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab' for='image'>
+                <i class='material-icons'>add_a_photo</i>
+                <input id='image' class='mdl-textfield__input' type='file' accept='image/*' @change='preview_image'>
+              </label>
+            </td>
+            <td class='mdl-data-table__cell--non-numeric'>
+              <div class='mdl-textfield mdl-js-textfield'>
+                <input id='name' v-model='name' class='mdl-textfield__input' type='text' required @change='load_value()'>
+                <label class='mdl-textfield__label' for='name'>名前</label>
+                <label class='mdl-textfield__error' for='name'>必須です</label>
+              </div>
+            </td>
+            <td>
+              <div id='field_price' class='mdl-textfield mdl-js-textfield'>
+                <input id='price' class='mdl-textfield__input' type='number'>
+                <label class='mdl-textfield__label' for='price'>値段</label>
+              </div>
+            </td>
+            <td>
+              <div id='field_count' class='mdl-textfield mdl-js-textfield'>
+                <input id='count' class='mdl-textfield__input' type='number'>
+                <label class='mdl-textfield__label' for='count'>個数</label>
+              </div>
+            </td>
+            <td class='mdl-data-table__cell--non-numeric'>
+              <div class='mdl-textfield mdl-js-textfield'>
+                <select id='saller' class='mdl-textfield__input' name=''>
+                  <option value=''></option>
+                  <option v-for='v in saller' :value='v'>{{v}}</option>
+                </select>
+                <label class='mdl-textfield__label' for='saller'>仕入先</label>
+              </div>
+            </td>
+            <td class='mdl-data-table__cell--non-numeric'>
+              <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -105,7 +106,7 @@ export default {
       setTimeout(() => {
         let user = firebase.auth().currentUser
         // data set
-        if (name.value === '') {
+        if (this.name === '') {
           e.target.disabled = false
           document.getElementById('name').focus()
           return
@@ -144,11 +145,15 @@ export default {
         }
       }, 200, e)
     },
-    delete_item: function () {
+    delete_item: function (name) {
       let user = firebase.auth().currentUser
       let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
-      firebase.storage().ref().child(path.join(user.uid, this.name)).delete()
-      collect.doc(this.name).delete()
+      firebase.storage().ref().child(path.join(user.uid, name)).delete().catch((err) => {
+        if (err.t !== 'storage/object-not-found') {
+          console.log(err)
+        }
+      })
+      collect.doc(name).delete()
     },
     clear_form: function () {
       this.name = ''
@@ -159,18 +164,12 @@ export default {
       document.getElementById('image').value = null
       document.getElementById('preview').style.backgroundImage = ''
     },
-    has_item: function (item) {
-      for (let i of this.items) {
-        if (i.name === item) {
-          return true
-        }
-      }
-      return false
-    },
     set_name: function (nameValue) {
       this.name = nameValue
-      document.getElementById('name').parentNode.MaterialTextfield.change(this.name)
+      let name = document.getElementById('name')
+      name.parentNode.MaterialTextfield.change(this.name)
       this.load_value()
+      name.focus()
     },
     load_value: function () {
       let i
@@ -197,26 +196,25 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.mdl-layout {
-  align-items: center;
-  #submit {
-    margin: 10px;
-    width: 350px;
-    #preview {
-      background-size: contain;
-      top: 0;
-      bottom: 0;
-      right: 0;
-    }
-    #image {
-      display: none;
-    }
-  }
-}
 table {
   width: 100%;
   .item_image {
     max-height: 100%;
+  }
+  #field_price, #field_count {
+    width: 50px;
+    #price, #count {
+      text-align: right;
+    }
+  }
+  #preview {
+    background-size: contain;
+    top: 0;
+    bottom: 0;
+    right: 0;
+  }
+  #image {
+    display: none;
   }
 }
 </style>
