@@ -7,8 +7,7 @@ import Sales from './Sales.vue'
 import Inventory from './Inventory.vue'
 import Settings from './Settings.vue'
 import Items from './Settings/Items.vue'
-import Farmers from './Settings/Farmers.vue'
-import Sellers from './Settings/Sellers.vue'
+import Partners from './Settings/Partners.vue'
 import Categories from './Settings/Categories.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -26,8 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
               component: Settings,
               children: [
                 { name: 'items', path: 'items', component: Items },
-                { name: 'farmers', path: 'farmers', component: Farmers },
-                { name: 'sellers', path: 'sellers', component: Sellers },
+                { name: 'buyers', path: 'buyers', component: Partners },
+                { name: 'sellers', path: 'sellers', component: Partners },
                 { name: 'categories', path: 'categories', component: Categories }
               ]
             }

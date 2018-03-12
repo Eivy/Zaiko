@@ -6,7 +6,7 @@
       </div>
       <div class='mdl-layout__tab-bar mdl-js-ripple-effect' :style='{height: "auto", "overflow-x": "auto"}'>
         <router-link class='mdl-layout__tab' :class='{"is-active": $router.currentRoute.name === "items"}' to='/settings/items'>商品</router-link>
-        <router-link class='mdl-layout__tab' :class='{"is-active": $router.currentRoute.name === "farmers"}' to='/settings/farmers'>販売先</router-link>
+        <router-link class='mdl-layout__tab' :class='{"is-active": $router.currentRoute.name === "buyers"}' to='/settings/buyers'>販売先</router-link>
         <router-link class='mdl-layout__tab' :class='{"is-active": $router.currentRoute.name === "sellers"}' to='/settings/sellers'>仕入先</router-link>
         <router-link class='mdl-layout__tab' :class='{"is-active": $router.currentRoute.name === "categories"}' to='/settings/categories'>カテゴリー</router-link>
       </div>
