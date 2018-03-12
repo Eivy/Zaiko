@@ -17,7 +17,7 @@
           <td class='mdl-data-table__cell--non-numeric'>{{i.name}}</td>
           <td>{{i.price}}</td>
           <td>{{i.count}}</td>
-          <td class='mdl-data-table__cell--non-numeric'>{{i.saller}}</td>
+          <td class='mdl-data-table__cell--non-numeric'>{{i.seller}}</td>
           <td class='mdl-data-table__cell--non-numeric'>
             <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click.stop='delete_item(i.name)'>削除</button>
           </td>
@@ -50,11 +50,11 @@
           </td>
           <td class='mdl-data-table__cell--non-numeric'>
             <div class='mdl-textfield mdl-js-textfield'>
-              <select id='saller' class='mdl-textfield__input' name=''>
+              <select id='seller' class='mdl-textfield__input' name=''>
                 <option value=''></option>
-                <option v-for='v in saller' :value='v'>{{v}}</option>
+                <option v-for='v in seller' :value='v'>{{v}}</option>
               </select>
-              <label class='mdl-textfield__label' for='saller'>仕入先</label>
+              <label class='mdl-textfield__label' for='seller'>仕入先</label>
             </div>
           </td>
           <td class='mdl-data-table__cell--non-numeric'>
@@ -69,7 +69,7 @@
 <script>
 import path from 'path'
 export default {
-  data: function () { return { items: [], saller: [], name: '' } },
+  data: function () { return { items: [], seller: [], name: '' } },
   created: function () {
     let user = firebase.auth().currentUser
     let ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
@@ -79,11 +79,11 @@ export default {
         this.items.push(d.data())
       })
     })
-    ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'saller'))
+    ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'seller'))
     ref.onSnapshot((s) => {
-      this.saller.splice(0, this.saller.length)
+      this.seller.splice(0, this.seller.length)
       s.forEach((d) => {
-        this.saller.push(d.id)
+        this.seller.push(d.id)
       })
     })
   },
@@ -111,12 +111,12 @@ export default {
         }
         let price = document.getElementById('price')
         let count = document.getElementById('count')
-        let saller = document.getElementById('saller')
+        let seller = document.getElementById('seller')
         let data = {}
         data.name = this.name
         data.price = Number(price.value)
         data.count = Number(count.value)
-        data.saller = saller.value
+        data.seller = seller.value
         data.time = new Date()
         const store = firebase.firestore()
         let collect = store.collection(path.join('Zaiko', user.uid, 'items'))
@@ -158,7 +158,7 @@ export default {
       document.getElementById('name').parentNode.MaterialTextfield.change('')
       document.getElementById('price').parentNode.MaterialTextfield.change('')
       document.getElementById('count').parentNode.MaterialTextfield.change('')
-      document.getElementById('saller').parentNode.MaterialTextfield.change('')
+      document.getElementById('seller').parentNode.MaterialTextfield.change('')
       document.getElementById('image').value = null
       document.getElementById('preview').style.backgroundImage = ''
     },
@@ -180,12 +180,12 @@ export default {
       if (o) {
         document.getElementById('price').parentNode.MaterialTextfield.change(o.price)
         document.getElementById('count').parentNode.MaterialTextfield.change(o.count)
-        document.getElementById('saller').parentNode.MaterialTextfield.change(o.saller)
+        document.getElementById('seller').parentNode.MaterialTextfield.change(o.seller)
         document.getElementById('preview').style.backgroundImage = 'url(' + o.image + ')'
       } else {
         document.getElementById('price').parentNode.MaterialTextfield.change('')
         document.getElementById('count').parentNode.MaterialTextfield.change('')
-        document.getElementById('saller').parentNode.MaterialTextfield.change('')
+        document.getElementById('seller').parentNode.MaterialTextfield.change('')
         document.getElementById('preview').style.backgroundImage = ''
       }
     }
