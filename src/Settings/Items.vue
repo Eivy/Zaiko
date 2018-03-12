@@ -122,7 +122,7 @@ export default {
         const store = firebase.firestore()
         let collect = store.collection(path.join('Zaiko', user.uid, 'items'))
         let ref = collect.doc(this.name)
-        ref.set(data).then(() => {
+        ref.set(data, {merge: true}).then(() => {
           this.clear_form()
         }).catch((err) => {
           console.log(err)
