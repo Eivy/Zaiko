@@ -105,24 +105,23 @@ export default {
       setTimeout(() => {
         let user = firebase.auth().currentUser
         // data set
-        let name = document.getElementById('name')
-        if (!name || name.value === '') {
+        if (name.value === '') {
           e.target.disabled = false
-          name.focus()
+          document.getElementById('name').focus()
           return
         }
         let price = document.getElementById('price')
         let count = document.getElementById('count')
         let saller = document.getElementById('saller')
         let data = {}
-        data.name = name.value
+        data.name = this.name
         data.price = Number(price.value)
         data.count = Number(count.value)
         data.saller = saller.value
         data.time = new Date()
         const store = firebase.firestore()
         let collect = store.collection(path.join('Zaiko', user.uid, 'items'))
-        let ref = collect.doc(name.value)
+        let ref = collect.doc(this.name)
         ref.set(data).then(() => {
           this.clear_form()
         }).catch((err) => {
@@ -132,7 +131,7 @@ export default {
         let file = document.getElementById('image').files[0]
         if (file) {
           let r = firebase.storage().ref()
-          let fileRef = r.child(path.join(user.uid, name.value))
+          let fileRef = r.child(path.join(user.uid, this.name))
           fileRef.put(file).then(snapshot => {
             ref.set({image: snapshot.metadata.downloadURLs[0]}, {merge: true})
             document.getElementById('preview').style.backgroundImage = ''
