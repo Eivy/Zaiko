@@ -157,6 +157,7 @@ export default {
       document.getElementById('count').parentNode.MaterialTextfield.change('')
       document.getElementById('saller').parentNode.MaterialTextfield.change('')
       document.getElementById('image').value = null
+      document.getElementById('preview').style.backgroundImage = ''
     },
     has_item: function (item) {
       for (let i of this.items) {
