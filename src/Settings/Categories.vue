@@ -1,32 +1,30 @@
 <template>
   <div>
-    <div class='mdl-layout mdl-js-layout'>
-      <div id='submit' class='mdl-card mdl-shadow--2dp'>
-        <div class='mdl-card__supporting-text'>
-          <form id='form'>
-            <div class='mdl-textfield mdl-js-textfield'>
-              <input id='category' v-model='name' class='mdl-textfield__input' type='text' required >
-              <label class='mdl-textfield__label' for='category'>名前</label>
-              <label class='mdl-textfield__error' for='category'>必須です</label>
-            </div>
-          </form>
-        </div>
-        <div class='mdl-card__actions'>
-          <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
-          <button v-if='has_item(name)' class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click='delete_item'>削除</button>
-        </div>
-      </div>
-    </div>
     <div>
       <table class='mdl-data-table mdl-js-data-table mdl-data-table--selectable  mdl-shadow--2dp'>
         <thead>
           <tr>
             <th class='mdl-data-table__cell--non-numeric'>カテゴリー</th>
+            <th class='mdl-data-table__cell--non-numeric'></th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for='c in categories' @click='set(c)'>
+          <tr v-for='c in categories'>
             <td class='mdl-data-table__cell--non-numeric'>{{c}}</td>
+            <td class='mdl-data-table__cell--non-numeric'>
+              <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click='delete_item(c)'>削除</button>
+            </td>
+          </tr>
+          <tr>
+            <td class='mdl-data-table__cell--non-numeric'>
+              <div class='mdl-textfield mdl-js-textfield'>
+                <input id='category' v-model='name' class='mdl-textfield__input' type='text' required >
+                <label class='mdl-textfield__label' for='category'>名前</label>
+              </div>
+            </td>
+            <td class='mdl-data-table__cell--non-numeric'>
+              <button id='button' class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -73,28 +71,16 @@ export default {
         })
       }, 200, e)
     },
-    delete_item: function () {
+    delete_item: function (item) {
       let user = firebase.auth().currentUser
       let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, 'categories'))
-      firebase.storage().ref().child(path.join(user.uid, this.name)).delete()
-      collect.doc(this.name).delete()
+      firebase.storage().ref().child(path.join(user.uid, item)).delete()
+      collect.doc(item).delete()
       this.clear_form()
     },
     clear_form: function () {
       this.name = ''
       document.getElementById('category').parentNode.MaterialTextfield.change('')
-    },
-    has_item: function (item) {
-      for (let i of this.categories) {
-        if (i === item) {
-          return true
-        }
-      }
-      return false
-    },
-    set: function (category) {
-      this.name = category
-      document.getElementById('category').parentNode.MaterialTextfield.change(this.name)
     }
   }
 }
@@ -110,5 +96,8 @@ export default {
 }
 table {
   width: 100%;
+  #button {
+    display: inline-block;
+  }
 }
 </style>
