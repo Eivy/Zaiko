@@ -53,7 +53,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for='i in items'>
+          <tr v-for='i in items' @click='set_name(i.name)'>
             <td class='mdl-data-table__cell--non-numeric'><img class='item_image' :src='i.image'></img></td>
             <td class='mdl-data-table__cell--non-numeric'>{{i.name}}</td>
             <td>{{i.price}}</td>
@@ -144,10 +144,12 @@ export default {
       collect.doc(this.name).delete()
     },
     clear_form: function () {
+      this.name = ''
       document.getElementById('name').parentNode.MaterialTextfield.change('')
       document.getElementById('price').parentNode.MaterialTextfield.change('')
       document.getElementById('count').parentNode.MaterialTextfield.change('')
       document.getElementById('saller').parentNode.MaterialTextfield.change('')
+      document.getElementById('image').value = null
     },
     has_item: function (item) {
       for (let i of this.items) {
@@ -156,6 +158,10 @@ export default {
         }
       }
       return false
+    },
+    set_name: function (nameValue) {
+      this.name = nameValue
+      document.getElementById('name').parentNode.MaterialTextfield.change(this.name)
     }
   }
 }
