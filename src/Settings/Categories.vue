@@ -1,34 +1,32 @@
 <template>
-  <div>
-    <div>
-      <table class='mdl-data-table mdl-js-data-table mdl-data-table--selectable  mdl-shadow--2dp'>
-        <thead>
-          <tr>
-            <th class='mdl-data-table__cell--non-numeric'>カテゴリー</th>
-            <th class='mdl-data-table__cell--non-numeric'></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for='c in categories'>
-            <td class='mdl-data-table__cell--non-numeric'>{{c}}</td>
-            <td class='mdl-data-table__cell--non-numeric'>
-              <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click='delete_item(c)'>削除</button>
-            </td>
-          </tr>
-          <tr>
-            <td class='mdl-data-table__cell--non-numeric'>
-              <div class='mdl-textfield mdl-js-textfield'>
-                <input id='category' v-model='name' class='mdl-textfield__input' type='text' required >
-                <label class='mdl-textfield__label' for='category'>名前</label>
-              </div>
-            </td>
-            <td class='mdl-data-table__cell--non-numeric'>
-              <button id='button' class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div id='wrapper'>
+    <table class='mdl-data-table mdl-js-data-table mdl-data-table--selectable  mdl-shadow--2dp'>
+      <thead>
+        <tr>
+          <th class='mdl-data-table__cell--non-numeric'>カテゴリー</th>
+          <th class='mdl-data-table__cell--non-numeric'></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for='c in categories'>
+          <td class='mdl-data-table__cell--non-numeric'>{{c}}</td>
+          <td class='mdl-data-table__cell--non-numeric'>
+            <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click='delete_item(c)'>削除</button>
+          </td>
+        </tr>
+        <tr>
+          <td class='mdl-data-table__cell--non-numeric'>
+            <div class='mdl-textfield mdl-js-textfield'>
+              <input id='category' v-model='name' class='mdl-textfield__input' type='text' required >
+              <label class='mdl-textfield__label' for='category'>名前</label>
+            </div>
+          </td>
+          <td class='mdl-data-table__cell--non-numeric'>
+            <button id='button' class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -87,12 +85,8 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.mdl-layout {
-  align-items: center;
-  #submit {
-    margin: 10px;
-    width: 350px;
-  }
+#wrapper {
+  overflow-x: auto;
 }
 table {
   width: 100%;

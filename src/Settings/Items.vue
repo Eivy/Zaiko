@@ -1,70 +1,68 @@
 <template>
-  <div>
-    <div>
-      <table class='mdl-data-table mdl-js-data-table mdl-data-table--selectable  mdl-shadow--2dp'>
-        <thead>
-          <tr>
-            <th class='mdl-data-table__cell--non-numeric'></th>
-            <th class='mdl-data-table__cell--non-numeric'>名前</th>
-            <th>値段</th>
-            <th>在庫数</th>
-            <th class='mdl-data-table__cell--non-numeric'>仕入先</th>
-            <th class='mdl-data-table__cell--non-numeric'></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for='i in items' @click='set_name(i.name)'>
-            <td class='mdl-data-table__cell--non-numeric'><img class='item_image' :src='i.image'></img></td>
-            <td class='mdl-data-table__cell--non-numeric'>{{i.name}}</td>
-            <td>{{i.price}}</td>
-            <td>{{i.count}}</td>
-            <td class='mdl-data-table__cell--non-numeric'>{{i.saller}}</td>
-            <td class='mdl-data-table__cell--non-numeric'>
-              <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click.stop='delete_item(i.name)'>削除</button>
-            </td>
-          </tr>
-          <tr>
-            <td class='mdl-data-table__cell--non-numeric'>
-              <label id='preview' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab' for='image'>
-                <i class='material-icons'>add_a_photo</i>
-                <input id='image' class='mdl-textfield__input' type='file' accept='image/*' @change='preview_image'>
-              </label>
-            </td>
-            <td class='mdl-data-table__cell--non-numeric'>
-              <div class='mdl-textfield mdl-js-textfield'>
-                <input id='name' v-model='name' class='mdl-textfield__input' type='text' required @change='load_value()'>
-                <label class='mdl-textfield__label' for='name'>名前</label>
-                <label class='mdl-textfield__error' for='name'>必須です</label>
-              </div>
-            </td>
-            <td>
-              <div id='field_price' class='mdl-textfield mdl-js-textfield'>
-                <input id='price' class='mdl-textfield__input' type='number'>
-                <label class='mdl-textfield__label' for='price'>値段</label>
-              </div>
-            </td>
-            <td>
-              <div id='field_count' class='mdl-textfield mdl-js-textfield'>
-                <input id='count' class='mdl-textfield__input' type='number'>
-                <label class='mdl-textfield__label' for='count'>個数</label>
-              </div>
-            </td>
-            <td class='mdl-data-table__cell--non-numeric'>
-              <div class='mdl-textfield mdl-js-textfield'>
-                <select id='saller' class='mdl-textfield__input' name=''>
-                  <option value=''></option>
-                  <option v-for='v in saller' :value='v'>{{v}}</option>
-                </select>
-                <label class='mdl-textfield__label' for='saller'>仕入先</label>
-              </div>
-            </td>
-            <td class='mdl-data-table__cell--non-numeric'>
-              <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <div id='wrapper'>
+    <table class='mdl-data-table mdl-js-data-table mdl-data-table--selectable  mdl-shadow--2dp'>
+      <thead>
+        <tr>
+          <th class='mdl-data-table__cell--non-numeric'></th>
+          <th class='mdl-data-table__cell--non-numeric'>名前</th>
+          <th>値段</th>
+          <th>在庫数</th>
+          <th class='mdl-data-table__cell--non-numeric'>仕入先</th>
+          <th class='mdl-data-table__cell--non-numeric'></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for='i in items' @click='set_name(i.name)'>
+          <td class='mdl-data-table__cell--non-numeric'><img class='item_image' :src='i.image'></img></td>
+          <td class='mdl-data-table__cell--non-numeric'>{{i.name}}</td>
+          <td>{{i.price}}</td>
+          <td>{{i.count}}</td>
+          <td class='mdl-data-table__cell--non-numeric'>{{i.saller}}</td>
+          <td class='mdl-data-table__cell--non-numeric'>
+            <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click.stop='delete_item(i.name)'>削除</button>
+          </td>
+        </tr>
+        <tr>
+          <td class='mdl-data-table__cell--non-numeric'>
+            <label id='preview' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab' for='image'>
+              <i class='material-icons'>add_a_photo</i>
+              <input id='image' class='mdl-textfield__input' type='file' accept='image/*' @change='preview_image'>
+            </label>
+          </td>
+          <td class='mdl-data-table__cell--non-numeric'>
+            <div class='mdl-textfield mdl-js-textfield'>
+              <input id='name' v-model='name' class='mdl-textfield__input' type='text' required @change='load_value()'>
+              <label class='mdl-textfield__label' for='name'>名前</label>
+              <label class='mdl-textfield__error' for='name'>必須です</label>
+            </div>
+          </td>
+          <td>
+            <div id='field_price' class='mdl-textfield mdl-js-textfield'>
+              <input id='price' class='mdl-textfield__input' type='number'>
+              <label class='mdl-textfield__label' for='price'>値段</label>
+            </div>
+          </td>
+          <td>
+            <div id='field_count' class='mdl-textfield mdl-js-textfield'>
+              <input id='count' class='mdl-textfield__input' type='number'>
+              <label class='mdl-textfield__label' for='count'>個数</label>
+            </div>
+          </td>
+          <td class='mdl-data-table__cell--non-numeric'>
+            <div class='mdl-textfield mdl-js-textfield'>
+              <select id='saller' class='mdl-textfield__input' name=''>
+                <option value=''></option>
+                <option v-for='v in saller' :value='v'>{{v}}</option>
+              </select>
+              <label class='mdl-textfield__label' for='saller'>仕入先</label>
+            </div>
+          </td>
+          <td class='mdl-data-table__cell--non-numeric'>
+            <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
@@ -196,6 +194,9 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+#wrapper {
+  overflow-x: auto;
+}
 table {
   width: 100%;
   .item_image {
