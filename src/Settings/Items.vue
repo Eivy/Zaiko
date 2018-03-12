@@ -202,6 +202,10 @@ table {
   .item_image {
     max-height: 100%;
   }
+  .mdl-textfield {
+    width: auto;
+    min-width: 50px;
+  }
   #field_price, #field_count {
     width: 50px;
     #price, #count {
