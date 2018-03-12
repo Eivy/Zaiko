@@ -9,6 +9,7 @@ import Settings from './Settings.vue'
 import Items from './Settings/Items.vue'
 import Farmers from './Settings/Farmers.vue'
 import Sellers from './Settings/Sellers.vue'
+import Categories from './Settings/Categories.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
   try {
@@ -26,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
               children: [
                 { name: 'items', path: 'items', component: Items },
                 { name: 'farmers', path: 'farmers', component: Farmers },
-                { name: 'sellers', path: 'sellers', component: Sellers }
+                { name: 'sellers', path: 'sellers', component: Sellers },
+                { name: 'categories', path: 'categories', component: Categories }
               ]
             }
           ]
