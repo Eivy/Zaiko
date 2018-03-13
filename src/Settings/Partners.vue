@@ -18,7 +18,7 @@
           <td class='mdl-data-table__cell--non-numeric'>{{i.tel}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.incharge}}</td>
           <td class='mdl-data-table__cell--non-numeric'>
-            <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click.stop='delete_item(i.id)'>削除</button>
+            <DeleteButton @click.native.stop='delete_item(i.id)'></DeleteButton>
           </td>
         </tr>
         <tr>
@@ -48,7 +48,7 @@
             </div>
           </td>
           <td class='mdl-data-table__cell--non-numeric'>
-            <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
+            <SubmitButton @click.native='submit'></SubmitButton>
           </td>
         </tr>
       </tbody>
@@ -58,8 +58,13 @@
 
 <script>
 import path from 'path'
+
+import SubmitButton from '../SubmitButton.vue'
+import DeleteButton from '../DeleteButton.vue'
+
 let snapshot
 export default {
+  components: { SubmitButton, DeleteButton },
   data: function () { return { items: [], name: '' } },
   created: function () {
     this.update(this.$route)

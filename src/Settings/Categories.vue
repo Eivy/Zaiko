@@ -11,7 +11,7 @@
         <tr v-for='c in categories'>
           <td class='mdl-data-table__cell--non-numeric'>{{c}}</td>
           <td class='mdl-data-table__cell--non-numeric'>
-            <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click='delete_item(c)'>削除</button>
+            <DeleteButton @click.native='delete_item(c)'></DeleteButton>
           </td>
         </tr>
         <tr>
@@ -22,7 +22,7 @@
             </div>
           </td>
           <td class='mdl-data-table__cell--non-numeric'>
-            <button id='button' class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
+            <SubmitButton @click.native='submit'></SubmitButton>
           </td>
         </tr>
       </tbody>
@@ -32,7 +32,12 @@
 
 <script>
 import path from 'path'
+
+import SubmitButton from '../SubmitButton.vue'
+import DeleteButton from '../DeleteButton.vue'
+
 export default {
+  components: { SubmitButton, DeleteButton },
   data: function () { return { categories: [], name: '' } },
   created: function () {
     let user = firebase.auth().currentUser

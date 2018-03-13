@@ -21,7 +21,7 @@
           <td>{{i.count}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.seller}}</td>
           <td class='mdl-data-table__cell--non-numeric'>
-            <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click.stop='delete_item(i.name)'>削除</button>
+            <DeleteButton @click.native.stop='delete_item(i.name)'></DeleteButton>
           </td>
         </tr>
         <tr>
@@ -66,7 +66,7 @@
             </div>
           </td>
           <td class='mdl-data-table__cell--non-numeric'>
-            <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--colored' @click='submit'>登録</button>
+            <SubmitButton @click.native='submit'></SubmitButton>
           </td>
         </tr>
       </tbody>
@@ -76,7 +76,12 @@
 
 <script>
 import path from 'path'
+
+import SubmitButton from '../SubmitButton.vue'
+import DeleteButton from '../DeleteButton.vue'
+
 export default {
+  components: {SubmitButton, DeleteButton},
   data: function () { return { items: [], sellers: [], name: '' } },
   created: function () {
     let user = firebase.auth().currentUser
