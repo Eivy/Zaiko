@@ -52,6 +52,10 @@ main {
   overflow-y: auto;
 }
 .mdl-card {
+  max-width: calc(50vmin - 2rem);
+  max-height: calc(50vmin - 2rem);
+  min-height: 100px;
+  min-width: 100px;
   width: 200px;
   height: 200px;
   float: left;
