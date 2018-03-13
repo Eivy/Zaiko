@@ -29,18 +29,19 @@
               <label class='mdl-textfield__error' for='id'>必須です</label>
             </div>
           </td>
-          <td>
+          <td class='mdl-data-table__cell--non-numeric'>
             <div class='mdl-textfield mdl-js-textfield'>
               <input id='address' class='mdl-textfield__input' type='text'>
               <label class='mdl-textfield__label' for='address'>住所</label>
             </div>
           </td>
-          <td>
+          <td class='mdl-data-table__cell--non-numeric'>
             <div class='mdl-textfield mdl-js-textfield'>
               <input id='tel' class='mdl-textfield__input' type='tel'>
               <label class='mdl-textfield__label' for='tel'>電話番号</label>
             </div>
-          </td><td>
+          </td>
+          <td class='mdl-data-table__cell--non-numeric'>
             <div class='mdl-textfield mdl-js-textfield'>
               <input id='incharge' class='mdl-textfield__input' type='text'>
               <label class='mdl-textfield__label' for='incharge'>担当者</label>
