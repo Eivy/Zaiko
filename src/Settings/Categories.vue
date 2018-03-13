@@ -1,6 +1,6 @@
 <template>
   <div id='wrapper'>
-    <table class='mdl-data-table mdl-js-data-table mdl-data-table--selectable  mdl-shadow--2dp'>
+    <table class='mdl-data-table mdl-js-data-table mdl-shadow--2dp'>
       <thead>
         <tr>
           <th class='mdl-data-table__cell--non-numeric'>カテゴリー</th>
