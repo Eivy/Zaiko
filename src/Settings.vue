@@ -16,10 +16,3 @@
     </main>
   </div>
 </template>
-<script>
-export default {
-  created: function () {
-    console.log(this.$router.currentRoute.name)
-  }
-}
-</script>
