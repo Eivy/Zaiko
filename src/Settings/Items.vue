@@ -199,12 +199,6 @@ export default {
         document.getElementById('count').parentNode.MaterialTextfield.change(o.count)
         document.getElementById('seller').parentNode.MaterialTextfield.change(o.seller)
         document.getElementById('preview').style.backgroundImage = 'url(' + o.image + ')'
-      } else {
-        document.getElementById('selling').parentNode.MaterialTextfield.change('')
-        document.getElementById('purchase').parentNode.MaterialTextfield.change('')
-        document.getElementById('count').parentNode.MaterialTextfield.change('')
-        document.getElementById('seller').parentNode.MaterialTextfield.change('')
-        document.getElementById('preview').style.backgroundImage = ''
       }
     }
   }

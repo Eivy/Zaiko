@@ -150,10 +150,6 @@ export default {
         document.getElementById('address').parentNode.MaterialTextfield.change(o.address)
         document.getElementById('tel').parentNode.MaterialTextfield.change(o.tel)
         document.getElementById('incharge').parentNode.MaterialTextfield.change(o.incharge)
-      } else {
-        document.getElementById('address').parentNode.MaterialTextfield.change('')
-        document.getElementById('tel').parentNode.MaterialTextfield.change('')
-        document.getElementById('incharge').parentNode.MaterialTextfield.change('')
       }
     }
   }
