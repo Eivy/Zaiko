@@ -13,6 +13,11 @@
       </div>
     </div>
     </main>
+    <footer class="mdl-mini-footer">
+      <div class="mdl-mini-footer__right-section">
+        <div class="mdl-logo">合計</div>
+      </div>
+    </footer>
   </div>
 </template>
 
@@ -42,6 +47,10 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+main {
+  height: 100%;
+  overflow-y: auto;
+}
 .mdl-card {
   width: 200px;
   height: 200px;
