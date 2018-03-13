@@ -10,10 +10,10 @@
       <div class="mdl-card__title mdl-card--expand"></div>
       <div class="mdl-card__actions">
         <span>{{i.id}}</span>
-        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" @click='decrease(i.id)'>
+        <button :disabled='!counts[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" @click='decrease(i.id)'>
           <i class="material-icons">remove</i>
         </button>
-        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" @click='increase(i.id)'>
+        <button :disabled='counts[i.id] >= i.count' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" @click='increase(i.id)'>
           <i class="material-icons">add</i>
         </button>
       </div>
@@ -60,6 +60,9 @@ export default {
     decrease: function (id) {
       if (this.counts[id] && this.counts[id] > 0) {
         this.counts[id] -= 1
+      }
+      if (this.counts[id] < 1) {
+        Vue.delete(this.counts, id)
       }
     }
   }
