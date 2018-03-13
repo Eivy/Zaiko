@@ -15,7 +15,7 @@
         <tr v-for='i in items' @click='set_name(i.id)'>
           <td class='mdl-data-table__cell--non-numeric'>{{i.id}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.address}}</td>
-          <td class='mdl-data-table__cell--non-numeric'>{{i.phone}}</td>
+          <td class='mdl-data-table__cell--non-numeric'>{{i.tel}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.incharge}}</td>
           <td class='mdl-data-table__cell--non-numeric'>
             <button class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent' @click.stop='delete_item(i.id)'>削除</button>

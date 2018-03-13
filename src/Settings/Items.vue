@@ -5,7 +5,8 @@
         <tr>
           <th class='mdl-data-table__cell--non-numeric'></th>
           <th class='mdl-data-table__cell--non-numeric'>名前</th>
-          <th>値段</th>
+          <th>販売価格</th>
+          <th>仕入価格</th>
           <th>在庫数</th>
           <th class='mdl-data-table__cell--non-numeric'>仕入先</th>
           <th class='mdl-data-table__cell--non-numeric'></th>
@@ -15,7 +16,8 @@
         <tr v-for='i in items' @click='set_name(i.name)'>
           <td class='mdl-data-table__cell--non-numeric'><img class='item_image' :src='i.image'></img></td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.name}}</td>
-          <td>{{i.price}}</td>
+          <td>{{i.selling}}</td>
+          <td>{{i.purchase}}</td>
           <td>{{i.count}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.seller}}</td>
           <td class='mdl-data-table__cell--non-numeric'>
@@ -37,9 +39,15 @@
             </div>
           </td>
           <td>
-            <div id='field_price' class='mdl-textfield mdl-js-textfield'>
-              <input id='price' class='mdl-textfield__input' type='number'>
-              <label class='mdl-textfield__label' for='price'>値段</label>
+            <div id='field_selling' class='mdl-textfield mdl-js-textfield'>
+              <input id='selling' class='mdl-textfield__input' type='number'>
+              <label class='mdl-textfield__label' for='selling'>販売価格</label>
+            </div>
+          </td>
+          <td>
+            <div id='field_purchase' class='mdl-textfield mdl-js-textfield'>
+              <input id='purchase' class='mdl-textfield__input' type='number'>
+              <label class='mdl-textfield__label' for='purchase'>仕入価格</label>
             </div>
           </td>
           <td>
@@ -109,12 +117,14 @@ export default {
           document.getElementById('name').focus()
           return
         }
-        let price = document.getElementById('price')
+        let selling = document.getElementById('selling')
+        let purchase = document.getElementById('purchase')
         let count = document.getElementById('count')
         let seller = document.getElementById('seller')
         let data = {}
         data.name = this.name
-        data.price = Number(price.value)
+        data.selling = Number(selling.value)
+        data.purchase = Number(purchase.value)
         data.count = Number(count.value)
         data.seller = seller.value
         data.time = new Date()
@@ -156,7 +166,8 @@ export default {
     clear_form: function () {
       this.name = ''
       document.getElementById('name').parentNode.MaterialTextfield.change('')
-      document.getElementById('price').parentNode.MaterialTextfield.change('')
+      document.getElementById('selling').parentNode.MaterialTextfield.change('')
+      document.getElementById('purchase').parentNode.MaterialTextfield.change('')
       document.getElementById('count').parentNode.MaterialTextfield.change('')
       document.getElementById('seller').parentNode.MaterialTextfield.change('')
       document.getElementById('image').value = null
@@ -178,12 +189,14 @@ export default {
       }
       let o = this.items[i]
       if (o) {
-        document.getElementById('price').parentNode.MaterialTextfield.change(o.price)
+        document.getElementById('selling').parentNode.MaterialTextfield.change(o.selling)
+        document.getElementById('purchase').parentNode.MaterialTextfield.change(o.purchase)
         document.getElementById('count').parentNode.MaterialTextfield.change(o.count)
         document.getElementById('seller').parentNode.MaterialTextfield.change(o.seller)
         document.getElementById('preview').style.backgroundImage = 'url(' + o.image + ')'
       } else {
-        document.getElementById('price').parentNode.MaterialTextfield.change('')
+        document.getElementById('selling').parentNode.MaterialTextfield.change('')
+        document.getElementById('purchase').parentNode.MaterialTextfield.change('')
         document.getElementById('count').parentNode.MaterialTextfield.change('')
         document.getElementById('seller').parentNode.MaterialTextfield.change('')
         document.getElementById('preview').style.backgroundImage = ''
@@ -206,9 +219,15 @@ table {
     width: auto;
     min-width: 50px;
   }
-  #field_price, #field_count {
+  #field_selling, #field_purchase {
+    width: 70px;
+    input {
+      text-align: right;
+    }
+  }
+  #field_count {
     width: 50px;
-    #price, #count {
+    #count {
       text-align: right;
     }
   }
