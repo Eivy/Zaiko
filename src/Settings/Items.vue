@@ -13,15 +13,15 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for='i in items' @click='set_name(i.name)'>
+        <tr v-for='i in items' @click='set_name(i.id)'>
           <td class='mdl-data-table__cell--non-numeric'><img class='item_image' :src='i.image'></img></td>
-          <td class='mdl-data-table__cell--non-numeric'>{{i.name}}</td>
+          <td class='mdl-data-table__cell--non-numeric'>{{i.id}}</td>
           <td>{{i.selling}}</td>
           <td>{{i.purchase}}</td>
           <td>{{i.count}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.seller}}</td>
           <td class='mdl-data-table__cell--non-numeric'>
-            <DeleteButton @click.native.stop='delete_item(i.name)'></DeleteButton>
+            <DeleteButton @click.native.stop='delete_item(i.id)'></DeleteButton>
           </td>
         </tr>
         <tr>
@@ -33,9 +33,9 @@
           </td>
           <td class='mdl-data-table__cell--non-numeric'>
             <div class='mdl-textfield mdl-js-textfield'>
-              <input id='name' v-model='name' class='mdl-textfield__input' type='text' required @change='load_value()'>
-              <label class='mdl-textfield__label' for='name'>名前</label>
-              <label class='mdl-textfield__error' for='name'>必須です</label>
+              <input id='id' v-model='id' class='mdl-textfield__input' type='text' required @change='load_value()'>
+              <label class='mdl-textfield__label' for='id'>名前</label>
+              <label class='mdl-textfield__error' for='id'>必須です</label>
             </div>
           </td>
           <td>
@@ -82,7 +82,7 @@ import DeleteButton from '../DeleteButton.vue'
 
 export default {
   components: {SubmitButton, DeleteButton},
-  data: function () { return { items: [], sellers: [], name: '' } },
+  data: function () { return { items: [], sellers: [], id: '' } },
   created: function () {
     let user = firebase.auth().currentUser
     let ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
@@ -117,9 +117,9 @@ export default {
       setTimeout(() => {
         let user = firebase.auth().currentUser
         // data set
-        if (this.name === '') {
+        if (this.id === '') {
           e.target.disabled = false
-          document.getElementById('name').focus()
+          document.getElementById('id').focus()
           return
         }
         let selling = document.getElementById('selling')
@@ -127,7 +127,7 @@ export default {
         let count = document.getElementById('count')
         let seller = document.getElementById('seller')
         let data = {}
-        data.name = this.name
+        data.id = this.id
         data.selling = Number(selling.value)
         data.purchase = Number(purchase.value)
         data.count = Number(count.value)
@@ -135,7 +135,7 @@ export default {
         data.time = new Date()
         const store = firebase.firestore()
         let collect = store.collection(path.join('Zaiko', user.uid, 'items'))
-        let ref = collect.doc(this.name)
+        let ref = collect.doc(this.id)
         ref.set(data, {merge: true}).then(() => {
           this.clear_form()
         }).catch((err) => {
@@ -145,7 +145,7 @@ export default {
         let file = document.getElementById('image').files[0]
         if (file) {
           let r = firebase.storage().ref()
-          let fileRef = r.child(path.join(user.uid, this.name))
+          let fileRef = r.child(path.join(user.uid, this.id))
           fileRef.put(file).then(snapshot => {
             ref.set({image: snapshot.metadata.downloadURLs[0]}, {merge: true})
             document.getElementById('preview').style.backgroundImage = ''
@@ -158,19 +158,19 @@ export default {
         }
       }, 200, e)
     },
-    delete_item: function (name) {
+    delete_item: function (id) {
       let user = firebase.auth().currentUser
       let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
-      firebase.storage().ref().child(path.join(user.uid, name)).delete().catch((err) => {
+      firebase.storage().ref().child(path.join(user.uid, id)).delete().catch((err) => {
         if (err.t !== 'storage/object-not-found') {
           console.log(err)
         }
       })
-      collect.doc(name).delete()
+      collect.doc(id).delete()
     },
     clear_form: function () {
-      this.name = ''
-      document.getElementById('name').parentNode.MaterialTextfield.change('')
+      this.id = ''
+      document.getElementById('id').parentNode.MaterialTextfield.change('')
       document.getElementById('selling').parentNode.MaterialTextfield.change('')
       document.getElementById('purchase').parentNode.MaterialTextfield.change('')
       document.getElementById('count').parentNode.MaterialTextfield.change('')
@@ -179,16 +179,16 @@ export default {
       document.getElementById('preview').style.backgroundImage = ''
     },
     set_name: function (nameValue) {
-      this.name = nameValue
-      let name = document.getElementById('name')
-      name.parentNode.MaterialTextfield.change(this.name)
+      this.id = nameValue
+      let id = document.getElementById('id')
+      id.parentNode.MaterialTextfield.change(this.id)
       this.load_value()
-      name.focus()
+      id.focus()
     },
     load_value: function () {
       let i
       for (i = 0; i < this.items.length; i++) {
-        if (this.items[i].name === this.name) {
+        if (this.items[i].id === this.id) {
           break
         }
       }
