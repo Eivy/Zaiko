@@ -6,10 +6,16 @@
       </div>
     </header>
     <main>
-    <div v-for='i in items' class='mdl-card mdl-shadow--2dp' :style='{background: "url(" + i.image + ") center / cover"}'>
+    <div v-for='i in items' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='counts[i.id]'>
       <div class="mdl-card__title mdl-card--expand"></div>
       <div class="mdl-card__actions">
         <span>{{i.id}}</span>
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" @click='decrease(i.id)'>
+          <i class="material-icons">remove</i>
+        </button>
+        <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" @click='increase(i.id)'>
+          <i class="material-icons">add</i>
+        </button>
       </div>
     </div>
     </main>
@@ -26,14 +32,15 @@ import path from 'path'
 
 let snapshot
 export default {
-  data: function () { return { items: [] } },
+  data: function () { return { items: [], counts: {} } },
   created: function () {
     let user = firebase.auth().currentUser
     let store = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
     snapshot = store.onSnapshot((s) => {
       this.items.splice(0, this.items.length)
       s.forEach((d) => {
-        this.items.push(d.data())
+        let v = d.data()
+        this.items.push(v)
       })
     })
   },
@@ -42,6 +49,19 @@ export default {
   },
   destroy: function () {
     snapshot()
+  },
+  methods: {
+    increase: function (id) {
+      if (this.counts[id] === undefined) {
+        Vue.set(this.counts, id, 0)
+      }
+      this.counts[id] += 1
+    },
+    decrease: function (id) {
+      if (this.counts[id] && this.counts[id] > 0) {
+        this.counts[id] -= 1
+      }
+    }
   }
 }
 </script>
@@ -59,13 +79,21 @@ main {
   width: 200px;
   height: 200px;
   float: left;
-  margin: 0.5rem;
+  margin: 1rem;
   position: relative;
+  overflow: visible;
   &:hover {
     box-shadow: 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2);
   }
   .mdl-card__actions {
     background: rgba(240, 240, 240, 0.8);
+    .mdl-button {
+      height: 30px;
+      width: 30px;
+      min-width: 30px;
+      min-height: 30px;
+      float: right;
+    }
   }
 }
 
