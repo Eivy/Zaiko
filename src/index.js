@@ -1,6 +1,3 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-
 import Menu from './Menu.vue'
 import Auth from './Auth.vue'
 import Sales from './Sales.vue'

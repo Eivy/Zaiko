@@ -19,6 +19,9 @@ module.exports = {
   },
   globals: {
     'firebase': true,
-    'componentHandler': true
+    'componentHandler': true,
+    'Vue': true,
+    'VueRouter': true,
+    'firebaseui': true
   }
 }
