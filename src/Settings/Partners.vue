@@ -12,7 +12,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for='i in items' @click='set_name(i.name)'>
+        <tr v-for='i in items' @click='set_name(i.id)'>
           <td class='mdl-data-table__cell--non-numeric'>{{i.id}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.address}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.phone}}</td>
@@ -136,15 +136,15 @@ export default {
     load_value: function () {
       let i
       for (i = 0; i < this.items.length; i++) {
-        if (this.items[i].name === this.name) {
+        if (this.items[i].id === this.name) {
           break
         }
       }
       let o = this.items[i]
       if (o) {
-        document.getElementById('address').parentNode.MaterialTextfield.change(o.price)
-        document.getElementById('tel').parentNode.MaterialTextfield.change(o.count)
-        document.getElementById('incharge').parentNode.MaterialTextfield.change(o.seller)
+        document.getElementById('address').parentNode.MaterialTextfield.change(o.address)
+        document.getElementById('tel').parentNode.MaterialTextfield.change(o.tel)
+        document.getElementById('incharge').parentNode.MaterialTextfield.change(o.incharge)
       } else {
         document.getElementById('address').parentNode.MaterialTextfield.change('')
         document.getElementById('tel').parentNode.MaterialTextfield.change('')
