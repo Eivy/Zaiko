@@ -9,7 +9,9 @@
     <div v-for='i in items' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='counts[i.id]'>
       <div class="mdl-card__title mdl-card--expand"></div>
       <div class="mdl-card__actions">
-        <span>{{i.id}}</span>
+        <div>
+        <span class='item_title'>{{i.id}}</span><span class='left_count'>残り: {{i.count}}</span>
+        </div>
         <button :disabled='!counts[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" @click='decrease(i.id)'>
           <i class="material-icons">remove</i>
         </button>
@@ -113,6 +115,21 @@ main {
       min-width: 30px;
       min-height: 30px;
       float: right;
+    }
+    div {
+      &:after {
+        display: block;
+        height: 0;
+        clear: both;
+        visibility: hidden;
+        content: '.';
+      }
+      .item_title {
+        float: left;
+      }
+      .left_count {
+        float: right;
+      }
     }
   }
 }
