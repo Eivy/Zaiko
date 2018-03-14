@@ -7,15 +7,15 @@
     </header>
     <main>
     <div v-for='i in items' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='counts[i.id]'>
-      <div class="mdl-card__title mdl-card--expand"></div>
-      <div class="mdl-card__actions">
-        <div>
-        <span class='item_title'>{{i.id}}</span><span class='left_count'>残り: {{i.count}}</span>
-        </div>
-        <button :disabled='!counts[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" @click='decrease(i.id)'>
+      <div class="mdl-card__title mdl-card--expand">
+      </div>
+      <div class="mdl-card__supporting-text">
+        <div>{{i.id}}</div>
+        <div>{{i.selling}}円 残り: {{counts[i.id] ? i.count - counts[i.id] : i.count}}</div>
+        <button :disabled='!counts[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click='decrease(i.id)'>
           <i class="material-icons">remove</i>
         </button>
-        <button :disabled='i.count === 0 || counts[i.id] >= i.count' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" @click='increase(i.id)'>
+        <button :disabled='i.count === 0 || counts[i.id] >= i.count' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click='increase(i.id)'>
           <i class="material-icons">add</i>
         </button>
       </div>
@@ -89,6 +89,7 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+$backColor: rgba(240, 240, 240, 0.8);
 main {
   height: 100%;
   overflow-y: auto;
@@ -107,28 +108,28 @@ main {
   &:hover {
     box-shadow: 0 8px 10px 1px rgba(0, 0, 0, .14), 0 3px 14px 2px rgba(0, 0, 0, .12), 0 5px 5px -3px rgba(0, 0, 0, .2);
   }
-  .mdl-card__actions {
-    background: rgba(240, 240, 240, 0.8);
+  .mdl-card__supporting-text {
+    width: 100%;
+    padding: 5px 5px 0 5px;
+    background: $backColor;
+    box-sizing: border-box;
+    opacity: 1;
     .mdl-button {
+      background-color: #eee;
       height: 30px;
       width: 30px;
       min-width: 30px;
       min-height: 30px;
-      float: right;
-    }
-    div {
-      &:after {
-        display: block;
-        height: 0;
-        clear: both;
-        visibility: hidden;
-        content: '.';
+      position: absolute;
+      bottom: 2px;
+      &[disabled] {
+        background-color: #ccc;
       }
-      .item_title {
-        float: left;
+      &.add {
+        right: 34px;
       }
-      .left_count {
-        float: right;
+      &.remove {
+        right: 2px;
       }
     }
   }
