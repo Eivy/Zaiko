@@ -13,7 +13,7 @@
         <button :disabled='!counts[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" @click='decrease(i.id)'>
           <i class="material-icons">remove</i>
         </button>
-        <button :disabled='counts[i.id] >= i.count' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" @click='increase(i.id)'>
+        <button :disabled='i.count === 0 || counts[i.id] >= i.count' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" @click='increase(i.id)'>
           <i class="material-icons">add</i>
         </button>
       </div>
