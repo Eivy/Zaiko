@@ -21,7 +21,7 @@
     </main>
     <footer class="mdl-mini-footer">
       <div class="mdl-mini-footer__right-section">
-        <div class="mdl-logo">合計</div>
+        <div class="mdl-logo">合計: <span>{{sum_count}}</span>個 <span>{{sum_price}}円</span></div>
       </div>
     </footer>
   </div>
@@ -32,15 +32,16 @@ import path from 'path'
 
 let snapshot
 export default {
-  data: function () { return { items: [], counts: {} } },
+  data: function () { return { items: {}, counts: {} } },
   created: function () {
     let user = firebase.auth().currentUser
     let store = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
     snapshot = store.onSnapshot((s) => {
-      this.items.splice(0, this.items.length)
+      for (let id in this.items) {
+        delete this.items[id]
+      }
       s.forEach((d) => {
-        let v = d.data()
-        this.items.push(v)
+        Vue.set(this.items, d.id, d.data())
       })
     })
   },
@@ -64,6 +65,22 @@ export default {
       if (this.counts[id] < 1) {
         Vue.delete(this.counts, id)
       }
+    }
+  },
+  computed: {
+    sum_count: function () {
+      let sum = 0
+      for (let id in this.counts) {
+        sum += this.counts[id]
+      }
+      return sum
+    },
+    sum_price: function () {
+      let sum = 0
+      for (let id in this.counts) {
+        sum += this.items[id].selling * this.counts[id]
+      }
+      return sum
     }
   }
 }
