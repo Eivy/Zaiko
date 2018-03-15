@@ -8,7 +8,7 @@
           <th class='mdl-data-table__cell--non-numeric'>住所</th>
           <th class='mdl-data-table__cell--non-numeric'>電話番号</th>
           <th class='mdl-data-table__cell--non-numeric'>担当者</th>
-          <th class='mdl-data-table__cell--non-numeric'></th>
+          <th class='mdl-data-table__cell--non-numeric'><CsvButton @read='read'></CsvButton></th>
         </tr>
       </thead>
       <tbody>
@@ -61,10 +61,11 @@ import path from 'path'
 
 import SubmitButton from '../SubmitButton.vue'
 import DeleteButton from '../DeleteButton.vue'
+import CsvButton from './CsvButton.vue'
 
 let snapshot
 export default {
-  components: { SubmitButton, DeleteButton },
+  components: { SubmitButton, DeleteButton, CsvButton },
   data: function () { return { items: [], name: '' } },
   created: function () {
     this.update(this.$route)
@@ -151,6 +152,30 @@ export default {
         document.getElementById('tel').parentNode.MaterialTextfield.change(o.tel)
         document.getElementById('incharge').parentNode.MaterialTextfield.change(o.incharge)
       }
+    },
+    read: function (data) {
+      let user = firebase.auth().currentUser
+      let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, this.$route.name))
+      data.forEach((row) => {
+        let id, address, tel, incharge
+        row.forEach((column, index) => {
+          switch (index) {
+            case 0:
+              id = column
+              break
+            case 1:
+              address = column || ''
+              break
+            case 2:
+              tel = column || ''
+              break
+            case 3:
+              incharge = column || ''
+              break
+          }
+        })
+        collect.doc(id).set({id, address, tel, incharge}, {merge: true})
+      })
     }
   }
 }
