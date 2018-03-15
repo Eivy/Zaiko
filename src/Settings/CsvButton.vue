@@ -1,11 +1,11 @@
 <template>
-  <span>
+  <div>
     <label id='csv_up' class='mdl-button mdl-js-button mdl-button--colored' for='csv'>
       <i class='material-icons'>file_upload</i>
       <input id='csv' class='mdl-textfield__input' type='file' accept='text/csv' @change='read'>
     </label>
     <span class="mdl-tooltip" data-mdl-for="csv_up">CSVアップロード</span>
-  </span>
+  </div>
 </template>
 
 <script>
@@ -37,7 +37,10 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-#csv {
-  display: none;
+#csv_up {
+  padding: initial;
+  #csv {
+    display: none;
+  }
 }
 </style>
