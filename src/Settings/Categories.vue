@@ -75,6 +75,9 @@ export default {
       }, 200, e)
     },
     delete_item: function (item) {
+      if (!confirm(item + 'を削除しますか?')) {
+        return
+      }
       let user = firebase.auth().currentUser
       let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, 'categories'))
       firebase.storage().ref().child(path.join(user.uid, item)).delete()

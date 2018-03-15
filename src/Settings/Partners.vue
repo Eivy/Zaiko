@@ -121,6 +121,9 @@ export default {
       }, 200, e)
     },
     delete_item: function (name) {
+      if (!confirm(name + 'を削除しますか?')) {
+        return
+      }
       let user = firebase.auth().currentUser
       let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, this.$route.name))
       collect.doc(name).delete()
