@@ -9,7 +9,7 @@
           <th>仕入価格</th>
           <th>在庫数</th>
           <th class='mdl-data-table__cell--non-numeric'>仕入先</th>
-          <th class='mdl-data-table__cell--non-numeric'></th>
+          <th class='mdl-data-table__cell--non-numeric'><CsvButton @read='read'></CsvButton></th>
         </tr>
       </thead>
       <tbody>
@@ -79,9 +79,10 @@ import path from 'path'
 
 import SubmitButton from '../SubmitButton.vue'
 import DeleteButton from '../DeleteButton.vue'
+import CsvButton from './CsvButton.vue'
 
 export default {
-  components: {SubmitButton, DeleteButton},
+  components: {SubmitButton, DeleteButton, CsvButton},
   data: function () { return { items: [], sellers: [], id: '' } },
   created: function () {
     let user = firebase.auth().currentUser
@@ -200,6 +201,46 @@ export default {
         document.getElementById('seller').parentNode.MaterialTextfield.change(o.seller)
         document.getElementById('preview').style.backgroundImage = 'url(' + o.image + ')'
       }
+    },
+    read: function (data) {
+      let user = firebase.auth().currentUser
+      let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
+      data.forEach((row, index) => {
+        let id, selling, purchase, count, seller
+        row.forEach((column, index) => {
+          console.log(index)
+          console.log(column)
+
+          switch (index) {
+            case 0:
+              if (column === '') {
+                return
+              }
+              id = column
+              break
+            case 1:
+              selling = column === '' ? 0 : column
+              break
+            case 2:
+              purchase = column === '' ? 0 : column
+              break
+            case 3:
+              count = column === '' ? 0 : column
+              break
+            case 4:
+              seller = column
+              break
+          }
+        })
+        let newData = {id, selling, purchase, count, seller, time: new Date()}
+        console.log(newData)
+        collect.doc(id).set(newData, {merge: true}).then(() => {
+          console.log('success')
+        }).catch((e) => {
+          console.log(e)
+        })
+        console.log('hoge')
+      })
     }
   }
 }
