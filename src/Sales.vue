@@ -6,16 +6,16 @@
       </div>
     </header>
     <main>
-    <div v-for='i in items' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='counts[i.id]'>
+    <div v-for='i in items' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='sell[i.id] ? sell[i.id].count : null'>
       <div class="mdl-card__title mdl-card--expand">
       </div>
       <div class="mdl-card__supporting-text">
         <div>{{i.id}}</div>
-        <div>{{i.selling}}円 残り: {{counts[i.id] ? i.count - counts[i.id] : i.count}}</div>
-        <button :disabled='!counts[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click='decrease(i.id)'>
+        <div>{{i.selling}}円 残り: {{sell[i.id] ? i.count - sell[i.id].count : i.count}}</div>
+        <button :disabled='!sell[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click='decrease(i.id)'>
           <i class="material-icons">remove</i>
         </button>
-        <button :disabled='i.count === 0 || counts[i.id] >= i.count' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click='increase(i.id)'>
+        <button :disabled='i.count === 0 || (sell[i.id] ? sell[i.id].count >= i.count : false)' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click='increase(i.id)'>
           <i class="material-icons">add</i>
         </button>
       </div>
@@ -24,6 +24,7 @@
     <footer class="mdl-mini-footer">
       <div class="mdl-mini-footer__right-section">
         <div class="mdl-logo">合計: <span>{{sum_count}}</span>個 <span>{{sum_price}}円</span></div>
+        <SubmitButton @click.native='submit'></SubmitButton>
       </div>
     </footer>
   </div>
@@ -32,13 +33,18 @@
 <script>
 import path from 'path'
 
+import SubmitButton from './SubmitButton.vue'
+
+const store = firebase.firestore()
+
 let snapshot
 export default {
-  data: function () { return { items: {}, counts: {} } },
+  components: { SubmitButton },
+  data: function () { return { items: {}, sell: {} } },
   created: function () {
     let user = firebase.auth().currentUser
-    let store = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
-    snapshot = store.onSnapshot((s) => {
+    let c = store.collection(path.join('Zaiko', user.uid, 'items'))
+    snapshot = c.onSnapshot((s) => {
       for (let id in this.items) {
         delete this.items[id]
       }
@@ -55,32 +61,50 @@ export default {
   },
   methods: {
     increase: function (id) {
-      if (this.counts[id] === undefined) {
-        Vue.set(this.counts, id, 0)
+      if (!this.sell[id]) {
+        let data = Object.assign({}, this.items[id])
+        data.count = 0
+        Vue.set(this.sell, id, data)
       }
-      this.counts[id] += 1
+      this.sell[id].count += 1
     },
     decrease: function (id) {
-      if (this.counts[id] && this.counts[id] > 0) {
-        this.counts[id] -= 1
+      if (this.sell[id]) {
+        if (this.sell[id].count > 0) {
+          this.sell[id].count -= 1
+        }
+        if (this.sell[id].count < 1) {
+          Vue.delete(this.sell, id)
+        }
       }
-      if (this.counts[id] < 1) {
-        Vue.delete(this.counts, id)
+    },
+    submit: function () {
+      let user = firebase.auth().currentUser
+      let sales = store.collection(path.join('Zaiko', user.uid, 'sales'))
+      let items = store.collection(path.join('Zaiko', user.uid, 'items'))
+      for (let id in this.sell) {
+        items.doc(id).get().then((d) => {
+          let data = d.data()
+          data.count -= this.sell[id].count
+          items.doc(id).set(data)
+          Vue.delete(this.sell, id)
+        })
       }
+      sales.doc().set({items: this.sell, date: new Date()})
     }
   },
   computed: {
     sum_count: function () {
       let sum = 0
-      for (let id in this.counts) {
-        sum += this.counts[id]
+      for (let id in this.sell) {
+        sum += this.sell[id].count
       }
       return sum
     },
     sum_price: function () {
       let sum = 0
-      for (let id in this.counts) {
-        sum += this.items[id].selling * this.counts[id]
+      for (let id in this.sell) {
+        sum += this.items[id].selling * this.sell[id].count
       }
       return sum
     }
