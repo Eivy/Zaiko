@@ -126,11 +126,10 @@ export default {
       collect.doc(name).delete()
     },
     clear_form: function () {
-      this.name = ''
-      document.getElementById('id').parentNode.MaterialTextfield.change('')
-      document.getElementById('address').parentNode.MaterialTextfield.change('')
-      document.getElementById('tel').parentNode.MaterialTextfield.change('')
-      document.getElementById('incharge').parentNode.MaterialTextfield.change('')
+      this.name = '';
+      ['id', 'address', 'tel', 'incharge'].forEach((s) => {
+        document.getElementById(s).parentNode.MaterialTextfield.change('')
+      })
     },
     set_name: function (nameValue) {
       this.name = nameValue
@@ -148,9 +147,9 @@ export default {
       }
       let o = this.items[i]
       if (o) {
-        document.getElementById('address').parentNode.MaterialTextfield.change(o.address)
-        document.getElementById('tel').parentNode.MaterialTextfield.change(o.tel)
-        document.getElementById('incharge').parentNode.MaterialTextfield.change(o.incharge)
+        ['address', 'tel', 'incharge'].forEach((s) => {
+          document.getElementById(s).parentNode.MaterialTextfield.change(o[s])
+        })
       }
     },
     read: function (data) {

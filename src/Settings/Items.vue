@@ -123,17 +123,18 @@ export default {
           document.getElementById('id').focus()
           return
         }
-        let selling = document.getElementById('selling')
-        let purchase = document.getElementById('purchase')
-        let count = document.getElementById('count')
-        let seller = document.getElementById('seller')
-        let data = {}
-        data.id = this.id
-        data.selling = Number(selling.value)
-        data.purchase = Number(purchase.value)
-        data.count = Number(count.value)
-        data.seller = seller.value
-        data.time = new Date()
+        let selling = document.getElementById('selling').value
+        let purchase = document.getElementById('purchase').value
+        let count = document.getElementById('count').value
+        let seller = document.getElementById('seller').value
+        let data = {
+          id: this.id,
+          selling: Number(selling),
+          purchase: Number(purchase),
+          count: Number(count),
+          seller,
+          time: new Date()
+        }
         const store = firebase.firestore()
         let collect = store.collection(path.join('Zaiko', user.uid, 'items'))
         let ref = collect.doc(this.id)
@@ -170,12 +171,10 @@ export default {
       collect.doc(id).delete()
     },
     clear_form: function () {
-      this.id = ''
-      document.getElementById('id').parentNode.MaterialTextfield.change('')
-      document.getElementById('selling').parentNode.MaterialTextfield.change('')
-      document.getElementById('purchase').parentNode.MaterialTextfield.change('')
-      document.getElementById('count').parentNode.MaterialTextfield.change('')
-      document.getElementById('seller').parentNode.MaterialTextfield.change('')
+      this.id = '';
+      ['id', 'selling', 'purchase', 'count', 'seller'].forEach((s) => {
+        document.getElementById(s).parentNode.MaterialTextfield.change('')
+      })
       document.getElementById('image').value = null
       document.getElementById('preview').style.backgroundImage = ''
     },
@@ -195,10 +194,9 @@ export default {
       }
       let o = this.items[i]
       if (o) {
-        document.getElementById('selling').parentNode.MaterialTextfield.change(o.selling)
-        document.getElementById('purchase').parentNode.MaterialTextfield.change(o.purchase)
-        document.getElementById('count').parentNode.MaterialTextfield.change(o.count)
-        document.getElementById('seller').parentNode.MaterialTextfield.change(o.seller)
+        ['selling', 'purchase', 'count', 'seller'].forEach((s) => {
+          document.getElementById(s).parentNode.MaterialTextfield.change(o[s])
+        })
         document.getElementById('preview').style.backgroundImage = 'url(' + o.image + ')'
       }
     },
