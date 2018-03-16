@@ -4,7 +4,7 @@
       <div class='mdl-layout__header-row'>
         <span class='mdl-layout-title'>管理</span>
       </div>
-      <div class='mdl-layout__tab-bar mdl-js-ripple-effect' :style='{height: "auto", "overflow-x": "auto"}'>
+      <div class='mdl-layout__tab-bar mdl-js-ripple-effect'>
         <router-link class='mdl-layout__tab' :class='{"is-active": $router.currentRoute.name === "items"}' to='/settings/items'>商品</router-link>
         <router-link class='mdl-layout__tab' :class='{"is-active": $router.currentRoute.name === "buyers"}' to='/settings/buyers'>販売先</router-link>
         <router-link class='mdl-layout__tab' :class='{"is-active": $router.currentRoute.name === "sellers"}' to='/settings/sellers'>仕入先</router-link>
@@ -18,8 +18,11 @@
   </div>
 </template>
 
-<style scoped lang='scss'>
+<style lang='scss'>
 .mdl-layout__content {
   height: 100%;
+}
+.mdl-layout__tab-bar-button {
+  visibility: hidden;
 }
 </style>
