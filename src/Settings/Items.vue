@@ -206,9 +206,6 @@ export default {
       data.forEach((row, index) => {
         let id, selling, purchase, count, seller
         row.forEach((column, index) => {
-          console.log(index)
-          console.log(column)
-
           switch (index) {
             case 0:
               if (column === '') {
@@ -217,13 +214,13 @@ export default {
               id = column
               break
             case 1:
-              selling = column === '' ? 0 : column
+              selling = Number(column)
               break
             case 2:
-              purchase = column === '' ? 0 : column
+              purchase = Number(column)
               break
             case 3:
-              count = column === '' ? 0 : column
+              count = Number(column)
               break
             case 4:
               seller = column
@@ -231,7 +228,6 @@ export default {
           }
         })
         let newData = {id, selling, purchase, count, seller, time: new Date()}
-        console.log(newData)
         collect.doc(id).set(newData, {merge: true}).then(() => {
           console.log('success')
         }).catch((e) => {
