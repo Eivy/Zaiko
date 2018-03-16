@@ -242,6 +242,7 @@ export default {
 
 <style scoped lang='scss'>
 #wrapper {
+  height: 100%;
   overflow-x: auto;
 }
 table {

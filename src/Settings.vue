@@ -16,3 +16,9 @@
     </main>
   </div>
 </template>
+
+<style scoped lang='scss'>
+.mdl-layout__content {
+  height: 100%;
+}
+</style>
