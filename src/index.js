@@ -6,6 +6,7 @@ import Settings from './Settings.vue'
 import Items from './Settings/Items.vue'
 import Partners from './Settings/Partners.vue'
 import Categories from './Settings/Categories.vue'
+import Config from './Settings/Config.vue'
 import SalesHistory from './Sales/History.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -26,7 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 { name: 'items', path: 'items', component: Items },
                 { name: 'buyers', path: 'buyers', component: Partners },
                 { name: 'sellers', path: 'sellers', component: Partners },
-                { name: 'categories', path: 'categories', component: Categories }
+                { name: 'categories', path: 'categories', component: Categories },
+                { name: 'config', path: 'config', component: Config }
               ]
             }
           ]

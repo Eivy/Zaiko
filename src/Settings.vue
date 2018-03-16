@@ -9,6 +9,7 @@
         <router-link class='mdl-layout__tab' :class='{"is-active": $router.currentRoute.name === "buyers"}' to='/settings/buyers'>販売先</router-link>
         <router-link class='mdl-layout__tab' :class='{"is-active": $router.currentRoute.name === "sellers"}' to='/settings/sellers'>仕入先</router-link>
         <router-link class='mdl-layout__tab' :class='{"is-active": $router.currentRoute.name === "categories"}' to='/settings/categories'>カテゴリー</router-link>
+        <router-link class='mdl-layout__tab' :class='{"is-active": $router.currentRoute.name === "config"}' to='/settings/config'>設定</router-link>
       </div>
     </header>
     <main class='mdl-layout__content'>
