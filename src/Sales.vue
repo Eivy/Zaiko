@@ -11,7 +11,7 @@
       </div>
       <div class="mdl-card__supporting-text">
         <div>{{i.id}}</div>
-        <div>\{{i.selling}} 残:{{sell[i.id] ? i.count - sell[i.id].count : i.count}}</div>
+        <div>¥{{i.selling}} 残:{{sell[i.id] ? i.count - sell[i.id].count : i.count}}</div>
         <button :disabled='!sell[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click='decrease(i.id)'>
           <i class="material-icons">remove</i>
         </button>
