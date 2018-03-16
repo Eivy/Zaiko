@@ -22,6 +22,15 @@
     </div>
     </main>
     <footer class="mdl-mini-footer">
+      <div class="mdl-mini-footer__left-section">
+        <div class='mdl-textfield mdl-js-textfield'>
+          <select id='buyer' class='mdl-textfield__input' name=''>
+            <option value=''></option>
+            <option v-for='(v, k) in buyers' :value='k'>{{k}}</option>
+          </select>
+          <label class='mdl-textfield__label' for='buyer'>販売先</label>
+        </div>
+      </div>
       <div class="mdl-mini-footer__right-section">
         <div class="mdl-logo">合計: <span>{{sum_count}}</span>個 <span>{{sum_price}}円</span></div>
         <SubmitButton @click.native='submit'></SubmitButton>
@@ -40,7 +49,7 @@ const store = firebase.firestore()
 let snapshot
 export default {
   components: { SubmitButton },
-  data: function () { return { items: {}, sell: {} } },
+  data: function () { return { items: {}, sell: {}, buyers: {} } },
   created: function () {
     let user = firebase.auth().currentUser
     let c = store.collection(path.join('Zaiko', user.uid, 'items'))
@@ -51,6 +60,16 @@ export default {
       s.forEach((d) => {
         Vue.set(this.items, d.id, d.data())
       })
+    })
+    c = store.collection(path.join('Zaiko', user.uid, 'buyers'))
+    snapshot = c.onSnapshot((s) => {
+      for (let id in this.buyers) {
+        delete this.buyers[id]
+      }
+      s.forEach((d) => {
+        Vue.set(this.buyers, d.id, d.data())
+      })
+      console.log(this.buyers)
     })
   },
   mounted: function () {
@@ -90,7 +109,12 @@ export default {
           Vue.delete(this.sell, id)
         })
       }
-      sales.doc().set({items: this.sell, date: new Date()})
+      let buyer = this.buyers[document.getElementById('buyer').value]
+      let data = {items: this.sell, date: new Date()}
+      if (buyer) {
+        data.buyer = buyer
+      }
+      sales.doc().set(data)
     }
   },
   computed: {
@@ -158,5 +182,18 @@ main {
     }
   }
 }
-
+.mdl-mini-footer {
+  .mdl-textfield {
+    padding: 0;
+  }
+  .mdl-textfield__label {
+    top: 5px;
+    &:after {
+      bottom: 0;
+    }
+  }
+  #buyer {
+    background-color: white;
+  }
+}
 </style>
