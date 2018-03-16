@@ -6,6 +6,7 @@ import Settings from './Settings.vue'
 import Items from './Settings/Items.vue'
 import Partners from './Settings/Partners.vue'
 import Categories from './Settings/Categories.vue'
+import SalesHistory from './Sales/History.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
   try {
@@ -15,6 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
           mode: 'history',
           routes: [
             { name: 'sales', path: '/sales', component: Sales },
+            { name: 'salesHistory', path: '/sales/history', component: SalesHistory },
             { name: 'inventory', path: '/inventory', component: Inventory },
             {
               name: 'settings',
