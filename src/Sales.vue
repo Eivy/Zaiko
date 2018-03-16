@@ -97,9 +97,21 @@ export default {
         }
       }
     },
+    check: function () {
+      for (let k in this.sell) {
+        if (this.items[k].count < this.sell[k].count) {
+          return k
+        }
+      }
+    },
     submit: function () {
       if (this.sum_count === 0) {
         alert('販売する商品がありません')
+        return
+      }
+      let check = this.check()
+      if (check) {
+        alert(check + 'の在庫が足りません')
         return
       }
       let user = firebase.auth().currentUser
