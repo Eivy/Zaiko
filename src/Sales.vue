@@ -4,13 +4,23 @@
       <div class="mdl-layout__header-row">
         <span class="mdl-layout-title">販売</span>
         <div class='mdl-layout-spacer'></div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+        mdl-textfield--floating-label mdl-textfield--align-right">
+          <label class="mdl-button mdl-js-button mdl-button--icon"
+                 for="fixed-header-drawer-exp">
+            <i class="material-icons">search</i>
+          </label>
+          <div class="mdl-textfield__expandable-holder">
+            <input class="mdl-textfield__input" v-model='filter' type="text" name="sample" id="fixed-header-drawer-exp">
+          </div>
+        </div>
         <nav class='mdl-navigation'>
           <router-link class='mdl-navigation__link' :to='{name: "salesHistory"}'>履歴</router-link>
         </nav>
       </div>
     </header>
     <main>
-    <div v-for='i in items' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='sell[i.id] ? sell[i.id].count : null'>
+    <div v-for='i in filterd_items' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='sell[i.id] ? sell[i.id].count : null'>
       <div class="mdl-card__title mdl-card--expand">
       </div>
       <div class="mdl-card__supporting-text">
@@ -53,7 +63,7 @@ const store = firebase.firestore()
 let snapshot
 export default {
   components: { SubmitButton },
-  data: function () { return { items: {}, sell: {}, buyers: {} } },
+  data: function () { return { items: {}, sell: {}, buyers: {}, filter: '' } },
   created: function () {
     let user = firebase.auth().currentUser
     let c = store.collection(path.join('Zaiko', user.uid, 'items'))
@@ -151,6 +161,19 @@ export default {
         sum += this.items[id].selling * this.sell[id].count
       }
       return sum
+    },
+    filterd_items: function () {
+      if (this.filter === '') {
+        return this.items
+      }
+      let r = {}
+      for (let k in this.items) {
+        let re = new RegExp('.*' + this.filter.replace(/([[\]\\{}.?*+^$])/, '\\$1') + '.*')
+        if (k.match(re)) {
+          r[k] = this.items[k]
+        }
+      }
+      return r
     }
   }
 }
