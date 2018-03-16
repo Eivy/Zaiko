@@ -1,9 +1,9 @@
 <template>
 <div>
-  <select @change='change_color' v-model=color_primary id='color-primary' name='color-primary'>
+  <select @change='change_color' v-model=color.primary id='color-primary' name='color-primary'>
     <option v-for='(v, k) in primary' :value=k >{{v}}</option>
   </select>
-  <select @change='change_color' v-model=color_accent id='color-accent' name='color-accent'>
+  <select @change='change_color' v-model=color.accent id='color-accent' name='color-accent'>
     <option v-for='(v, k) in accent' :value=k >{{v}}</option>
   </select>
 </div>
@@ -13,8 +13,10 @@
 export default {
   data: function () {
     return {
-      color_primary: 'blue',
-      color_accent: 'purple',
+      color: {
+        primary: 'blue',
+        accent: 'purple'
+      },
       colors: {
         deep_orange: 'Deep Orange',
         red: 'Red',
@@ -41,7 +43,7 @@ export default {
   methods: {
     change_color: function () {
       document.head.querySelectorAll('link[href*="code.getmdl.io"]').forEach((l) => {
-        l.setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + this.color_primary + '-' + this.color_accent + '.min.css')
+        l.setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + this.color.primary + '-' + this.color.accent + '.min.css')
       })
     }
   },
@@ -49,7 +51,7 @@ export default {
     primary: function () {
       let data = {}
       for (let k in this.colors) {
-        if (k !== this.color_accent) {
+        if (k !== this.color.accent) {
           data[k] = this.colors[k]
         }
       }
@@ -58,7 +60,7 @@ export default {
     accent: function () {
       let data = {}
       for (let k in this.colors) {
-        if (k !== this.color_primary && k !== 'brown' && k !== 'blue_grey' && k !== 'grey') {
+        if (k !== this.color.primary && k !== 'brown' && k !== 'blue_grey' && k !== 'grey') {
           data[k] = this.colors[k]
         }
       }
