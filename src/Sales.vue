@@ -98,6 +98,10 @@ export default {
       }
     },
     submit: function () {
+      if (this.sum_count === 0) {
+        alert('販売する商品がありません')
+        return
+      }
       let user = firebase.auth().currentUser
       let sales = store.collection(path.join('Zaiko', user.uid, 'sales'))
       let items = store.collection(path.join('Zaiko', user.uid, 'items'))
