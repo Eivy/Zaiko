@@ -1,59 +1,68 @@
 <template>
 <div>
-  <select @change='change_color' id='color-primary' name='color-primary'>
-    <option value='deep_orange'>Deep Orange</option>
-    <option value='red'>Red</option>
-    <option value='pink'>Pink</option>
-    <option value='purple'>Purple</option>
-    <option value='deep_purple'>Deep Purple</option>
-    <option value='indigo'>Indigo</option>
-    <option selected value='blue'>Blue</option>
-    <option value='light_blue'>Light Blue</option>
-    <option value='cyan'>Cyan</option>
-    <option value='teal'>Teal</option>
-    <option value='green'>Green</option>
-    <option value='light_green'>Light Green</option>
-    <option value='lime'>Lime</option>
-    <option value='yellow'>Yellow</option>
-    <option value='amber'>Amber</option>
-    <option value='orange'>Orange</option>
-    <option value='brown'>Brown</option>
-    <option value='blue_grey'>Blue Grey</option>
-    <option value='grey'>Grey</option>
+  <select @change='change_color' v-model=color_primary id='color-primary' name='color-primary'>
+    <option v-for='(v, k) in primary' :value=k >{{v}}</option>
   </select>
-  <select @change='change_color' id='color-accent' name='color-accent'>
-    <option value='deep_orange'>Deep Orange</option>
-    <option value='red'>Red</option>
-    <option value='pink'>Pink</option>
-    <option selected value='purple'>Purple</option>
-    <option value='deep_purple'>Deep Purple</option>
-    <option value='indigo'>Indigo</option>
-    <option value='blue'>Blue</option>
-    <option value='light_blue'>Light Blue</option>
-    <option value='cyan'>Cyan</option>
-    <option value='teal'>Teal</option>
-    <option value='green'>Green</option>
-    <option value='light_green'>Light Green</option>
-    <option value='lime'>Lime</option>
-    <option value='yellow'>Yellow</option>
-    <option value='amber'>Amber</option>
-    <option value='orange'>Orange</option>
+  <select @change='change_color' v-model=color_accent id='color-accent' name='color-accent'>
+    <option v-for='(v, k) in accent' :value=k >{{v}}</option>
   </select>
 </div>
 </template>
 
 <script>
 export default {
+  data: function () {
+    return {
+      color_primary: 'blue',
+      color_accent: 'purple',
+      colors: {
+        deep_orange: 'Deep Orange',
+        red: 'Red',
+        pink: 'Pink',
+        purple: 'Purple',
+        deep_purple: 'Deep Purple',
+        indigo: 'Indigo',
+        blue: 'Blue',
+        light_blue: 'Light Blue',
+        cyan: 'Cyan',
+        teal: 'Teal',
+        green: 'Green',
+        light_green: 'Light Green',
+        lime: 'Lime',
+        yellow: 'Yellow',
+        amber: 'Amber',
+        orange: 'Orange',
+        brown: 'Brown',
+        blue_grey: 'Blue Grey',
+        grey: 'Grey'
+      }
+    }
+  },
   methods: {
     change_color: function () {
-      var primary = document.getElementById('color-primary').value
-      console.log(primary)
-      var accent = document.getElementById('color-accent').value
-      console.log(accent)
       document.head.querySelectorAll('link[href*="code.getmdl.io"]').forEach((l) => {
-        l.setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + primary + '-' + accent + '.min.css')
-        console.log('done!!')
+        l.setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + this.color_primary + '-' + this.color_accent + '.min.css')
       })
+    }
+  },
+  computed: {
+    primary: function () {
+      let data = {}
+      for (let k in this.colors) {
+        if (k !== this.color_accent) {
+          data[k] = this.colors[k]
+        }
+      }
+      return data
+    },
+    accent: function () {
+      let data = {}
+      for (let k in this.colors) {
+        if (k !== this.color_primary && k !== 'brown' && k !== 'blue_grey' && k !== 'grey') {
+          data[k] = this.colors[k]
+        }
+      }
+      return data
     }
   }
 }
