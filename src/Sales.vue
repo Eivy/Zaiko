@@ -83,7 +83,6 @@ export default {
       s.forEach((d) => {
         Vue.set(this.buyers, d.id, d.data())
       })
-      console.log(this.buyers)
     })
   },
   mounted: function () {
