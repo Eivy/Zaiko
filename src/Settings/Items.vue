@@ -21,7 +21,7 @@
           <td>{{i.count}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.seller}}</td>
           <td class='mdl-data-table__cell--non-numeric'>
-            <DeleteButton @click.native.stop='delete_item(i.id)'></DeleteButton>
+            <DeleteButton @click='delete_item(i.id)' :id='i.id'></DeleteButton>
           </td>
         </tr>
         <tr>
@@ -160,9 +160,6 @@ export default {
       }, 200, e)
     },
     delete_item: function (id) {
-      if (!confirm(id + 'を削除しますか?')) {
-        return
-      }
       let user = firebase.auth().currentUser
       let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
       firebase.storage().ref().child(path.join(user.uid, id)).delete().catch((err) => {
