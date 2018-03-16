@@ -9,7 +9,7 @@ module.exports = [
       path: path.join(__dirname, 'public'),
       filename: '[name].js'
     },
-    devtool: 'inline-source-map',
+    devtool: process.env.NODE_ENV === 'development' ? 'inline-source-map' : false,
     module: {
       rules: [
         {
