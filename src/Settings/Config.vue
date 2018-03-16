@@ -1,12 +1,25 @@
 <template>
-<div>
-  <select @change='change_color' v-model=color.primary id='color-primary' name='color-primary'>
-    <option v-for='(v, k) in primary' :value=k >{{v}}</option>
-  </select>
-  <select @change='change_color' v-model=color.accent id='color-accent' name='color-accent'>
-    <option v-for='(v, k) in accent' :value=k >{{v}}</option>
-  </select>
-</div>
+  <div>
+    <div id='color' class='mdl-card mdl-js-card mdl-shadow--2dp'>
+      <div class='mdl-card__title'>配色</div>
+      <div class='mdl-card__actions'>
+        <div>ベース
+          <div class='mdl-textfield mdl-js-textfield'>
+            <select class='mdl-textfield__input' @change='change_color' v-model=color.primary id='color-primary' name='color-primary'>
+              <option v-for='(v, k) in primary' :value=k >{{v}}</option>
+            </select>
+          </div>
+        </div>
+        <div>アクセント
+          <div class='mdl-textfield mdl-js-textfield'>
+            <select class='mdl-textfield__input' @change='change_color' v-model=color.accent id='color-accent' name='color-accent'>
+              <option v-for='(v, k) in accent' :value=k >{{v}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -81,3 +94,14 @@ export default {
   }
 }
 </script>
+
+<style scoped lang='scss'>
+.mdl-card {
+  width: 80%;
+  margin: 2rem;
+  .mdl-card__actions>div {
+    display: inline-block;
+    margin: 1rem;
+  }
+}
+</style>
