@@ -69,7 +69,7 @@
           </td>
           <td class='mdl-data-table__cell--non-numeric'>
             <div class='mdl-textfield mdl-js-textfield mdl-select'>
-              <input class='mdl-textfield__input' type='text' id='categories' v-model='input.categories'></input>
+              <input class='mdl-textfield__input' type='text' id='categories' v-model='input.categories' readonly></input>
               <label class='mdl-textfield__label' for='categories'>カテゴリー</label>
               <ul class='mdl-menu mdl-menu--top-right mdl-js-menu mdl-js-ripple-effect' for='categories'>
                 <li v-for='c in categories' class='mdl-menu__item'>
