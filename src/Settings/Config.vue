@@ -67,9 +67,6 @@ export default {
     change_color: function () {
       let user = firebase.auth().currentUser
       firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('color').set(this.color)
-      document.head.querySelectorAll('link[href*="code.getmdl.io"]').forEach((l) => {
-        l.setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + this.color.primary + '-' + this.color.accent + '.min.css')
-      })
     }
   },
   computed: {

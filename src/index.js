@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.location.pathname === '/') {
           router.push('/sales')
         }
-        firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('color').get().then((d) => {
+        firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('color').onSnapshot((d) => {
           document.head.querySelectorAll('link[href*="code.getmdl.io"]').forEach((l) => {
             l.setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + d.data().primary + '-' + d.data().accent + '.min.css')
           })
