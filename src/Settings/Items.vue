@@ -9,6 +9,7 @@
           <th>仕入価格</th>
           <th>在庫数</th>
           <th class='mdl-data-table__cell--non-numeric'>仕入先</th>
+          <th class='mdl-data-table__cell--non-numeric'>カテゴリ</th>
           <th class='mdl-data-table__cell--non-numeric'><CsvButton @read='read'></CsvButton></th>
         </tr>
       </thead>
@@ -20,6 +21,7 @@
           <td>{{i.purchase}}</td>
           <td>{{i.count}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.seller}}</td>
+          <td class='mdl-data-table__cell--non-numeric'>{{i.categories ? i.categories.join(',') : ''}}</td>
           <td class='mdl-data-table__cell--non-numeric'>
             <DeleteButton @click='delete_item(i.id)' :id='i.id'></DeleteButton>
           </td>
@@ -58,11 +60,25 @@
           </td>
           <td class='mdl-data-table__cell--non-numeric'>
             <div class='mdl-textfield mdl-js-textfield'>
-              <select id='seller' class='mdl-textfield__input' name=''>
+              <select id='seller' class='mdl-textfield__input'>
                 <option value=''></option>
                 <option v-for='v in sellers' :value='v'>{{v}}</option>
               </select>
               <label class='mdl-textfield__label' for='seller'>仕入先</label>
+            </div>
+          </td>
+          <td class='mdl-data-table__cell--non-numeric'>
+            <div class='mdl-textfield mdl-js-textfield mdl-select'>
+              <input class='mdl-textfield__input' type='text' id='categories' v-model='input.categories'></input>
+              <label class='mdl-textfield__label' for='categories'>カテゴリー</label>
+              <ul class='mdl-menu mdl-menu--top-right mdl-js-menu mdl-js-ripple-effect' for='categories'>
+                <li v-for='c in categories' class='mdl-menu__item'>
+                  <label class='mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect' :for=c >
+                    <input :id=c type='checkbox' v-model='input.categories' :value='c' class='mdl-checkbox__input'>
+                    <span class='mdl-checkbox__label'>{{c}}</span>
+                  </label>
+                </li>
+              </ul>
             </div>
           </td>
           <td class='mdl-data-table__cell--non-numeric'>
@@ -83,7 +99,7 @@ import CsvButton from './CsvButton.vue'
 
 export default {
   components: {SubmitButton, DeleteButton, CsvButton},
-  data: function () { return { items: [], sellers: [], id: '' } },
+  data: function () { return { items: [], sellers: [], categories: [], id: '', input: { categories: [] } } },
   created: function () {
     let user = firebase.auth().currentUser
     let ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
@@ -98,6 +114,13 @@ export default {
       this.sellers.splice(0, this.sellers.length)
       s.forEach((d) => {
         this.sellers.push(d.id)
+      })
+    })
+    ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'categories'))
+    ref.onSnapshot((s) => {
+      this.categories.splice(0, this.categories.length)
+      s.forEach((d) => {
+        this.categories.push(d.id)
       })
     })
   },
@@ -133,6 +156,7 @@ export default {
           purchase: Number(purchase),
           count: Number(count),
           seller,
+          categories: this.input.categories,
           time: new Date()
         }
         const store = firebase.firestore()
@@ -171,7 +195,8 @@ export default {
       collect.doc(id).delete()
     },
     clear_form: function () {
-      this.id = '';
+      this.id = ''
+      this.input.categories = [];
       ['id', 'selling', 'purchase', 'count', 'seller'].forEach((s) => {
         document.getElementById(s).parentNode.MaterialTextfield.change('')
       })
@@ -197,6 +222,7 @@ export default {
         ['selling', 'purchase', 'count', 'seller'].forEach((s) => {
           document.getElementById(s).parentNode.MaterialTextfield.change(o[s])
         })
+        this.input.categories = o.categories
         document.getElementById('preview').style.backgroundImage = 'url(' + o.image + ')'
       }
     },
