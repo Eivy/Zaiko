@@ -18,6 +18,15 @@
           <router-link class='mdl-navigation__link' :to='{name: "salesHistory"}'>履歴</router-link>
         </nav>
       </div>
+      <div class="mdl-layout__header-row">
+        <div class='mdl-textfield mdl-js-textfield'>
+          <select v-model='filter_category' id='category' class='mdl-textfield__input'>
+            <option value=''></option>
+            <option v-for='v in categories' :value='v'>{{v}}</option>
+          </select>
+          <label class='mdl-textfield__label' for='category'>カテゴリー</label>
+        </div>
+      </div>
     </header>
     <main>
     <div v-for='i in filterd_items' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='sell[i.id] ? sell[i.id].count : null'>
@@ -63,7 +72,7 @@ const store = firebase.firestore()
 let snapshot
 export default {
   components: { SubmitButton },
-  data: function () { return { items: {}, sell: {}, buyers: {}, filter: '' } },
+  data: function () { return { items: {}, sell: {}, buyers: {}, filter: '', filter_category: '', categories: [] } },
   created: function () {
     let user = firebase.auth().currentUser
     let c = store.collection(path.join('Zaiko', user.uid, 'items'))
@@ -82,6 +91,13 @@ export default {
       }
       s.forEach((d) => {
         Vue.set(this.buyers, d.id, d.data())
+      })
+    })
+    c = store.collection(path.join('Zaiko', user.uid, 'categories'))
+    snapshot = c.onSnapshot((s) => {
+      this.categories.splice(0, this.categories.length)
+      s.forEach((d) => {
+        this.categories.push(d.id)
       })
     })
   },
@@ -162,13 +178,13 @@ export default {
       return sum
     },
     filterd_items: function () {
-      if (this.filter === '') {
+      if (this.filter === '' && this.filter_category === '') {
         return this.items
       }
       let r = {}
+      let re = new RegExp('.*(' + this.filter.replace(/([[\]\\{}.?*+^$])/, '\\$1').split(/ +/).join('|') + ').*')
       for (let k in this.items) {
-        let re = new RegExp('.*(' + this.filter.replace(/([[\]\\{}.?*+^$])/, '\\$1').split(/ +/).join('|') + ').*')
-        if (k.match(re)) {
+        if ((this.filter_category === '' || (this.items[k].categories && this.items[k].categories.indexOf(this.filter_category) >= 0)) && k.match(re)) {
           r[k] = this.items[k]
         }
       }
