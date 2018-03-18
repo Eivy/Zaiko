@@ -167,7 +167,7 @@ export default {
       }
       let r = {}
       for (let k in this.items) {
-        let re = new RegExp('.*' + this.filter.replace(/([[\]\\{}.?*+^$])/, '\\$1') + '.*')
+        let re = new RegExp('.*(' + this.filter.replace(/([[\]\\{}.?*+^$])/, '\\$1').split(/ +/).join('|') + ').*')
         if (k.match(re)) {
           r[k] = this.items[k]
         }
