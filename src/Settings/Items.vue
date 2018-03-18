@@ -23,7 +23,7 @@
           <td class='mdl-data-table__cell--non-numeric'>{{i.seller}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.categories ? i.categories.join(',') : ''}}</td>
           <td class='mdl-data-table__cell--non-numeric'>
-            <DeleteButton @click='delete_item(i.id)' :id='i.id'></DeleteButton>
+            <DeleteButton @delete='delete_item(i.id)' :id='i.id'></DeleteButton>
           </td>
         </tr>
         <tr>

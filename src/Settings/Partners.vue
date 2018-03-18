@@ -18,7 +18,7 @@
           <td class='mdl-data-table__cell--non-numeric'>{{i.tel}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.incharge}}</td>
           <td class='mdl-data-table__cell--non-numeric'>
-            <DeleteButton @click='delete_item(i.id)' :id='i.id'></DeleteButton>
+            <DeleteButton @delete='delete_item(i.id)' :id='i.id'></DeleteButton>
           </td>
         </tr>
         <tr>

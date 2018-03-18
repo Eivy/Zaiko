@@ -1,5 +1,5 @@
 <template>
-  <button @click=confirm class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent'><i class='material-icons'>delete_forever</i></button>
+  <button @click.stop=confirm class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent'><i class='material-icons'>delete_forever</i></button>
 </template>
 
 <script>
@@ -8,7 +8,7 @@ export default {
   methods: {
     confirm: function () {
       if (confirm(this.id + 'を削除しますか?')) {
-        this.$emit('click')
+        this.$emit('delete')
       }
     }
   }

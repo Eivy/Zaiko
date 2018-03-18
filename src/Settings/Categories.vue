@@ -11,7 +11,7 @@
         <tr v-for='c in categories'>
           <td class='mdl-data-table__cell--non-numeric'>{{c}}</td>
           <td class='mdl-data-table__cell--non-numeric'>
-            <DeleteButton @click='delete_item(c)' :id='c'></DeleteButton>
+            <DeleteButton @delete='delete_item(c)' :id='c'></DeleteButton>
           </td>
         </tr>
         <tr>
