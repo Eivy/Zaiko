@@ -91,9 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
           })
         })
         firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('color').onSnapshot((d) => {
-          document.head.querySelectorAll('link[href*="code.getmdl.io"]').forEach((l) => {
-            l.setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + d.data().primary + '-' + d.data().accent + '.min.css')
-          })
+          if (d.exists) {
+            document.head.querySelectorAll('link[href*="code.getmdl.io"]').forEach((l) => {
+              l.setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + d.data().primary + '-' + d.data().accent + '.min.css')
+            })
+          }
         })
       } else {
         let app = new Vue({
