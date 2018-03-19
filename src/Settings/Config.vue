@@ -86,10 +86,16 @@ export default {
   },
   created: function () {
     firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc('color').get().then((d) => {
+      if (!d.exists) {
+        return
+      }
       this.color.primary = d.data().primary
       this.color.accent = d.data().accent
     })
     firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc('count').onSnapshot((d) => {
+      if (!d.exists) {
+        return
+      }
       this.count.use = d.data().use
       this.count.count = d.data().count
       if (this.count.use) {
