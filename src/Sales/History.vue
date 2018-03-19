@@ -9,7 +9,7 @@
     <ul class='mdl-list'>
       <li v-for='v in sales' class='mdl-list__item mdl-list__item--three-line'>
         <span class='mdl-list__item-primary-content'>
-          <i class='material-icons mdl-list__item-icon'>shopping_basket</i>
+          <Icon class='mdl-list__item-icon'>shopping_basket</Icon>
           <span>{{date_format(v.date)}}</span>
           <span class='mdl-list__item-text-body'>
             <div>{{ list_item(v.items) }}</div>
@@ -17,7 +17,7 @@
           </span>
         </span>
         <span class='mdl-list__item-secondary-content'>
-          <router-link class='mdl-list__item-secondary-action' target='_blank' :to='{name: "detail", params: { id }}'><i class='material-icons'>open_in_new</i></router-link>
+          <router-link class='mdl-list__item-secondary-action' target='_blank' :to='{name: "detail", params: { id }}'><Icon>open_in_new</Icon></router-link>
         </span>
       </li>
     </ul>

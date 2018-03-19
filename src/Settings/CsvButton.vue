@@ -1,7 +1,7 @@
 <template>
   <div>
     <label id='csv_up' class='mdl-button mdl-js-button mdl-button--colored' for='csv'>
-      <i class='material-icons'>file_upload</i>
+      <Icon>file_upload</Icon>
       <input id='csv' class='mdl-textfield__input' type='file' accept='text/csv' @change='read'>
     </label>
     <span class="mdl-tooltip" data-mdl-for="csv_up">CSVアップロード</span>

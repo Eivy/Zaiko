@@ -8,7 +8,7 @@
         mdl-textfield--floating-label mdl-textfield--align-right">
           <label class="mdl-button mdl-js-button mdl-button--icon"
                  for="fixed-header-drawer-exp">
-            <i class="material-icons">search</i>
+            <Icon>search</Icon>
           </label>
           <div class="mdl-textfield__expandable-holder">
             <input class="mdl-textfield__input" v-model='filter' type="text" name="sample" id="fixed-header-drawer-exp">
@@ -36,10 +36,10 @@
         <div>{{i.id}}</div>
         <div>¥{{i.selling}} 残:{{sell[i.id] ? i.count - sell[i.id].count : i.count}}</div>
         <button :disabled='!sell[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click.stop='decrease(i.id)'>
-          <i class="material-icons">remove</i>
+          <Icon>remove</Icon>
         </button>
         <button :disabled='i.count === 0 || (sell[i.id] ? sell[i.id].count >= i.count : false)' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click.stop='increase(i.id)'>
-          <i class="material-icons">add</i>
+          <Icon>add</Icon>
         </button>
       </div>
     </div>

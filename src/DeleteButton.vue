@@ -1,5 +1,5 @@
 <template>
-  <button @click.stop=confirm class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent'><i class='material-icons'>delete_forever</i></button>
+  <button @click.stop=confirm class='mdl-button mdl-js-button mdl-button--raised mdl-button--accent'><Icon>delete_forever</Icon></button>
 </template>
 
 <script>

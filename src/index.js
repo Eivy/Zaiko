@@ -10,6 +10,7 @@ import Partners from './Settings/Partners.vue'
 import Categories from './Settings/Categories.vue'
 import Config from './Settings/Config.vue'
 import SalesHistory from './Sales/History.vue'
+import Icon from './Icon.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
   try {
@@ -37,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         Vue.use(VueRouter)
         Vue.use(Vuex)
+        Vue.component('Icon', Icon)
         var data = {
           user,
           config: {},

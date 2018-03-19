@@ -29,7 +29,7 @@
         <tr>
           <td class='mdl-data-table__cell--non-numeric'>
             <label id='preview' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab' for='image'>
-              <i class='material-icons'>add_a_photo</i>
+              <Icon>add_a_photo</Icon>
               <input id='image' class='mdl-textfield__input' type='file' accept='image/*' @change='preview_image'>
             </label>
           </td>
