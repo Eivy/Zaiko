@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     increase_more: function (id) {
-      if (this.config.use) {
+      if (this.config.count.use) {
         if (!this.sell[id]) {
           let data = Object.assign({}, this.items[id])
           data.count = 0
@@ -99,7 +99,7 @@ export default {
       }
     },
     decrease_more: function (id) {
-      if (this.config.use) {
+      if (this.config.count.use) {
         if (this.sell[id].count <= this.config.count) {
           Vue.delete(this.sell, id)
         } else {
