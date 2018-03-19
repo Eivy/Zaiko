@@ -267,6 +267,7 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+@import '../index.scss';
 #wrapper {
   height: 100%;
   overflow-x: auto;
