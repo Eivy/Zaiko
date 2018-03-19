@@ -108,6 +108,7 @@ export default {
       firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc('color').set(this.color)
     },
     change_count: function () {
+      this.count.count = Number(this.count.count)
       componentHandler.upgradeDom()
       firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc('count').set(this.count)
     }
