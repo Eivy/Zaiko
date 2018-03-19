@@ -21,6 +21,10 @@
     </div>
     <div id='count' class='mdl-card mdl-js-card mdl-shadow--2dp'>
       <div class='mdl-card__title'>数量</div>
+      <div class='mdl-card__supporting-text'>
+        商品の<i class='material-icons'>add</i>ボタンの代わりに画像部分をクリックすると数量で指定した数を増やせるようになります。<br />
+        減らす場合は商品名の部分をクリックします。
+      </div>
       <div class='mdl-card__actions'>
         <div>
           <div class='mdl-textfield mdl-js-textfield'>
@@ -143,5 +147,8 @@ export default {
     display: inline-block;
     margin: 1rem;
   }
+}
+.material-icons {
+  font-size: inherit;
 }
 </style>
