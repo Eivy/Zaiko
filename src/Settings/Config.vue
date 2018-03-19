@@ -52,6 +52,7 @@ import path from 'path'
 export default {
   data: function () {
     return {
+      user: this.$store.state.user,
       count: {
         use: false,
         count: 10
@@ -84,12 +85,11 @@ export default {
     }
   },
   created: function () {
-    let user = firebase.auth().currentUser
-    firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('color').get().then((d) => {
+    firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc('color').get().then((d) => {
       this.color.primary = d.data().primary
       this.color.accent = d.data().accent
     })
-    firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('count').onSnapshot((d) => {
+    firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc('count').onSnapshot((d) => {
       this.count.use = d.data().use
       this.count.count = d.data().count
       if (this.count.use) {
@@ -105,13 +105,11 @@ export default {
   },
   methods: {
     change_color: function () {
-      let user = firebase.auth().currentUser
-      firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('color').set(this.color)
+      firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc('color').set(this.color)
     },
     change_count: function () {
       componentHandler.upgradeDom()
-      let user = firebase.auth().currentUser
-      firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('count').set(this.count)
+      firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc('count').set(this.count)
     }
   },
   computed: {

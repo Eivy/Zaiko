@@ -72,44 +72,9 @@ const store = firebase.firestore()
 let snapshot = []
 export default {
   components: { SubmitButton },
-  data: function () { return { items: {}, sell: {}, buyers: {}, filter: '', filter_category: '', categories: [], config: {} } },
-  created: function () {
-    let user = firebase.auth().currentUser
-    let c = store.collection(path.join('Zaiko', user.uid, 'items'))
-    snapshot.push(c.onSnapshot((s) => {
-      for (let id in this.items) {
-        delete this.items[id]
-      }
-      s.forEach((d) => {
-        Vue.set(this.items, d.id, d.data())
-      })
-    }))
-    c = store.collection(path.join('Zaiko', user.uid, 'buyers'))
-    snapshot.push(c.onSnapshot((s) => {
-      for (let id in this.buyers) {
-        delete this.buyers[id]
-      }
-      s.forEach((d) => {
-        Vue.set(this.buyers, d.id, d.data())
-      })
-    }))
-    c = store.collection(path.join('Zaiko', user.uid, 'categories'))
-    snapshot.push(c.onSnapshot((s) => {
-      this.categories.splice(0, this.categories.length)
-      s.forEach((d) => {
-        this.categories.push(d.id)
-      })
-    }))
-    c = store.collection(path.join('Zaiko', user.uid, 'config'))
-    snapshot.push(c.onSnapshot((s) => {
-      s.forEach((d) => {
-        if (d.id === 'count') {
-          this.config = d.data()
-        }
-      })
-    }))
-  },
+  data: function () { return Object.assign({ sell: {}, filter: '', filter_category: '' }, this.$store.state) },
   mounted: function () {
+    console.log(this.user)
     componentHandler.upgradeDom()
   },
   destroy: function () {

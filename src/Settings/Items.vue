@@ -62,7 +62,7 @@
             <div class='mdl-textfield mdl-js-textfield'>
               <select id='seller' class='mdl-textfield__input'>
                 <option value=''></option>
-                <option v-for='v in sellers' :value='v'>{{v}}</option>
+                <option v-for='(v, k) in sellers' :value='k'>{{k}}</option>
               </select>
               <label class='mdl-textfield__label' for='seller'>仕入先</label>
             </div>
@@ -99,31 +99,7 @@ import CsvButton from './CsvButton.vue'
 
 export default {
   components: {SubmitButton, DeleteButton, CsvButton},
-  data: function () { return { items: [], sellers: [], categories: [], id: '', input: { categories: [] } } },
-  created: function () {
-    let user = firebase.auth().currentUser
-    let ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
-    ref.onSnapshot((s) => {
-      this.items.splice(0, this.items.length)
-      s.forEach((d) => {
-        this.items.push(d.data())
-      })
-    })
-    ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'sellers'))
-    ref.onSnapshot((s) => {
-      this.sellers.splice(0, this.sellers.length)
-      s.forEach((d) => {
-        this.sellers.push(d.id)
-      })
-    })
-    ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'categories'))
-    ref.onSnapshot((s) => {
-      this.categories.splice(0, this.categories.length)
-      s.forEach((d) => {
-        this.categories.push(d.id)
-      })
-    })
-  },
+  data: function () { return Object.assign({ id: '', input: { categories: [] } }, this.$store.state) },
   mounted: function () {
     componentHandler.upgradeDom()
   },
@@ -139,7 +115,6 @@ export default {
     submit: function (e) {
       e.target.disabled = true
       setTimeout(() => {
-        let user = firebase.auth().currentUser
         // data set
         if (this.id === '') {
           e.target.disabled = false
@@ -160,7 +135,7 @@ export default {
           time: new Date()
         }
         const store = firebase.firestore()
-        let collect = store.collection(path.join('Zaiko', user.uid, 'items'))
+        let collect = store.collection(path.join('Zaiko', this.user.uid, 'items'))
         let ref = collect.doc(this.id)
         ref.set(data, {merge: true}).then(() => {
           this.clear_form()
@@ -171,7 +146,7 @@ export default {
         let file = document.getElementById('image').files[0]
         if (file) {
           let r = firebase.storage().ref()
-          let fileRef = r.child(path.join(user.uid, this.id))
+          let fileRef = r.child(path.join(this.user.uid, this.id))
           fileRef.put(file).then(snapshot => {
             ref.set({image: snapshot.metadata.downloadURLs[0]}, {merge: true})
             document.getElementById('preview').style.backgroundImage = ''
@@ -185,9 +160,8 @@ export default {
       }, 200, e)
     },
     delete_item: function (id) {
-      let user = firebase.auth().currentUser
-      let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
-      firebase.storage().ref().child(path.join(user.uid, id)).delete().catch((err) => {
+      let collect = firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'items'))
+      firebase.storage().ref().child(path.join(this.user.uid, id)).delete().catch((err) => {
         if (err.t !== 'storage/object-not-found') {
           console.log(err)
         }
@@ -211,13 +185,7 @@ export default {
       id.focus()
     },
     load_value: function () {
-      let i
-      for (i = 0; i < this.items.length; i++) {
-        if (this.items[i].id === this.id) {
-          break
-        }
-      }
-      let o = this.items[i]
+      let o = this.items[this.id]
       if (o) {
         ['selling', 'purchase', 'count', 'seller'].forEach((s) => {
           document.getElementById(s).parentNode.MaterialTextfield.change(o[s])
@@ -227,8 +195,7 @@ export default {
       }
     },
     read: function (data) {
-      let user = firebase.auth().currentUser
-      let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, 'items'))
+      let collect = firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'items'))
       data.forEach((row, index) => {
         let id, selling, purchase, count, seller
         row.forEach((column, index) => {

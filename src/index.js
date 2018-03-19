@@ -36,8 +36,29 @@ document.addEventListener('DOMContentLoaded', () => {
           ]
         })
         Vue.use(VueRouter)
+        Vue.use(Vuex)
+        var data = {
+          user,
+          config: {},
+          items: {},
+          sellers: {},
+          buyers: {},
+          categories: []
+        }
+        let store = new Vuex.Store({
+          state: data,
+          mutations: {
+            push (state, payload) {
+              state[payload.name].push(payload.value)
+            },
+            set (state, payload) {
+              Vue.set(state[payload.name], payload.value.id, payload.value.data())
+            }
+          }
+        })
         let app = new Vue({
           router,
+          store,
           template: '<router-view></router-view>'
         })
         app.$mount('#main')
@@ -50,6 +71,23 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.location.pathname === '/') {
           router.push('/sales')
         }
+        ['config', 'items', 'buyers', 'sellers'].forEach(c => {
+          firebase.firestore().collection(path.join('Zaiko', user.uid, c)).onSnapshot(s => {
+            for (let k in data[c]) {
+              delete data[c][k]
+            }
+            s.forEach(d => {
+              var p = { name: c, value: d }
+              store.commit('set', p)
+            })
+          })
+        })
+        firebase.firestore().collection(path.join('Zaiko', user.uid, 'categories')).onSnapshot(s => {
+          data.categories.splice(0, data.categories.length)
+          s.forEach(d => {
+            store.commit('push', { name: 'categories', value: d.id })
+          })
+        })
         firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('color').onSnapshot((d) => {
           document.head.querySelectorAll('link[href*="code.getmdl.io"]').forEach((l) => {
             l.setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + d.data().primary + '-' + d.data().accent + '.min.css')

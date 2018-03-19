@@ -22,6 +22,7 @@ module.exports = {
     'componentHandler': true,
     'Vue': true,
     'VueRouter': true,
+    'Vuex': true,
     'firebaseui': true
   }
 }

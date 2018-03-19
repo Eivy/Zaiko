@@ -63,37 +63,21 @@ import SubmitButton from '../SubmitButton.vue'
 import DeleteButton from '../DeleteButton.vue'
 import CsvButton from './CsvButton.vue'
 
-let snapshot
 export default {
   components: { SubmitButton, DeleteButton, CsvButton },
-  data: function () { return { items: [], name: '' } },
-  created: function () {
-    this.update(this.$route)
-  },
+  data: function () { return { user: this.$store.state.user, items: this.$store.state[this.$route.name], name: '' } },
   watch: {
-    '$route': function (from, to) {
-      snapshot()
-      this.update(to)
+    '$route': function (to, from) {
+      this.items = this.$store.state[to.name]
     }
   },
   mounted: function () {
     componentHandler.upgradeDom()
   },
   methods: {
-    update: function () {
-      let user = firebase.auth().currentUser
-      let ref = firebase.firestore().collection(path.join('Zaiko', user.uid, this.$route.name))
-      snapshot = ref.onSnapshot((s) => {
-        this.items.splice(0, this.items.length)
-        s.forEach((d) => {
-          this.items.push(d.data())
-        })
-      })
-    },
     submit: function (e) {
       e.target.disabled = true
       setTimeout(() => {
-        let user = firebase.auth().currentUser
         // data set
         if (this.name === '') {
           e.target.disabled = false
@@ -110,7 +94,7 @@ export default {
         data.incharge = incharge.value
         data.time = new Date()
         const store = firebase.firestore()
-        let collect = store.collection(path.join('Zaiko', user.uid, this.$route.name))
+        let collect = store.collection(path.join('Zaiko', this.user.uid, this.$route.name))
         let ref = collect.doc(this.name)
         ref.set(data, {merge: true}).then(() => {
           this.clear_form()
@@ -121,8 +105,7 @@ export default {
       }, 200, e)
     },
     delete_item: function (name) {
-      let user = firebase.auth().currentUser
-      let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, this.$route.name))
+      let collect = firebase.firestore().collection(path.join('Zaiko', this.user.uid, this.$route.name))
       collect.doc(name).delete()
     },
     clear_form: function () {
@@ -139,13 +122,7 @@ export default {
       name.focus()
     },
     load_value: function () {
-      let i
-      for (i = 0; i < this.items.length; i++) {
-        if (this.items[i].id === this.name) {
-          break
-        }
-      }
-      let o = this.items[i]
+      let o = this.items[this.name]
       if (o) {
         ['address', 'tel', 'incharge'].forEach((s) => {
           document.getElementById(s).parentNode.MaterialTextfield.change(o[s])
@@ -153,8 +130,7 @@ export default {
       }
     },
     read: function (data) {
-      let user = firebase.auth().currentUser
-      let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, this.$route.name))
+      let collect = firebase.firestore().collection(path.join('Zaiko', this.user.uid, this.$route.name))
       data.forEach((row) => {
         let id, address, tel, incharge
         row.forEach((column, index) => {

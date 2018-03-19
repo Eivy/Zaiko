@@ -38,17 +38,7 @@ import DeleteButton from '../DeleteButton.vue'
 
 export default {
   components: { SubmitButton, DeleteButton },
-  data: function () { return { categories: [], name: '' } },
-  created: function () {
-    let user = firebase.auth().currentUser
-    let ref = firebase.firestore().collection(path.join('Zaiko', user.uid, 'categories'))
-    ref.onSnapshot((s) => {
-      this.categories.splice(0, this.categories.length)
-      s.forEach((d) => {
-        this.categories.push(d.id)
-      })
-    })
-  },
+  data: function () { return { user: this.$store.state.user, categories: this.$store.state.categories, name: '' } },
   mounted: function () {
     componentHandler.upgradeDom()
   },
@@ -56,7 +46,6 @@ export default {
     submit: function (e) {
       e.target.disabled = true
       setTimeout(() => {
-        let user = firebase.auth().currentUser
         // data set
         if (name.value === '') {
           e.target.disabled = false
@@ -64,7 +53,7 @@ export default {
           return
         }
         const store = firebase.firestore()
-        let collect = store.collection(path.join('Zaiko', user.uid, 'categories'))
+        let collect = store.collection(path.join('Zaiko', this.user.uid, 'categories'))
         let ref = collect.doc(this.name)
         ref.set({}).then(() => {
           this.clear_form()
@@ -75,9 +64,8 @@ export default {
       }, 200, e)
     },
     delete_item: function (item) {
-      let user = firebase.auth().currentUser
-      let collect = firebase.firestore().collection(path.join('Zaiko', user.uid, 'categories'))
-      firebase.storage().ref().child(path.join(user.uid, item)).delete()
+      let collect = firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'categories'))
+      firebase.storage().ref().child(path.join(this.user.uid, item)).delete()
       collect.doc(item).delete()
       this.clear_form()
     },
