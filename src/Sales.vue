@@ -125,6 +125,8 @@ export default {
         }
         if (this.items[id].count >= this.sell[id].count + this.config.count) {
           this.sell[id].count += this.config.count
+        } else {
+          this.sell[id].count = this.items[id].count
         }
         if (this.sell[id].count === 0) {
           Vue.delete(this.sell, id)
