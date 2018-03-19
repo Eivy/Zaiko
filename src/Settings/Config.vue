@@ -19,6 +19,26 @@
         </div>
       </div>
     </div>
+    <div id='count' class='mdl-card mdl-js-card mdl-shadow--2dp'>
+      <div class='mdl-card__title'>数量</div>
+      <div class='mdl-card__actions'>
+        <div>
+          <div class='mdl-textfield mdl-js-textfield'>
+            <label class='mdl-switch mdl-js-switch mdl-js-ripple-effect' for='use_count'>
+              <input @change='change_count' v-model='count.use' type='checkbox' id='use_count' class='mdl-switch__input'>
+              <span class='mdl-switch__label'>大量販売をする</span>
+            </label>
+          </div>
+        </div>
+        <div>
+          <div class='mdl-textfield mdl-js-textfield' :class='{"is-disabled": !count.use}'>
+            <input @change='change_count' v-model='count.count' :disabled='!count.use' class='mdl-textfield__input' type='text' pattern='-?[0-9]*(\.[0-9]+)?' id='count_num'>
+            <label class='mdl-textfield__label' for='count_num'>数量</label>
+            <span class='mdl-textfield__error'>数値を入力してください</span>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -28,6 +48,10 @@ import path from 'path'
 export default {
   data: function () {
     return {
+      count: {
+        use: false,
+        count: 10
+      },
       color: {
         primary: 'blue',
         accent: 'purple'
@@ -58,15 +82,32 @@ export default {
   created: function () {
     let user = firebase.auth().currentUser
     firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('color').get().then((d) => {
-      console.log(d.data())
       this.color.primary = d.data().primary
       this.color.accent = d.data().accent
     })
+    firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('count').onSnapshot((d) => {
+      this.count.use = d.data().use
+      this.count.count = d.data().count
+      if (this.count.use) {
+        document.getElementById('use_count').parentNode.MaterialSwitch.on()
+      } else {
+        document.getElementById('use_count').parentNode.MaterialSwitch.off()
+      }
+      document.getElementById('count_num').parentNode.MaterialTextfield.change(this.count.count)
+    })
+  },
+  mounted: function () {
+    componentHandler.upgradeDom()
   },
   methods: {
     change_color: function () {
       let user = firebase.auth().currentUser
       firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('color').set(this.color)
+    },
+    change_count: function () {
+      componentHandler.upgradeDom()
+      let user = firebase.auth().currentUser
+      firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('count').set(this.count)
     }
   },
   computed: {
@@ -96,6 +137,8 @@ export default {
 .mdl-card {
   width: 80%;
   margin: 2rem;
+}
+.mdl-card#color {
   .mdl-card__actions>div {
     display: inline-block;
     margin: 1rem;

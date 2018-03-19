@@ -29,16 +29,16 @@
       </div>
     </header>
     <main>
-    <div v-for='i in filterd_items' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='sell[i.id] ? sell[i.id].count : null'>
+    <div v-for='i in filterd_items' @click='increase_more(i.id)' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='sell[i.id] ? sell[i.id].count : null'>
       <div class="mdl-card__title mdl-card--expand">
       </div>
-      <div class="mdl-card__supporting-text">
+      <div @click.stop='decrease_more(i.id)' class="mdl-card__supporting-text">
         <div>{{i.id}}</div>
         <div>¥{{i.selling}} 残:{{sell[i.id] ? i.count - sell[i.id].count : i.count}}</div>
-        <button :disabled='!sell[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click='decrease(i.id)'>
+        <button :disabled='!sell[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click.stop='decrease(i.id)'>
           <i class="material-icons">remove</i>
         </button>
-        <button :disabled='i.count === 0 || (sell[i.id] ? sell[i.id].count >= i.count : false)' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click='increase(i.id)'>
+        <button :disabled='i.count === 0 || (sell[i.id] ? sell[i.id].count >= i.count : false)' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click.stop='increase(i.id)'>
           <i class="material-icons">add</i>
         </button>
       </div>
@@ -69,37 +69,45 @@ import SubmitButton from './SubmitButton.vue'
 
 const store = firebase.firestore()
 
-let snapshot
+let snapshot = []
 export default {
   components: { SubmitButton },
-  data: function () { return { items: {}, sell: {}, buyers: {}, filter: '', filter_category: '', categories: [] } },
+  data: function () { return { items: {}, sell: {}, buyers: {}, filter: '', filter_category: '', categories: [], config: {} } },
   created: function () {
     let user = firebase.auth().currentUser
     let c = store.collection(path.join('Zaiko', user.uid, 'items'))
-    snapshot = c.onSnapshot((s) => {
+    snapshot.push(c.onSnapshot((s) => {
       for (let id in this.items) {
         delete this.items[id]
       }
       s.forEach((d) => {
         Vue.set(this.items, d.id, d.data())
       })
-    })
+    }))
     c = store.collection(path.join('Zaiko', user.uid, 'buyers'))
-    snapshot = c.onSnapshot((s) => {
+    snapshot.push(c.onSnapshot((s) => {
       for (let id in this.buyers) {
         delete this.buyers[id]
       }
       s.forEach((d) => {
         Vue.set(this.buyers, d.id, d.data())
       })
-    })
+    }))
     c = store.collection(path.join('Zaiko', user.uid, 'categories'))
-    snapshot = c.onSnapshot((s) => {
+    snapshot.push(c.onSnapshot((s) => {
       this.categories.splice(0, this.categories.length)
       s.forEach((d) => {
         this.categories.push(d.id)
       })
-    })
+    }))
+    c = store.collection(path.join('Zaiko', user.uid, 'config'))
+    snapshot.push(c.onSnapshot((s) => {
+      s.forEach((d) => {
+        if (d.id === 'count') {
+          this.config = d.data()
+        }
+      })
+    }))
   },
   mounted: function () {
     componentHandler.upgradeDom()
@@ -108,6 +116,30 @@ export default {
     snapshot()
   },
   methods: {
+    increase_more: function (id) {
+      if (this.config.use) {
+        if (!this.sell[id]) {
+          let data = Object.assign({}, this.items[id])
+          data.count = 0
+          Vue.set(this.sell, id, data)
+        }
+        if (this.items[id].count >= this.sell[id].count + this.config.count) {
+          this.sell[id].count += this.config.count
+        }
+        if (this.sell[id].count === 0) {
+          Vue.delete(this.sell, id)
+        }
+      }
+    },
+    decrease_more: function (id) {
+      if (this.config.use) {
+        if (this.sell[id].count <= this.config.count) {
+          Vue.delete(this.sell, id)
+        } else {
+          this.sell[id].count -= this.config.count
+        }
+      }
+    },
     increase: function (id) {
       if (!this.sell[id]) {
         let data = Object.assign({}, this.items[id])
