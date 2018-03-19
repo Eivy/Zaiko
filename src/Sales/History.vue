@@ -32,10 +32,9 @@ const store = firebase.firestore()
 let snapshot
 
 export default {
-  data: function () { return {sales: []} },
+  data: function () { return {user: this.$store.state.user, sales: []} },
   created: function () {
-    let user = firebase.auth().currentUser
-    let c = store.collection(path.join('Zaiko', user.uid, 'sales')).orderBy('date', 'desc')
+    let c = store.collection(path.join('Zaiko', this.user.uid, 'sales')).orderBy('date', 'desc')
     snapshot = c.onSnapshot((s) => {
       this.sales.splice(0, this.sales.length)
       s.forEach((d) => {
