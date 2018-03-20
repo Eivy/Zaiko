@@ -109,6 +109,5 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   } catch (e) {
     console.error(e)
-    document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.'
   }
 })

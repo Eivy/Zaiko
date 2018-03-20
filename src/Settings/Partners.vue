@@ -100,7 +100,7 @@ export default {
           this.clear_form()
           e.target.disabled = false
         }).catch((err) => {
-          console.log(err)
+          console.error(err)
         })
       }, 200, e)
     },

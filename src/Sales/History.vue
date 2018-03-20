@@ -42,7 +42,6 @@ export default {
         data.id = d.id
         this.sales.push(data)
       })
-      console.log(this.sales)
     })
   },
   destroy: function () {

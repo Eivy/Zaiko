@@ -140,7 +140,7 @@ export default {
         ref.set(data, {merge: true}).then(() => {
           this.clear_form()
         }).catch((err) => {
-          console.log(err)
+          console.error(err)
         })
         // file upload
         let file = document.getElementById('image').files[0]
@@ -152,7 +152,7 @@ export default {
             document.getElementById('preview').style.backgroundImage = ''
             e.target.disabled = false
           }).catch(err => {
-            console.log(err)
+            console.error(err)
           })
         } else {
           e.target.disabled = false
@@ -163,7 +163,7 @@ export default {
       let collect = firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'items'))
       firebase.storage().ref().child(path.join(this.user.uid, id)).delete().catch((err) => {
         if (err.t !== 'storage/object-not-found') {
-          console.log(err)
+          console.error(err)
         }
       })
       collect.doc(id).delete()
@@ -198,7 +198,6 @@ export default {
         document.getElementById('preview').style.backgroundImage = 'url(' + o.image + ')'
         setTimeout(() => {
           document.querySelectorAll('input[type="checkbox"]').forEach(e => {
-            console.log(e)
             e.parentNode.MaterialCheckbox.checkToggleState()
           })
         }, 100)
@@ -232,11 +231,9 @@ export default {
         })
         let newData = {id, selling, purchase, count, seller, time: new Date()}
         collect.doc(id).set(newData, {merge: true}).then(() => {
-          console.log('success')
         }).catch((e) => {
-          console.log(e)
+          console.error(e)
         })
-        console.log('hoge')
       })
     }
   }
