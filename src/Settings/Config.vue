@@ -5,14 +5,14 @@
       <div class='mdl-card__actions'>
         <div>ベース
           <div class='mdl-textfield mdl-js-textfield'>
-            <select class='mdl-textfield__input' @change='change("color")' v-model=color.primary id='color-primary' name='color-primary'>
+            <select class='mdl-textfield__input' v-model='color.primary' @change='change("color")' id='color-primary' name='color-primary'>
               <option v-for='(v, k) in primary' :value=k >{{v}}</option>
             </select>
           </div>
         </div>
         <div>アクセント
           <div class='mdl-textfield mdl-js-textfield'>
-            <select class='mdl-textfield__input' @change='change("color")' v-model=color.accent id='color-accent' name='color-accent'>
+            <select class='mdl-textfield__input' v-model='color.accent' @change='change("color")' id='color-accent' name='color-accent'>
               <option v-for='(v, k) in accent' :value=k >{{v}}</option>
             </select>
           </div>
@@ -53,14 +53,8 @@ export default {
   data: function () {
     return {
       user: this.$store.state.user,
-      count: {
-        use: false,
-        count: 10
-      },
-      color: {
-        primary: 'blue',
-        accent: 'purple'
-      },
+      color: { primary: 'blue', accent: 'purple' },
+      count: { use: false, count: 10 },
       colors: {
         deep_orange: 'Deep Orange',
         red: 'Red',
@@ -84,27 +78,17 @@ export default {
       }
     }
   },
-  created: function () {
-    firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc('color').get().then((d) => {
-      if (!d.exists) {
-        return
+  watch: {
+    '$store.state.config': function () {
+      for (let k in this.$store.state.config) {
+        this[k] = this.$store.state.config[k]
       }
-      this.color.primary = d.data().primary
-      this.color.accent = d.data().accent
-    })
-    firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc('count').onSnapshot((d) => {
-      if (!d.exists) {
-        return
-      }
-      this.count.use = d.data().use
-      this.count.count = d.data().count
-      if (this.count.use) {
-        document.getElementById('use_count').parentNode.MaterialSwitch.on()
-      } else {
-        document.getElementById('use_count').parentNode.MaterialSwitch.off()
-      }
-      document.getElementById('count_num').parentNode.MaterialTextfield.change(this.count.count)
-    })
+      setTimeout(() => {
+        document.querySelectorAll('input[type="checkbox"]').forEach(e => {
+          e.parentNode.MaterialSwitch.checkToggleState()
+        })
+      }, 100)
+    }
   },
   mounted: function () {
     componentHandler.upgradeDom()
