@@ -12,20 +12,20 @@
           </label>
           <div class="mdl-textfield__expandable-holder">
             <input class="mdl-textfield__input" v-model='filter' type="text" name="sample" id="fixed-header-drawer-exp">
+            <ul class='mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect' for='fixed-header-drawer-exp'>
+              <li class='mdl-list__item'>カテゴリー</li>
+              <li v-for='c in categories' class='mdl-menu__item'>
+                <label class='mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect' :for=c >
+                  <input :id=c type='checkbox' v-model='filter_category' :value='c' class='mdl-checkbox__input'>
+                  <span class='mdl-checkbox__label'>{{c}}</span>
+                </label>
+              </li>
+            </ul>
           </div>
         </div>
         <nav class='mdl-navigation'>
           <router-link class='mdl-navigation__link' :to='{name: "salesHistory"}'>履歴</router-link>
         </nav>
-      </div>
-      <div class="mdl-layout__header-row">
-        <div class='mdl-textfield mdl-js-textfield'>
-          <select v-model='filter_category' id='category' class='mdl-textfield__input'>
-            <option value=''></option>
-            <option v-for='v in categories' :value='v'>{{v}}</option>
-          </select>
-          <label class='mdl-textfield__label' for='category'>カテゴリー</label>
-        </div>
       </div>
     </header>
     <main>
@@ -72,7 +72,7 @@ const store = firebase.firestore()
 let snapshot = []
 export default {
   components: { SubmitButton },
-  data: function () { return Object.assign({ sell: {}, filter: '', filter_category: '' }, this.$store.state) },
+  data: function () { return Object.assign({ sell: {}, filter: '', filter_category: [] }, this.$store.state) },
   mounted: function () {
     componentHandler.upgradeDom()
   },
@@ -176,14 +176,29 @@ export default {
       return sum
     },
     filterd_items: function () {
-      if (this.filter === '' && this.filter_category === '') {
+      if (this.filter === '' && this.filter_category.length === 0) {
         return this.items
       }
       let r = {}
+      if (this.filter_category.length > 0) {
+        for (let k in this.items) {
+          if (this.items[k].categories) {
+            let isInclude = true
+            for (let c in this.filter_category) {
+              isInclude = isInclude && (this.items[k].categories.indexOf(this.filter_category[c]) >= 0)
+            }
+            if (isInclude) {
+              r[k] = this.items[k]
+            }
+          }
+        }
+      } else {
+        Object.assign(r, this.items)
+      }
       let re = new RegExp('.*(' + this.filter.replace(/([[\]\\{}.?*+^$])/, '\\$1').split(/ +/).join('|') + ').*')
-      for (let k in this.items) {
-        if ((this.filter_category === '' || (this.items[k].categories && this.items[k].categories.indexOf(this.filter_category) >= 0)) && k.match(re)) {
-          r[k] = this.items[k]
+      for (let k in r) {
+        if (!k.match(re)) {
+          delete r[k]
         }
       }
       return r
