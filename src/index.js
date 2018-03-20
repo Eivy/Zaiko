@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
               var p = { name: c, value: d }
               store.commit('set', p)
             })
+            componentHandler.upgradeDom()
           })
         })
         firebase.firestore().collection(path.join('Zaiko', user.uid, 'categories')).onSnapshot(s => {
@@ -96,6 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
               l.setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + d.data().primary + '-' + d.data().accent + '.min.css')
             })
           }
+          componentHandler.upgradeDom()
         })
       } else {
         let app = new Vue({
