@@ -47,7 +47,7 @@
     <footer class="mdl-mini-footer">
       <div class="mdl-mini-footer__left-section">
         <div v-if='config.buyer && config.buyer.use' class='mdl-textfield mdl-js-textfield'>
-          <select id='buyer' class='mdl-textfield__input' name=''>
+          <select id='buyer' class='mdl-textfield__input' v-model=buyer >
             <option value=''></option>
             <option v-for='(v, k) in buyers' :value='k'>{{k}}</option>
           </select>
@@ -72,7 +72,7 @@ const store = firebase.firestore()
 let snapshot = []
 export default {
   components: { SubmitButton },
-  data: function () { return Object.assign({ sell: {}, filter: '', filter_category: [] }, this.$store.state) },
+  data: function () { return Object.assign({ buyer: '', sell: {}, filter: '', filter_category: [] }, this.$store.state) },
   mounted: function () {
     componentHandler.upgradeDom()
   },
@@ -141,9 +141,9 @@ export default {
         alert(check + 'の在庫が足りません')
         return
       }
-      let user = firebase.auth().currentUser
-      let sales = store.collection(path.join('Zaiko', user.uid, 'sales'))
-      let items = store.collection(path.join('Zaiko', user.uid, 'items'))
+      let uid = this.$store.state.user.uid
+      let sales = store.collection(path.join('Zaiko', uid, 'sales'))
+      let items = store.collection(path.join('Zaiko', uid, 'items'))
       for (let id in this.sell) {
         items.doc(id).get().then((d) => {
           let data = d.data()
@@ -152,10 +152,9 @@ export default {
           Vue.delete(this.sell, id)
         })
       }
-      let buyer = this.buyers[document.getElementById('buyer').value]
       let data = {items: this.sell, date: new Date()}
-      if (buyer) {
-        data.buyer = buyer
+      if (this.buyer !== '') {
+        data.buyer = this.buyer
       }
       sales.doc().set(data)
     }
