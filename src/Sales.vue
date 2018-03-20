@@ -82,14 +82,14 @@ export default {
   },
   methods: {
     increase_more: function (id) {
-      if (this.config.count.use) {
+      if (this.config.count && this.config.count.use) {
         if (!this.sell[id]) {
           let data = Object.assign({}, this.items[id])
           data.count = 0
           Vue.set(this.sell, id, data)
         }
-        if (this.items[id].count >= this.sell[id].count + this.config.count) {
-          this.sell[id].count += this.config.count
+        if (this.items[id].count >= this.sell[id].count + this.config.count.count) {
+          this.sell[id].count += this.config.count.count
         } else {
           this.sell[id].count = this.items[id].count
         }
@@ -99,11 +99,11 @@ export default {
       }
     },
     decrease_more: function (id) {
-      if (this.config.count.use) {
-        if (this.sell[id].count <= this.config.count) {
+      if (this.config.count && this.config.count.use && this.sell[id]) {
+        if (this.sell[id].count <= this.config.count.count) {
           Vue.delete(this.sell, id)
         } else {
-          this.sell[id].count -= this.config.count
+          this.sell[id].count -= this.config.count.count
         }
       }
     },
