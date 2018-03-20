@@ -74,7 +74,6 @@ export default {
   components: { SubmitButton },
   data: function () { return Object.assign({ sell: {}, filter: '', filter_category: '' }, this.$store.state) },
   mounted: function () {
-    console.log(this.user)
     componentHandler.upgradeDom()
   },
   destroy: function () {
