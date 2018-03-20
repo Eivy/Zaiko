@@ -4,12 +4,8 @@
       <div class="mdl-layout__header-row">
         <span class="mdl-layout-title">販売</span>
         <div class='mdl-layout-spacer'></div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
-        mdl-textfield--floating-label mdl-textfield--align-right">
-          <label class="mdl-button mdl-js-button mdl-button--icon"
-                 for="fixed-header-drawer-exp">
-            <Icon>search</Icon>
-          </label>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--expandable mdl-textfield--floating-label mdl-textfield--align-right">
+          <label class="mdl-button mdl-js-button mdl-button--icon" for="fixed-header-drawer-exp"><Icon>search</Icon></label>
           <div class="mdl-textfield__expandable-holder">
             <input class="mdl-textfield__input" v-model='filter' type="text" name="sample" id="fixed-header-drawer-exp">
             <ul class='mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect' for='fixed-header-drawer-exp'>
@@ -30,17 +26,12 @@
     </header>
     <main>
     <div v-for='i in filterd_items' @click='increase_more(i.id)' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='sell[i.id] ? sell[i.id].count : null'>
-      <div class="mdl-card__title mdl-card--expand">
-      </div>
+      <div class="mdl-card__title mdl-card--expand"></div>
       <div @click.stop='decrease_more(i.id)' class="mdl-card__supporting-text">
         <div>{{i.id}}</div>
         <div>¥{{i.selling}} 残:{{sell[i.id] ? i.count - sell[i.id].count : i.count}}</div>
-        <button :disabled='!sell[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click.stop='decrease(i.id)'>
-          <Icon>remove</Icon>
-        </button>
-        <button :disabled='i.count === 0 || (sell[i.id] ? sell[i.id].count >= i.count : false)' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click.stop='increase(i.id)'>
-          <Icon>add</Icon>
-        </button>
+        <button :disabled='!sell[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click.stop='decrease(i.id)'><Icon>remove</Icon></button>
+        <button :disabled='i.count === 0 || (sell[i.id] ? sell[i.id].count >= i.count : false)' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click.stop='increase(i.id)'><Icon>add</Icon></button>
       </div>
     </div>
     </main>
@@ -194,7 +185,7 @@ export default {
       } else {
         Object.assign(r, this.items)
       }
-      let re = new RegExp('.*(' + this.filter.replace(/([[\]\\{}.?*+^$])/, '\\$1').split(/ +/).join('|') + ').*')
+      let re = new RegExp('.*(' + this.filter.replace(/([[\]\\{}.?*+^$])/, '\\$1').split(new RegExp('[ 　]+')).join('|') + ').*')
       for (let k in r) {
         if (!k.match(re)) {
           delete r[k]
