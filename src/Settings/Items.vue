@@ -71,9 +71,10 @@
             <div class='mdl-textfield mdl-js-textfield mdl-select'>
               <input class='mdl-textfield__input' type='text' id='categories' v-model='input.categories' readonly></input>
               <label class='mdl-textfield__label' for='categories'>カテゴリー</label>
-              <ul class='mdl-menu mdl-menu--top-right mdl-js-menu mdl-js-ripple-effect' for='categories'>
+              <ul class='mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect' for='categories'>
+                <li class='mdl-menu__item'>カテゴリー</li>
                 <li v-for='c in categories' class='mdl-menu__item'>
-                  <label class='mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect' :for=c >
+                  <label @click.stop class='mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect' :for=c >
                     <input :id=c type='checkbox' v-model='input.categories' :value='c' class='mdl-checkbox__input'>
                     <span class='mdl-checkbox__label'>{{c}}</span>
                   </label>

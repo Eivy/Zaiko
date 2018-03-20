@@ -9,9 +9,9 @@
           <div class="mdl-textfield__expandable-holder">
             <input class="mdl-textfield__input" v-model='filter' type="text" name="sample" id="fixed-header-drawer-exp">
             <ul class='mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect' for='fixed-header-drawer-exp'>
-              <li class='mdl-list__item'>カテゴリー</li>
+              <li class='mdl-menu__item'>カテゴリー</li>
               <li v-for='c in categories' class='mdl-menu__item'>
-                <label class='mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect' :for=c >
+                <label @click.stop class='mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect' :for=c >
                   <input :id=c type='checkbox' v-model='filter_category' :value='c' class='mdl-checkbox__input'>
                   <span class='mdl-checkbox__label'>{{c}}</span>
                 </label>
