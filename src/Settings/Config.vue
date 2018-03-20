@@ -5,14 +5,14 @@
       <div class='mdl-card__actions'>
         <div>ベース
           <div class='mdl-textfield mdl-js-textfield'>
-            <select class='mdl-textfield__input' @change='change_color' v-model=color.primary id='color-primary' name='color-primary'>
+            <select class='mdl-textfield__input' @change='change("color")' v-model=color.primary id='color-primary' name='color-primary'>
               <option v-for='(v, k) in primary' :value=k >{{v}}</option>
             </select>
           </div>
         </div>
         <div>アクセント
           <div class='mdl-textfield mdl-js-textfield'>
-            <select class='mdl-textfield__input' @change='change_color' v-model=color.accent id='color-accent' name='color-accent'>
+            <select class='mdl-textfield__input' @change='change("color")' v-model=color.accent id='color-accent' name='color-accent'>
               <option v-for='(v, k) in accent' :value=k >{{v}}</option>
             </select>
           </div>
@@ -29,14 +29,14 @@
         <div>
           <div class='mdl-textfield mdl-js-textfield'>
             <label class='mdl-switch mdl-js-switch mdl-js-ripple-effect' for='use_count'>
-              <input @change='change_count' v-model='count.use' type='checkbox' id='use_count' class='mdl-switch__input'>
+              <input @change='change("count")' v-model='count.use' type='checkbox' id='use_count' class='mdl-switch__input'>
               <span class='mdl-switch__label'>大量販売をする</span>
             </label>
           </div>
         </div>
         <div>
           <div class='mdl-textfield mdl-js-textfield' :class='{"is-disabled": !count.use}'>
-            <input @change='change_count' v-model='count.count' :disabled='!count.use' class='mdl-textfield__input' type='text' pattern='-?[0-9]*(\.[0-9]+)?' id='count_num'>
+            <input @change='change("count")' v-model='count.count' :disabled='!count.use' class='mdl-textfield__input' type='text' pattern='-?[0-9]*(\.[0-9]+)?' id='count_num'>
             <label class='mdl-textfield__label' for='count_num'>数量</label>
             <span class='mdl-textfield__error'>数値を入力してください</span>
           </div>
@@ -110,13 +110,8 @@ export default {
     componentHandler.upgradeDom()
   },
   methods: {
-    change_color: function () {
-      firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc('color').set(this.color)
-    },
-    change_count: function () {
-      this.count.count = Number(this.count.count)
-      componentHandler.upgradeDom()
-      firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc('count').set(this.count)
+    change: function (key) {
+      firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc(key).set(this[key])
     }
   },
   computed: {
