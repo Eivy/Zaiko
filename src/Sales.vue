@@ -213,6 +213,9 @@ main {
   height: 100%;
   overflow-y: auto;
 }
+.mdl-checkbox__label {
+  position: absolute;
+}
 .mdl-card {
   max-width: calc(50vmin - 2rem);
   max-height: calc(50vmin - 2rem);

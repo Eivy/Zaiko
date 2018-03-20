@@ -252,6 +252,9 @@ table {
     width: auto;
     min-width: 50px;
   }
+  .mdl-checkbox__label {
+    position: absolute;
+  }
   #field_selling, #field_purchase {
     width: 70px;
     input {
