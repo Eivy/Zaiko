@@ -190,7 +190,11 @@ export default {
         ['selling', 'purchase', 'count', 'seller'].forEach((s) => {
           document.getElementById(s).parentNode.MaterialTextfield.change(o[s])
         })
-        this.input.categories = o.categories
+        if (o.categories) {
+          this.input.categories = o.categories
+        } else {
+          this.input.categories = []
+        }
         document.getElementById('preview').style.backgroundImage = 'url(' + o.image + ')'
       }
     },
