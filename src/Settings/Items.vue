@@ -196,6 +196,12 @@ export default {
           this.input.categories = []
         }
         document.getElementById('preview').style.backgroundImage = 'url(' + o.image + ')'
+        setTimeout(() => {
+          document.querySelectorAll('input[type="checkbox"]').forEach(e => {
+            console.log(e)
+            e.parentNode.MaterialCheckbox.checkToggleState()
+          })
+        }, 100)
       }
     },
     read: function (data) {
