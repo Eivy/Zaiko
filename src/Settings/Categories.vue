@@ -10,7 +10,7 @@
       <tbody>
         <tr v-for='c in categories'>
           <td class='mdl-data-table__cell--non-numeric'>{{c}}</td>
-          <td class='mdl-data-table__cell--non-numeric'>
+          <TD CLASs='mdl-data-table__cell--non-numeric'>
             <DeleteButton @delete='delete_item(c)' :id='c'></DeleteButton>
           </td>
         </tr>
@@ -45,13 +45,13 @@ export default {
   methods: {
     submit: function (e) {
       e.target.disabled = true
+      if (this.name === '') {
+        e.target.disabled = false
+        document.getElementById('category').focus()
+        return
+      }
       setTimeout(() => {
         // data set
-        if (name.value === '') {
-          e.target.disabled = false
-          document.getElementById('name').focus()
-          return
-        }
         const store = firebase.firestore()
         let collect = store.collection(path.join('Zaiko', this.user.uid, 'categories'))
         let ref = collect.doc(this.name)
