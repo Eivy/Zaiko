@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ['config', 'items', 'buyers', 'sellers'].forEach(c => {
           firebase.firestore().collection(path.join('Zaiko', user.uid, c)).onSnapshot(s => {
             for (let k in data[c]) {
-              delete data[c][k]
+              Vue.delete(data[c], k)
             }
             s.forEach(d => {
               var p = { name: c, value: d }
