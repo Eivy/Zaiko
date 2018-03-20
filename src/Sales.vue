@@ -46,7 +46,7 @@
     </main>
     <footer class="mdl-mini-footer">
       <div class="mdl-mini-footer__left-section">
-        <div class='mdl-textfield mdl-js-textfield'>
+        <div v-if='config.buyer && config.buyer.use' class='mdl-textfield mdl-js-textfield'>
           <select id='buyer' class='mdl-textfield__input' name=''>
             <option value=''></option>
             <option v-for='(v, k) in buyers' :value='k'>{{k}}</option>

@@ -43,6 +43,17 @@
         </div>
       </div>
     </div>
+    <div id='buyer' class='mdl-card mdl-js-card mdl-shadow--2dp'>
+      <div class='mdl-card__title'>販売先</div>
+      <div class='mdl-card__actions'>
+        <div class='mdl-textfield mdl-js-textfield'>
+          <label class='mdl-switch mdl-js-switch mdl-js-ripple-effect' for='use_buyer'>
+            <input @change='change("buyer")' v-model='buyer.use' type='checkbox' id='use_buyer' class='mdl-switch__input'>
+            <span class='mdl-switch__label'>販売時に販売先を指定する</SPAN>
+          </label>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -55,6 +66,7 @@ export default {
       user: this.$store.state.user,
       color: { primary: 'blue', accent: 'purple' },
       count: { use: false, count: 10 },
+      buyer: { use: false },
       colors: {
         deep_orange: 'Deep Orange',
         red: 'Red',
