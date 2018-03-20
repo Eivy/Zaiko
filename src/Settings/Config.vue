@@ -92,6 +92,18 @@ export default {
   },
   watch: {
     '$store.state.config': function () {
+      this.check_config()
+    }
+  },
+  mounted: function () {
+    this.check_config()
+    componentHandler.upgradeDom()
+  },
+  methods: {
+    change: function (key) {
+      firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc(key).set(this[key])
+    },
+    check_config: function () {
       for (let k in this.$store.state.config) {
         this[k] = this.$store.state.config[k]
       }
@@ -103,14 +115,6 @@ export default {
           e.parentNode.MaterialSwitch.checkToggleState()
         })
       }, 100)
-    }
-  },
-  mounted: function () {
-    componentHandler.upgradeDom()
-  },
-  methods: {
-    change: function (key) {
-      firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc(key).set(this[key])
     }
   },
   computed: {
