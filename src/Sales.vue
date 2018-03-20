@@ -55,7 +55,7 @@
         </div>
       </div>
       <div class="mdl-mini-footer__right-section">
-        <div class="mdl-logo">合計: <span>{{sum_count}}</span>個 <span>{{sum_price}}円</span></div>
+        <span>合計: <span>{{sum_count}}</span>個 <span>{{sum_price}}円</span></span>
         <SubmitButton @click.native='submit'></SubmitButton>
       </div>
     </footer>
