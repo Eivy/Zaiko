@@ -84,6 +84,9 @@ export default {
         this[k] = this.$store.state.config[k]
       }
       setTimeout(() => {
+        document.querySelectorAll('input[type="text"]').forEach(e => {
+          e.parentNode.MaterialTextfield.checkDirty()
+        })
         document.querySelectorAll('input[type="checkbox"]').forEach(e => {
           e.parentNode.MaterialSwitch.checkToggleState()
         })
