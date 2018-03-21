@@ -1,11 +1,24 @@
 <template>
-  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
-    <header class="mdl-layout__header">
-      <div class="mdl-layout__header-row">
-        <span class="mdl-layout-title">販売履歴</span>
+  <div class='mdl-layout mdl-js-layout mdl-layout--fixed-header'>
+    <header class='mdl-layout__header'>
+      <div class='mdl-layout__header-row'>
+        <span class='mdl-layout-title'>販売履歴</span>
       </div>
     </header>
     <main>
+    <div>
+      <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
+        <input v-model='count' @change='filter' class='mdl-textfield__input' type='number' id='count'>
+        <label class='mdl-textfield__label' for='sample3'>表示件数</label>
+      </div>
+      <div v-if='config.buyer && config.buyer.use' class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
+        <select id='buyer' v-model=buyer @change='filter' class='mdl-textfield__input'>
+          <option value=''></option>
+          <option v-for='(v, k) in buyers' :value='k'>{{k}}</option>
+        </select>
+        <label class='mdl-textfield__label' for='buyer'>販売先</label>
+      </div>
+    </div>
     <ul class='mdl-list'>
       <li v-for='v in sales' class='mdl-list__item mdl-list__item--three-line'>
         <span class='mdl-list__item-primary-content'>
@@ -29,25 +42,26 @@
 import path from 'path'
 
 const store = firebase.firestore()
-let snapshot
+let collection
 
 export default {
-  data: function () { return {user: this.$store.state.user, sales: []} },
+  data: function () { return { user: this.$store.state.user, config: this.$store.state.config, sales: [], buyers: this.$store.state.buyers, count: 10, buyer: '' } },
   created: function () {
-    let c = store.collection(path.join('Zaiko', this.user.uid, 'sales')).orderBy('date', 'desc')
-    snapshot = c.onSnapshot((s) => {
-      this.sales.splice(0, this.sales.length)
-      s.forEach((d) => {
-        let data = d.data()
-        data.id = d.id
-        this.sales.push(data)
-      })
-    })
-  },
-  destroy: function () {
-    snapshot()
+    collection = store.collection(path.join('Zaiko', this.user.uid, 'sales'))
+    let c = collection.orderBy('date', 'desc').limit(this.count)
+    this.get(c)
   },
   methods: {
+    get: function (c) {
+      c.get().then((s) => {
+        this.sales.splice(0, this.sales.length)
+        s.forEach((d) => {
+          let data = d.data()
+          data.id = d.id
+          this.sales.push(data)
+        })
+      })
+    },
     date_format: function (date) {
       let r = ''
       r += date.getFullYear() + '年'
@@ -66,6 +80,17 @@ export default {
         r += items[k].id + ' ×' + items[k].count + ', '
       }
       return r
+    },
+    filter: function () {
+      this.count = Number(this.count)
+      let c = collection
+      if (this.buyer.length > 0) {
+        c = c.where('buyer', '==', this.buyer)
+      }
+      if (this.count.length !== 0 && this.count > 0) {
+        c = c.limit(this.count)
+      }
+      this.get(c)
     }
   }
 }
