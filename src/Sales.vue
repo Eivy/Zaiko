@@ -40,7 +40,7 @@
         <div v-if='config.buyer && config.buyer.use' class='mdl-textfield mdl-js-textfield'>
           <select id='buyer' class='mdl-textfield__input' v-model=buyer >
             <option value=''></option>
-            <option v-for='(v, k) in buyers' :value='k'>{{k}}</option>
+            <option v-for='(v, k) in buyers' :value='v'>{{k}}</option>
           </select>
           <label class='mdl-textfield__label' for='buyer'>販売先</label>
         </div>

@@ -85,7 +85,7 @@ export default {
       this.count = Number(this.count)
       let c = collection
       if (this.buyer.length > 0) {
-        c = c.where('buyer', '==', this.buyer)
+        c = c.where('buyer.id', '==', this.buyer)
       }
       if (this.count.length !== 0 && this.count > 0) {
         c = c.limit(this.count)
