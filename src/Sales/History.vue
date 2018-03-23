@@ -32,6 +32,9 @@
           <div>{{ list_item(v.items) }}</div>
           <div v-if=v.buyer >販売先: {{ v.buyer.id }}</div>
       </div>
+      <div class='mdl-card__menu'>
+        <router-link target='_blank' :to='{name: "detail", params: { id }}'><Icon>open_in_new</Icon></router-link>
+      </div>
     </div>
     </main>
   </div>
