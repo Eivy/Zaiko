@@ -23,7 +23,7 @@
     </div>
     <div v-for='v in sales' class='mdl-card mdl-card-wide mdl-shadow--2dp'>
       <div class='mdl-card__title'>
-        <router-link :to='{name: "detail", params: { id }}'>
+        <router-link :to='{name: "salesDetail", params: { id: v.id }}'>
           <Icon class='mdl-list__item-icon'>shopping_basket</Icon>
           {{date_format(v.date)}}
           </router-link>
@@ -33,7 +33,7 @@
           <div v-if=v.buyer >販売先: {{ v.buyer.id }}</div>
       </div>
       <div class='mdl-card__menu'>
-        <router-link target='_blank' :to='{name: "detail", params: { id }}'><Icon>open_in_new</Icon></router-link>
+        <router-link target='_blank' :to='{name: "salesDetail", params: { id: v.id }}'><Icon>open_in_new</Icon></router-link>
       </div>
     </div>
     </main>

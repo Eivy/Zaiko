@@ -10,6 +10,7 @@ import Partners from './Settings/Partners.vue'
 import Categories from './Settings/Categories.vue'
 import Config from './Settings/Config.vue'
 import SalesHistory from './Sales/History.vue'
+import SalesDetail from './Sales/Detail.vue'
 import Icon from './Icon.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -21,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
           routes: [
             { name: 'sales', path: '/sales', component: Sales },
             { name: 'salesHistory', path: '/sales/history', component: SalesHistory },
+            { name: 'salesDetail', path: '/sales/detail/:id', component: SalesDetail, props: true },
             { name: 'inventory', path: '/inventory', component: Inventory },
             {
               name: 'settings',
