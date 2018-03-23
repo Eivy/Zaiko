@@ -147,7 +147,9 @@ export default {
       if (this.buyer !== '') {
         data.buyer = this.buyer
       }
-      sales.doc().set(data)
+      sales.add(data).then(d => {
+        this.$router.push({name: 'salesDetail', params: {id: d.id}})
+      })
     }
   },
   computed: {
