@@ -103,4 +103,7 @@ export default {
     overflow: hidden;
   }
 }
+.mdl-textfield {
+  display: inline-flex;
+}
 </style>
