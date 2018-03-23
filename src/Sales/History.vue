@@ -7,6 +7,7 @@
     </header>
     <main>
     <div>
+      <span id='cond_label'>表示条件</span>
       <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
         <input v-model='count' @change='filter' class='mdl-textfield__input' type='number' id='count'>
         <label class='mdl-textfield__label' for='sample3'>表示件数</label>
@@ -50,6 +51,9 @@ export default {
     collection = store.collection(path.join('Zaiko', this.user.uid, 'sales'))
     let c = collection.limit(this.count)
     this.get(c)
+  },
+  mounted: function () {
+    componentHandler.upgradeDom()
   },
   methods: {
     get: function (c) {
@@ -105,5 +109,8 @@ export default {
 }
 .mdl-textfield {
   display: inline-flex;
+}
+#cond_label {
+  padding: 1rem;
 }
 </style>
