@@ -9,16 +9,17 @@
     <div>
       <span id='cond_label'>表示条件</span>
       <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
-        <input v-model='count' @change='filter' class='mdl-textfield__input' type='number' id='count'>
+        <input v-model='count' class='mdl-textfield__input' type='number' id='count'>
         <label class='mdl-textfield__label' for='sample3'>表示件数</label>
       </div>
       <div v-if='config.buyer && config.buyer.use' class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label'>
-        <select id='buyer' v-model=buyer @change='filter' class='mdl-textfield__input'>
+        <select id='buyer' v-model=buyer class='mdl-textfield__input'>
           <option value=''></option>
           <option v-for='(v, k) in buyers' :value='k'>{{k}}</option>
         </select>
         <label class='mdl-textfield__label' for='buyer'>販売先</label>
       </div>
+      <SubmitButton @click.native='filter' ></SubmitButton>
     </div>
     <ul class='mdl-list'>
       <li v-for='v in sales' class='mdl-list__item mdl-list__item--three-line'>
@@ -42,11 +43,14 @@
 <script>
 import path from 'path'
 
+import SubmitButton from '../SubmitButton.vue'
+
 const store = firebase.firestore()
 let collection
 
 export default {
   data: function () { return { user: this.$store.state.user, config: this.$store.state.config, sales: [], buyers: this.$store.state.buyers, count: 10, buyer: '' } },
+  components: { SubmitButton },
   created: function () {
     collection = store.collection(path.join('Zaiko', this.user.uid, 'sales'))
     let c = collection.limit(this.count)
