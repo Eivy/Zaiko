@@ -48,12 +48,12 @@ export default {
   data: function () { return { user: this.$store.state.user, config: this.$store.state.config, sales: [], buyers: this.$store.state.buyers, count: 10, buyer: '' } },
   created: function () {
     collection = store.collection(path.join('Zaiko', this.user.uid, 'sales'))
-    let c = collection.orderBy('date', 'desc').limit(this.count)
+    let c = collection.limit(this.count)
     this.get(c)
   },
   methods: {
     get: function (c) {
-      c.get().then((s) => {
+      c.orderBy('date', 'desc').get().then((s) => {
         this.sales.splice(0, this.sales.length)
         s.forEach((d) => {
           let data = d.data()
