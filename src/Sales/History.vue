@@ -21,21 +21,18 @@
       </div>
       <SubmitButton @click.native='filter' ></SubmitButton>
     </div>
-    <ul class='mdl-list'>
-      <li v-for='v in sales' class='mdl-list__item mdl-list__item--three-line'>
-        <span class='mdl-list__item-primary-content'>
+    <div v-for='v in sales' class='mdl-card mdl-card-wide mdl-shadow--2dp'>
+      <div class='mdl-card__title'>
+        <router-link :to='{name: "detail", params: { id }}'>
           <Icon class='mdl-list__item-icon'>shopping_basket</Icon>
-          <span>{{date_format(v.date)}}</span>
-          <span class='mdl-list__item-text-body'>
-            <div>{{ list_item(v.items) }}</div>
-            <div v-if=v.buyer >{{ v.buyer.id }}</div>
-          </span>
-        </span>
-        <span class='mdl-list__item-secondary-content'>
-          <router-link class='mdl-list__item-secondary-action' target='_blank' :to='{name: "detail", params: { id }}'><Icon>open_in_new</Icon></router-link>
-        </span>
-      </li>
-    </ul>
+          {{date_format(v.date)}}
+          </router-link>
+      </div>
+      <div class='mdl-card__supporting-text'>
+          <div>{{ list_item(v.items) }}</div>
+          <div v-if=v.buyer >販売先: {{ v.buyer.id }}</div>
+      </div>
+    </div>
     </main>
   </div>
 </template>
@@ -105,11 +102,10 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.mdl-list {
-  max-width: 600px;
-  .mdl-list__item-text-body {
-    overflow: hidden;
-  }
+.mdl-card {
+  width: calc(100% - 1rem);
+  min-height: initial;
+  margin: 0.5rem;
 }
 .mdl-textfield {
   display: inline-flex;
