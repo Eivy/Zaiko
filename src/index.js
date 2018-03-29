@@ -38,6 +38,34 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           ]
         })
+        var names = {
+          'sales': '販売',
+          'inventory': '在庫',
+          'detail': '詳細',
+          'history': '履歴',
+          'settings': '管理',
+          'items': '商品',
+          'buyers': '販売先',
+          'sellers': '仕入先',
+          'categories': 'カテゴリー',
+          'config': '設定'
+        }
+        var mixin = {
+          mounted () {
+            this.updateTitle()
+          },
+          watch: {
+            '$route': function (to, from) {
+              this.updateTitle()
+            }
+          },
+          methods: {
+            updateTitle () {
+              document.title = 'Zaiko - ' + this.$route.path.split('/').filter(i => i.length > 1).map(i => names[i]).join(' - ')
+            }
+          }
+        }
+        Vue.mixin(mixin)
         Vue.use(VueRouter)
         Vue.use(Vuex)
         Vue.component('Icon', Icon)
