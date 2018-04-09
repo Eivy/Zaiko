@@ -148,7 +148,7 @@ export default {
         if (file) {
           let r = firebase.storage().ref()
           let fileRef = r.child(path.join(this.user.uid, this.id))
-          fileRef.put(file).then(snapshot => {
+          fileRef.put(file, {customMetadata: { 'thumbs': 1 }}).then(snapshot => {
             ref.set({image: snapshot.metadata.downloadURLs[0]}, {merge: true})
             document.getElementById('preview').style.backgroundImage = ''
             e.target.disabled = false
