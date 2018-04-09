@@ -1,10 +1,13 @@
 <template>
   <div>
-    <div>{{date}}</div>
-    <div v-for='(v, k) in items'>
-      {{v.id}} × {{v.count}} {{v.selling * v.count}}
+    <div id='detail'>
+      <div>{{date}}</div>
+      <div v-for='(v, k) in items'>
+        {{v.id}} × {{v.count}} {{v.selling * v.count}}
+      </div>
+      <div v-if=buyer>{{buyer.id}}</div>
     </div>
-    <div v-if=buyer>{{buyer.id}}</div>
+    <span @click='back()' class='mdl-button mdl-js-button mdl-js-ripple-effect'><i class='material-icons'>arrow_back</i></span>
   </div>
 </template>
 
@@ -21,6 +24,11 @@ export default {
         Vue.set(this, k, d.data()[k])
       }
     })
+  },
+  methods: {
+    back () {
+      this.$router.go(-1)
+    }
   }
 }
 </script>
