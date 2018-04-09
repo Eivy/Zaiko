@@ -1,5 +1,12 @@
 <template>
-  <div>
+  <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <header class="mdl-layout__header">
+      <div class="mdl-layout__header-row">
+        <span @click='back()' class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect'><i class='material-icons'>arrow_back</i></span>
+        <span class="mdl-layout-title">詳細</span>
+      </div>
+    </header>
+    <main>
     <div id='detail'>
       <div>{{date}}</div>
       <div v-for='(v, k) in items'>
@@ -7,7 +14,7 @@
       </div>
       <div v-if=buyer>{{buyer.id}}</div>
     </div>
-    <span @click='back()' class='mdl-button mdl-js-button mdl-js-ripple-effect'><i class='material-icons'>arrow_back</i></span>
+    </main>
   </div>
 </template>
 
@@ -32,3 +39,16 @@ export default {
   }
 }
 </script>
+
+<style scoped lang='scss'>
+.mdl-layout__header-row {
+  padding-left: 0;
+}
+.mdl-button--fab {
+  color: white;
+  margin: 0 2rem 0 0;
+}
+#detail {
+  margin: 2rem;
+}
+</style>
