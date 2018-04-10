@@ -11,6 +11,8 @@ import Categories from './Settings/Categories.vue'
 import Config from './Settings/Config.vue'
 import SalesHistory from './Sales/History.vue'
 import SalesDetail from './Sales/Detail.vue'
+import InventoryHistory from './Inventory/History.vue'
+import InventoryDetail from './Inventory/Detail.vue'
 import Icon from './Icon.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -24,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { name: 'salesHistory', path: '/sales/history', component: SalesHistory },
             { name: 'salesDetail', path: '/sales/detail/:id', component: SalesDetail, props: true },
             { name: 'inventory', path: '/inventory', component: Inventory },
+            { name: 'inventoryHistory', path: '/inventory/history', component: InventoryHistory },
+            { name: 'inventoryDetail', path: '/inventory/detail/:id', component: InventoryDetail, props: true },
             {
               name: 'settings',
               path: '/settings',
