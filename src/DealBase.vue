@@ -37,12 +37,12 @@
     </main>
     <footer class="mdl-mini-footer">
       <div class="mdl-mini-footer__left-section">
-        <div v-if='config.buyer && config.buyer.use' class='mdl-textfield mdl-js-textfield'>
-          <select id='buyer' class='mdl-textfield__input' v-model=buyer >
+        <div v-if='use_dealer' class='mdl-textfield mdl-js-textfield'>
+          <select id='dealer' class='mdl-textfield__input' v-model=dealer >
             <option value=''></option>
-            <option v-for='(v, k) in buyers' :value='v'>{{k}}</option>
+            <option v-for='(v, k) in dealers' :value='v'>{{k}}</option>
           </select>
-          <label class='mdl-textfield__label' for='buyer'>販売先</label>
+          <label class='mdl-textfield__label' for='dealer'>{{$route.name === "sales" ? "販売先" : "仕入先"}}</label>
         </div>
       </div>
       <div class="mdl-mini-footer__right-section">
@@ -80,7 +80,7 @@ import Icon from './Icon.vue'
 let snapshot = []
 export default {
   components: { SubmitButton, Icon },
-  data: function () { return Object.assign({ confirm: false, buyer: '', deal: {}, filter: '', filter_category: [] }, this.$store.state) },
+  data: function () { return Object.assign({ confirm: false, dealer: '', deal: {}, filter: '', filter_category: [] }, this.$store.state) },
   mounted: function () {
     componentHandler.upgradeDom()
   },

@@ -58,8 +58,8 @@ export default {
         })
       }
       let data = {items: this.deal, date: new Date()}
-      if (this.buyer !== '') {
-        data.buyer = this.buyer
+      if (this.dealer !== '') {
+        data.seller = this.dealer
       }
       sales.add(data).then(d => {
         this.$router.push({path: this.$route.path + '/detail/' + d.id})
@@ -73,6 +73,12 @@ export default {
         sum += this.items[id].purchase * this.deal[id].count
       }
       return sum
+    },
+    use_dealer () {
+      return true
+    },
+    dealers () {
+      return this.sellers
     }
   }
 }
