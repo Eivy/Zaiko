@@ -25,15 +25,15 @@
       </div>
     </header>
     <main>
-    <div v-for='i in filterd_items' @click='increase_more(i.id)' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='deal[i.id] ? deal[i.id].count : null'>
-      <div class="mdl-card__title mdl-card--expand"></div>
-      <div @click.stop='decrease_more(i.id)' class="mdl-card__supporting-text">
-        <div>{{i.id}}</div>
-        <div>¥{{price(i.id)}} 残:{{count(i.id)}}</div>
-        <button :disabled='!deal[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click.stop='decrease(i.id)'><Icon>remove</Icon></button>
-        <button :disabled='i.count === 0 || (deal[i.id] ? deal[i.id].count >= i.count : false)' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click.stop='increase(i.id)'><Icon>add</Icon></button>
+      <div v-for='i in filterd_items' @click='increase_more(i.id)' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='deal[i.id] ? deal[i.id].count : null'>
+        <div class="mdl-card__title mdl-card--expand"></div>
+        <div @click.stop='decrease_more(i.id)' class="mdl-card__supporting-text">
+          <div>{{i.id}}</div>
+          <div>¥{{price(i.id)}} 残:{{count(i.id)}}</div>
+          <button :disabled='!deal[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click.stop='decrease(i.id)'><Icon>remove</Icon></button>
+          <button :disabled='i.count === 0 || (deal[i.id] ? deal[i.id].count >= i.count : false)' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click.stop='increase(i.id)'><Icon>add</Icon></button>
+        </div>
       </div>
-    </div>
     </main>
     <footer class="mdl-mini-footer">
       <div class="mdl-mini-footer__left-section">
@@ -47,19 +47,40 @@
       </div>
       <div class="mdl-mini-footer__right-section">
         <span>合計: <span>{{sum_count}}</span>個 <span>{{sum_price}}円</span></span>
-        <SubmitButton @click.native='submit'></SubmitButton>
+        <SubmitButton @click.native='before_submit()'></SubmitButton>
       </div>
     </footer>
+    <div id='confirm' v-if=confirm @click.stop='confirm = !confirm'>
+      <div class='mdl-card mdl-shadown--2dp' @click.stop >
+        <div class='mdl-card__title'><h4>以下の内容でよろしいですか?</h4></div>
+        <div class='mdl-list'>
+          <div v-for='(v, k) in deal' class="mdl-list__item mdl-list__item--two-line mdl-shadow--2dp">
+            <span class='mdl-list__item-primary-content'>
+              <div class='mdl-list__item-avatar' :style='{background: "url(" + v.image + ") center / cover"}'></div>
+              <span class='mdl-list__item-title'>{{k}}</span>
+              <span class='mdl-list__item-sub-title'>{{price(k)}}円</span>
+            </span>
+            <span class='mdl-list__item-secondary-action'>{{v.count}}個</span>
+          </div>
+        </div>
+        <h5>合計: {{sum_price}}円</h5>
+        <div class='mdl-card__actions'>
+          <SubmitButton @click.native='submit()'></SubmitButton>
+          <button class='mdl-button mdl-js-button mdl-ripple-effect mdl-button--raised' @click.stop='confirm = !confirm'><Icon>close</Icon></button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import SubmitButton from './SubmitButton.vue'
+import Icon from './Icon.vue'
 
 let snapshot = []
 export default {
-  components: { SubmitButton },
-  data: function () { return Object.assign({ buyer: '', deal: {}, filter: '', filter_category: [] }, this.$store.state) },
+  components: { SubmitButton, Icon },
+  data: function () { return Object.assign({ confirm: false, buyer: '', deal: {}, filter: '', filter_category: [] }, this.$store.state) },
   mounted: function () {
     componentHandler.upgradeDom()
   },
@@ -110,6 +131,12 @@ export default {
           Vue.delete(this.deal, id)
         }
       }
+    },
+    before_submit () {
+      if (!this.is_valid_submit()) {
+        return
+      }
+      this.confirm = true
     }
   },
   computed: {
@@ -213,6 +240,43 @@ main {
   }
   #buyer {
     background-color: white;
+  }
+}
+#confirm {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  z-index:999;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(50, 50, 50, 0.8);
+  .mdl-card__title {
+    h4 {
+      margin: 0;
+    }
+  }
+  .mdl-card {
+    width: 80%;
+    height: initial;
+    max-width: 600px;
+    max-height: 80%;
+    background-color: white;
+    h5 {
+      text-align: right;
+      padding-right: 1rem;
+    }
+  }
+  .mdl-list {
+    height: 100%;
+    overflow-y: auto;
+  }
+  .mdl-list__item {
+    background-color: white;
+    margin: 1rem;
+  }
+  .mdl-list__item-avatar {
+    border-radius: 0;
   }
 }
 </style>
