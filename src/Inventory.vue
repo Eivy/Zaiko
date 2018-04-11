@@ -1,5 +1,7 @@
 <script>
+import path from 'path'
 import DealBase from './DealBase.vue'
+const store = firebase.firestore()
 
 export default {
   mixins: [DealBase],
@@ -38,6 +40,27 @@ export default {
     },
     price (id) {
       return this.items[id].purchase
+    },
+    submit: function () {
+      this.confirm = false
+      let uid = this.$store.state.user.uid
+      let sales = store.collection(path.join('Zaiko', uid, this.$route.name))
+      let items = store.collection(path.join('Zaiko', uid, 'items'))
+      for (let id in this.deal) {
+        items.doc(id).get().then((d) => {
+          let data = d.data()
+          data.count += this.deal[id].count
+          items.doc(id).set(data)
+          Vue.delete(this.deal, id)
+        })
+      }
+      let data = {items: this.deal, date: new Date()}
+      if (this.buyer !== '') {
+        data.buyer = this.buyer
+      }
+      sales.add(data).then(d => {
+        this.$router.push({path: this.$route.path + '/detail/' + d.id})
+      })
     }
   },
   computed: {

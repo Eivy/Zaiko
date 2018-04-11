@@ -54,11 +54,7 @@
 </template>
 
 <script>
-import path from 'path'
-
 import SubmitButton from './SubmitButton.vue'
-
-const store = firebase.firestore()
 
 let snapshot = []
 export default {
@@ -114,29 +110,6 @@ export default {
           Vue.delete(this.deal, id)
         }
       }
-    },
-    submit: function () {
-      if (!this.is_valid_submit) {
-        return
-      }
-      let uid = this.$store.state.user.uid
-      let sales = store.collection(path.join('Zaiko', uid, this.$route.name))
-      let items = store.collection(path.join('Zaiko', uid, 'items'))
-      for (let id in this.deal) {
-        items.doc(id).get().then((d) => {
-          let data = d.data()
-          data.count -= this.deal[id].count
-          items.doc(id).set(data)
-          Vue.delete(this.deal, id)
-        })
-      }
-      let data = {items: this.deal, date: new Date()}
-      if (this.buyer !== '') {
-        data.buyer = this.buyer
-      }
-      sales.add(data).then(d => {
-        this.$router.push({path: this.$route.path + '/detail/' + d.id})
-      })
     }
   },
   computed: {
