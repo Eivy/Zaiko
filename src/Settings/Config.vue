@@ -36,7 +36,7 @@
         </div>
         <div>
           <div class='mdl-textfield mdl-js-textfield' :class='{"is-disabled": !count.use}'>
-            <input @change='change("count")' v-model='count.count' :disabled='!count.use' class='mdl-textfield__input' type='text' pattern='-?[0-9]*(\.[0-9]+)?' id='count_num'>
+            <input @change='change("count")' v-model.number='count.count' :disabled='!count.use' class='mdl-textfield__input' type='number' pattern='-?[0-9]*(\.[0-9]+)?' id='count_num'>
             <label class='mdl-textfield__label' for='count_num'>数量</label>
             <span class='mdl-textfield__error'>数値を入力してください</span>
           </div>
