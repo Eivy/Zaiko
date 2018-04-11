@@ -31,7 +31,7 @@
           <div>{{i.id}}</div>
           <div>¥{{price(i.id)}} 残:{{count(i.id)}}</div>
           <button :disabled='!deal[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click.stop='decrease(i.id)'><Icon>remove</Icon></button>
-          <button :disabled='i.count === 0 || (deal[i.id] ? deal[i.id].count >= i.count : false)' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click.stop='increase(i.id)'><Icon>add</Icon></button>
+          <button :disabled='is_able_increment(i.id)' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click.stop='increase(i.id)'><Icon>add</Icon></button>
         </div>
       </div>
     </main>

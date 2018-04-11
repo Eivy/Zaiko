@@ -7,6 +7,9 @@ export default {
   mixins: [DealBase],
   data () { return {title: '在庫'} },
   methods: {
+    is_able_increment (id) {
+      return false
+    },
     count (id) {
       return this.items[id].count
     },

@@ -7,6 +7,9 @@ export default {
   mixins: [DealBase],
   data () { return {title: '販売'} },
   methods: {
+    is_able_increment (id) {
+      return this.items[id].count === 0 || (this.deal[this.items[id].id] ? this.deal[this.items[id].id].count >= this.items[id].count : false)
+    },
     price (id) {
       return this.items[id].selling
     },
