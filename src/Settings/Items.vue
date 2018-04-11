@@ -167,6 +167,11 @@ export default {
           console.error(err)
         }
       })
+      firebase.storage().ref().child(path.join(this.user.uid, 'thumb_' + id)).delete().catch((err) => {
+        if (err.t !== 'storage/object-not-found') {
+          console.error(err)
+        }
+      })
       collect.doc(id).delete()
     },
     clear_form: function () {
