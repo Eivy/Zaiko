@@ -5,6 +5,9 @@ export default {
   mixins: [DealBase],
   data () { return {title: '在庫'} },
   methods: {
+    count (id) {
+      return this.items[id].count
+    },
     increase_more: function (id) {
       if (this.config.count && this.config.count.use) {
         if (!this.deal[id]) {
