@@ -54,13 +54,31 @@
         </div>
       </div>
     </div>
+    <div id='delete_data' class='mdl-card mdl-js-card mdl-shadow--2dp'>
+      <div class='mdl-card__title'>データ削除</div>
+      <div class='mdl-card__supporting-text'>すべてのデータを削除します。削除したデータは元に戻せません。</div>
+      <div class='mdl-card__actions'>
+        <DeleteButton @delete='delete_data()' id='すべてのデータ' class='mdl-color--red-A700' ></DeleteButton>
+      </div>
+    </div>
+    <div id='delete_user' class='mdl-card mdl-js-card mdl-shadow--2dp'>
+      <div class='mdl-card__title'>ユーザー削除</div>
+      <div class='mdl-card__supporting-text'>すべてのデータとユーザーを削除します。削除したデータは元に戻せません。</div>
+      <div class='mdl-card__actions'>
+        <DeleteButton @delete='delete_user()' id='すべてのデータ' class='mdl-color--red-A700' ></DeleteButton>
+        <div id="auth"></div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import path from 'path'
 
+import DeleteButton from '../DeleteButton.vue'
+
 export default {
+  components: { DeleteButton },
   data: function () {
     return {
       user: this.$store.state.user,
@@ -115,6 +133,43 @@ export default {
           e.parentNode.MaterialSwitch.checkToggleState()
         })
       }, 100)
+    },
+    delete_data () {
+      const store = firebase.firestore()
+      store.collection(path.join('Zaiko', this.user.uid, 'items')).get().then(s => {
+        s.forEach(d => {
+          firebase.storage().ref(this.user.uid).child(d.id).delete().catch(err => console.log(err))
+          firebase.storage().ref(this.user.uid).child('thumb_' + d.id).delete().catch(err => console.log(err))
+        })
+      })
+      let keys = ['config', 'items', 'buyers', 'sellers', 'sales', 'inventory']
+      for (let k of keys) {
+        store.collection(path.join('Zaiko', this.user.uid, k)).get().then(s => {
+          s.forEach(d => {
+            store.collection(path.join('Zaiko', this.user.uid, k)).doc(d.id).delete().catch(err => {
+              console.log(err)
+            })
+          })
+        })
+      }
+    },
+    delete_user () {
+      this.delete_data()
+      this.user.delete().then(() => {
+        alert('ユーザーが削除されました')
+        location.reload()
+      }).catch(err => {
+        if (err.code === 'auth/requires-recent-login') {
+          alert('ユーザー削除の為に再認証が必要です.')
+          const ui = new firebaseui.auth.AuthUI(firebase.auth())
+          ui.start('#auth', {
+            signInOptions: [
+              this.user.providerId === 'firebase' ? firebase.auth.EmailAuthProvider.PROVIDER_ID : this.user.providerId
+            ],
+            tosUrl: ''
+          })
+        }
+      })
     }
   },
   computed: {
@@ -144,6 +199,7 @@ export default {
 .mdl-card {
   width: 80%;
   margin: 2rem;
+  min-height: initial;
 }
 .mdl-card#color {
   .mdl-card__actions>div {
