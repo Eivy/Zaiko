@@ -17,7 +17,9 @@ export default {
     const ui = new firebaseui.auth.AuthUI(firebase.auth())
     ui.start('#firebase-auth-container', {
       signInOptions: [
-        firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+        firebase.auth.EmailAuthProvider.PROVIDER_ID
       ],
       tosUrl: ''
     })
