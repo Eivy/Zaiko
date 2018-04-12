@@ -26,7 +26,9 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-#firebase-auth-container {
-  height: 100vh;
+.mdl-layout__content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
