@@ -1,6 +1,10 @@
 <template>
   <div>
     <div id='color' class='mdl-card mdl-js-card mdl-shadow--2dp'>
+      <div class='mdl-card__title'>ユーザーID</div>
+      <div class='mdl-card__supporting-text'>{{user.uid}}</div>
+    </div>
+    <div id='color' class='mdl-card mdl-js-card mdl-shadow--2dp'>
       <div class='mdl-card__title'>配色</div>
       <div class='mdl-card__actions'>
         <div>ベース
@@ -54,6 +58,28 @@
         </div>
       </div>
     </div>
+    <div id='data_share' class='mdl-card mdl-js-card mdl-shadow--2dp'>
+      <div class='mdl-card__title'>他アカウントの許可</div>
+      <div class='mdl-card__supporting-text'>
+        <div>あなたのデータにアクセスできるユーザーを指定します。<br/>許可したいユーザーのユーザーIDを入力してください。</div>
+        <div>
+          <span>許可済みユーザー</span>
+          <div class="mdl-list">
+            <div v-for='(v, i) in permitted.users' class="mdl-list__item">
+              <span class="mdl-list__item-primary-content">{{v}}</span>
+              <DeleteButton :id='v' @delete='remove_permit(i)'></DeleteButton>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='mdl-card__actions'>
+        <div class='mdl-textfield mdl-js-textfield' :class='{"is-disabled": !count.use}'>
+          <input @keyup.enter='permit_user()' class='mdl-textfield__input' type='text' id='permit_user'>
+          <label class='mdl-textfield__label' for='permit_user'>ユーザーID</label>
+        </div>
+        <SubmitButton @click.native='permit_user()'></SubmitButton>
+      </div>
+    </div>
     <div id='delete_data' class='mdl-card mdl-js-card mdl-shadow--2dp'>
       <div class='mdl-card__title'>データ削除</div>
       <div class='mdl-card__supporting-text'>すべてのデータを削除します。削除したデータは元に戻せません。</div>
@@ -76,9 +102,10 @@
 import path from 'path'
 
 import DeleteButton from '../DeleteButton.vue'
+import SubmitButton from '../SubmitButton.vue'
 
 export default {
-  components: { DeleteButton },
+  components: { DeleteButton, SubmitButton },
   data: function () {
     return {
       user: this.$store.state.user,
@@ -105,7 +132,8 @@ export default {
         brown: 'Brown',
         blue_grey: 'Blue Grey',
         grey: 'Grey'
-      }
+      },
+      permitted: { users: [] }
     }
   },
   watch: {
@@ -118,6 +146,16 @@ export default {
     componentHandler.upgradeDom()
   },
   methods: {
+    permit_user () {
+      let user = document.querySelector('#permit_user')
+      this.permitted.users.push(user.value)
+      user.value = ''
+      this.change('permitted')
+    },
+    remove_permit (i) {
+      this.permitted.users.splice(i, 1)
+      this.change('permitted')
+    },
     change: function (key) {
       firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'config')).doc(key).set(this[key])
     },
