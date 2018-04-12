@@ -71,6 +71,7 @@
             </div>
           </div>
         </div>
+        <div>あなたのデータへのリンク: <span>{{link}}</span></div>
       </div>
       <div class='mdl-card__actions'>
         <div class='mdl-textfield mdl-js-textfield' :class='{"is-disabled": !count.use}'>
@@ -228,6 +229,9 @@ export default {
         }
       }
       return data
+    },
+    link () {
+      return document.location.protocol + '//' + document.location.host + '/?' + this.user.uid
     }
   }
 }

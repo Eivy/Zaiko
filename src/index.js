@@ -19,6 +19,9 @@ document.addEventListener('DOMContentLoaded', () => {
   try {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
+        if (location.search.length > 0) {
+          user = {uid: location.search.substring(1)}
+        }
         let router = new VueRouter({
           mode: 'history',
           routes: [
