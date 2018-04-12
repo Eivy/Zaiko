@@ -61,7 +61,7 @@
     <div id='data_share' class='mdl-card mdl-js-card mdl-shadow--2dp'>
       <div class='mdl-card__title'>他アカウントの許可</div>
       <div class='mdl-card__supporting-text'>
-        <div>あなたのデータにアクセスできるユーザーを指定します。<br/>許可したいユーザーのユーザーIDを入力してください。</div>
+        <div>他のアカウントのユーザーIDを追加することで、そのアカウントからあなたのデータへアクセスできるようにします.<br/>ユーザーIDは設定画面の最上部に表示されます.</div>
         <div>
           <span>許可済みユーザー</span>
           <div class="mdl-list">
