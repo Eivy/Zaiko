@@ -21,9 +21,9 @@
       </div>
       <SubmitButton @click.native='filter' ></SubmitButton>
     </div>
-    <div v-for='v in sales' class='mdl-card mdl-card-wide mdl-shadow--2dp'>
+    <div v-for='v in history' class='mdl-card mdl-card-wide mdl-shadow--3dp'>
       <div class='mdl-card__title'>
-        <router-link :to='{name: "salesDetail", params: { id: v.id }}'>
+        <router-link :to='detail(v.id)'>
           <Icon class='mdl-list__item-icon'>shopping_basket</Icon>
           {{date_format(v.date)}}
           </router-link>
@@ -33,7 +33,7 @@
           <div v-if=v.buyer >販売先: {{ v.buyer.id }}</div>
       </div>
       <div class='mdl-card__menu'>
-        <router-link target='_blank' :to='{name: "salesDetail", params: { id: v.id }}'><Icon>open_in_new</Icon></router-link>
+        <router-link target='_blank' :to='detail(v.id)'><Icon>open_in_new</Icon></router-link>
       </div>
     </div>
     </main>
@@ -43,16 +43,16 @@
 <script>
 import path from 'path'
 
-import SubmitButton from '../SubmitButton.vue'
+import SubmitButton from './SubmitButton.vue'
 
 const store = firebase.firestore()
 let collection
 
 export default {
-  data: function () { return { user: this.$store.state.user, config: this.$store.state.config, sales: [], buyers: this.$store.state.buyers, count: 10, buyer: '' } },
+  data: function () { return { user: this.$store.state.user, config: this.$store.state.config, history: [], buyers: this.$store.state.buyers, count: 10, buyer: '' } },
   components: { SubmitButton },
   created: function () {
-    collection = store.collection(path.join('Zaiko', this.user.uid, 'sales'))
+    collection = store.collection(path.join('Zaiko', this.user.uid, location.pathname.split('/')[1]))
     let c = collection.limit(this.count)
     this.get(c)
   },
@@ -62,11 +62,11 @@ export default {
   methods: {
     get: function (c) {
       c.orderBy('date', 'desc').get().then((s) => {
-        this.sales.splice(0, this.sales.length)
+        this.history.splice(0, this.history.length)
         s.forEach((d) => {
           let data = d.data()
           data.id = d.id
-          this.sales.push(data)
+          this.history.push(data)
         })
       })
     },
@@ -99,6 +99,9 @@ export default {
         c = c.limit(this.count)
       }
       this.get(c)
+    },
+    detail (id) {
+      return path.join('detail', id)
     }
   }
 }

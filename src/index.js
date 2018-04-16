@@ -9,10 +9,8 @@ import Items from './Settings/Items.vue'
 import Partners from './Settings/Partners.vue'
 import Categories from './Settings/Categories.vue'
 import Config from './Settings/Config.vue'
-import SalesHistory from './Sales/History.vue'
-import SalesDetail from './Sales/Detail.vue'
-import InventoryHistory from './Inventory/History.vue'
-import InventoryDetail from './Inventory/Detail.vue'
+import History from './History.vue'
+import Detail from './Detail.vue'
 import Icon from './Icon.vue'
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -26,11 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
           mode: 'history',
           routes: [
             { name: 'sales', path: '/sales', component: Sales },
-            { name: 'salesHistory', path: '/sales/history', component: SalesHistory },
-            { name: 'salesDetail', path: '/sales/detail/:id', component: SalesDetail, props: true },
+            { name: 'salesHistory', path: '/sales/history', component: History },
+            { name: 'salesDetail', path: '/sales/detail/:id', component: Detail, props: true },
             { name: 'inventory', path: '/inventory', component: Inventory },
-            { name: 'inventoryHistory', path: '/inventory/history', component: InventoryHistory },
-            { name: 'inventoryDetail', path: '/inventory/detail/:id', component: InventoryDetail, props: true },
+            { name: 'inventoryHistory', path: '/inventory/history', component: History },
+            { name: 'inventoryDetail', path: '/inventory/detail/:id', component: Detail, props: true },
             {
               name: 'settings',
               path: '/settings',
