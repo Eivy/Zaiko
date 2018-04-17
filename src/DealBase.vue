@@ -47,7 +47,7 @@
       </div>
       <div class="mdl-mini-footer__right-section">
         <span>合計: <span>{{sum_count}}</span>個 <span>{{sum_price}}円</span></span>
-        <SubmitButton @click.native='before_submit()'></SubmitButton>
+        <SubmitButton :disabled='sum_count === 0' @click.native='before_submit()'></SubmitButton>
       </div>
     </footer>
     <div id='confirm' v-if=confirm @click.stop='confirm = !confirm'>

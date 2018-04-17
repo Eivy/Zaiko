@@ -35,10 +35,6 @@ export default {
       this.deal[id].count += 1
     },
     is_valid_submit () {
-      if (this.sum_count === 0) {
-        alert('仕入れる商品がありません')
-        return false
-      }
       return true
     },
     price (id) {

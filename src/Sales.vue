@@ -49,10 +49,6 @@ export default {
       }
     },
     is_valid_submit () {
-      if (this.sum_count === 0) {
-        alert('販売する商品がありません')
-        return false
-      }
       let check = this.check()
       if (check) {
         alert(check + 'の在庫が足りません')
