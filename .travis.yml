@@ -1,6 +1,10 @@
 language: node_js
 node_js: stable
 dist: trusty
+before_script:
+- cd functions
+- npm i
+- cd ..
 script:
 - npm run deploy -- --token $FIREBASE_TOKEN --project $FIREBASE_PROJECT
 branches:
