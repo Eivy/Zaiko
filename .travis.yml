@@ -1,0 +1,8 @@
+language: node_js
+node_js: stable
+dist: trusty
+script:
+- npm run deploy -- --token $FIREBASE_TOKEN
+branches:
+  only:
+  - master
