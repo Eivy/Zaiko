@@ -25,6 +25,8 @@
       </div>
     </header>
     <main>
+      <div v-if='Object.keys(items).length === 0' class='caution'><router-link to='/settings/items'>商品管理</router-link>で商品の登録をしてください</div>
+      <div v-else-if='Object.keys(filterd_items).length === 0' class='caution'>該当商品がありません</div>
       <div v-for='i in filterd_items' @click='increase_more(i.id)' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='deal[i.id] ? deal[i.id].count : null'>
         <div class="mdl-card__title mdl-card--expand"></div>
         <div @click.stop='decrease_more(i.id)' class="mdl-card__supporting-text">
@@ -184,6 +186,9 @@ $backColor: rgba(240, 240, 240, 0.8);
 main {
   height: 100%;
   overflow-y: auto;
+  .caution {
+    padding: 2rem;
+  }
 }
 .mdl-checkbox__label {
   position: absolute;
