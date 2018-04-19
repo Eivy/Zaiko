@@ -1,5 +1,6 @@
 <template>
   <div id='main' class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/2.5.1/firebaseui.css" />
     <header class="mdl-layout__header">
       <div class="mdl-layout__header-row">
         <span class="mdl-layout-title">ログイン</span>
