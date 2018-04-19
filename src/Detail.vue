@@ -7,7 +7,7 @@
     </header>
     <main>
     <div id='detail'>
-      <div>{{date}}</div>
+      <h3>{{format_date(date)}}</h3>
       <div v-if=buyer>販売先: {{buyer.id}}</div>
       <div v-if=seller>仕入先: {{seller.id}}</div>
       <div class='mdl-list'>
@@ -15,12 +15,12 @@
           <span class='mdl-list__item-primary-content'>
             <div class='mdl-list__item-avatar' :style='{background: "url(" + v.image + ") center / cover"}'></div>
             <span class='mdl-list__item-title'>{{k}}</span>
-            <span class='mdl-list__item-sub-title'>{{price(k)}}円</span>
+            <span class='mdl-list__item-sub-title'>{{format_price(price(k))}}円</span>
           </span>
           <span class='mdl-list__item-secondary-action'>{{v.count}}個</span>
         </div>
       </div>
-      <h5>合計: {{sum_price}}円</h5>
+      <h5>合計: {{format_price(sum_price)}}円</h5>
     </div>
     <span @click='back()' class='mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect'><i class='material-icons'>arrow_back</i></span>
     </main>

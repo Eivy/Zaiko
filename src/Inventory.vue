@@ -68,7 +68,7 @@ export default {
       for (let id in this.deal) {
         sum += this.items[id].purchase * this.deal[id].count
       }
-      return sum
+      return this.format_price(sum)
     },
     use_dealer () {
       return true

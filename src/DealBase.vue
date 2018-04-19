@@ -31,7 +31,7 @@
         <div class="mdl-card__title mdl-card--expand"></div>
         <div @click.stop='decrease_more(i.id)' class="mdl-card__supporting-text">
           <div>{{i.id}}</div>
-          <div>¥{{price(i.id)}} 残:{{count(i.id)}}</div>
+          <div>¥{{format_price(price(i.id))}} 残:{{count(i.id)}}</div>
           <button :disabled='!deal[i.id]' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab remove" @click.stop='decrease(i.id)'><Icon>remove</Icon></button>
           <button :disabled='is_able_increment(i.id)' class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab add" @click.stop='increase(i.id)'><Icon>add</Icon></button>
         </div>
@@ -60,7 +60,7 @@
             <span class='mdl-list__item-primary-content'>
               <div class='mdl-list__item-avatar' :style='{background: "url(" + v.image + ") center / cover"}'></div>
               <span class='mdl-list__item-title'>{{k}}</span>
-              <span class='mdl-list__item-sub-title'>{{price(k)}}円</span>
+              <span class='mdl-list__item-sub-title'>{{format_price(price(k))}}円</span>
             </span>
             <span class='mdl-list__item-secondary-action'>{{v.count}}個</span>
           </div>

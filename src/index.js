@@ -67,6 +67,17 @@ document.addEventListener('DOMContentLoaded', () => {
           methods: {
             updateTitle () {
               document.title = 'Zaiko - ' + this.$route.path.split('/').filter(i => i.length > 1).map(i => names[i]).join(' - ')
+            },
+            format_price (p) {
+              return String(p).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
+            },
+            format_date (date) {
+              if (date) {
+                return [date.getFullYear(), this.padding(date.getMonth(), 2), this.padding(date.getDay(), 2)].join('/') + ' ' + [this.padding(date.getHours(), 2), this.padding(date.getMinutes(), 2)].join(':')
+              }
+            },
+            padding (s, n) {
+              return ('0'.repeat(n) + s).slice(-1 * n)
             }
           }
         }

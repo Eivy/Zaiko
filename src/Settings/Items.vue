@@ -17,8 +17,8 @@
         <tr v-for='i in items' @click='set_name(i.id)'>
           <td class='mdl-data-table__cell--non-numeric'><img class='item_image' :src='i.image'></img></td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.id}}</td>
-          <td>{{i.selling}}</td>
-          <td>{{i.purchase}}</td>
+          <td>{{format_price(i.selling)}}</td>
+          <td>{{format_price(i.purchase)}}</td>
           <td>{{i.count}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.seller}}</td>
           <td class='mdl-data-table__cell--non-numeric'>{{i.categories ? i.categories.join(',') : ''}}</td>
