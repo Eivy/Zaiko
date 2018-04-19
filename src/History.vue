@@ -21,19 +21,16 @@
       </div>
       <SubmitButton @click.native='filter' ></SubmitButton>
     </div>
-    <div v-for='v in history' class='mdl-card mdl-card-wide mdl-shadow--3dp'>
+    <div v-for='v in history' class='mdl-card mdl-card-wide mdl-shadow--2dp'>
       <div class='mdl-card__title'>
-        <router-link :to='detail(v.id)'>
-          <Icon class='mdl-list__item-icon'>shopping_basket</Icon>
-          {{date_format(v.date)}}
-          </router-link>
+        <Icon class='mdl-list__item-icon'>shopping_basket</Icon>
+        <router-link :to='detail(v.id)'>{{date_format(v.date)}}</router-link>
+        <div class='mdl-layout-spacer'></div>
+        合計: {{sum_price(v)}}円
       </div>
       <div class='mdl-card__supporting-text'>
-          <div>{{ list_item(v.items) }}</div>
-          <div v-if=v.buyer >販売先: {{ v.buyer.id }}</div>
-      </div>
-      <div class='mdl-card__menu'>
-        <router-link target='_blank' :to='detail(v.id)'><Icon>open_in_new</Icon></router-link>
+        <div>{{ list_item(v.items) }}</div>
+        <div v-if=v.buyer >販売先: {{ v.buyer.id }}</div>
       </div>
     </div>
     </main>
@@ -102,6 +99,13 @@ export default {
     },
     detail (id) {
       return path.join('detail', id)
+    },
+    sum_price (deal) {
+      let sum = 0
+      for (let k in deal.items) {
+        sum += (this.$route.name.split('/')[1] === 'sales' ? deal.items[k].selling : deal.items[k].purchase) * deal.items[k].count
+      }
+      return this.format_price(sum)
     }
   }
 }
