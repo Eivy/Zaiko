@@ -75,6 +75,39 @@ export default {
     },
     dealers () {
       return this.sellers
+    },
+    filterd_items: function () {
+      if (this.dealer === '' && this.filter === '' && this.filter_category.length === 0) {
+        return this.items
+      }
+      let r = Object.assign({}, this.items)
+      if (this.dealer.id.length > 0) {
+        for (let k in r) {
+          if (r[k].seller !== '' && r[k].seller !== this.dealer.id) {
+            delete r[k]
+          }
+        }
+      }
+      if (this.filter_category.length > 0) {
+        for (let k in r) {
+          if (r[k].categories) {
+            let isInclude = true
+            for (let c in this.filter_category) {
+              isInclude = isInclude && (r[k].categories.indexOf(this.filter_category[c]) >= 0)
+            }
+            if (!isInclude) {
+              delete r[k]
+            }
+          }
+        }
+      }
+      let re = new RegExp('.*(' + this.filter.replace(/([[\]\\{}.?*+^$])/, '\\$1').split(new RegExp('[ 　]+')).join('|') + ').*')
+      for (let k in r) {
+        if (!k.match(re)) {
+          delete r[k]
+        }
+      }
+      return r
     }
   }
 }
