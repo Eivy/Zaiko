@@ -236,6 +236,8 @@ main {
 .mdl-mini-footer {
   .mdl-textfield {
     padding: 0;
+    background-color: white;
+    color: black;
   }
   .mdl-textfield__label {
     top: 5px;
