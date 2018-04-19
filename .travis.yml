@@ -5,6 +5,7 @@ before_script:
 - cd functions
 - npm i
 - echo $FUNCTIONS_CREDENTIAL > credential.json
+- ls
 - cd ..
 script:
 - npm run deploy -- --token $FIREBASE_TOKEN --project $FIREBASE_PROJECT
