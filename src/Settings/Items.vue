@@ -26,7 +26,7 @@
             <DeleteButton @delete='delete_item(i.id)' :id='i.id'></DeleteButton>
           </td>
         </tr>
-        <tr>
+        <tr id='new_data'>
           <td class='mdl-data-table__cell--non-numeric'>
             <label id='preview' class='mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab' for='image'>
               <Icon>add_a_photo</Icon>
@@ -120,6 +120,12 @@ export default {
         if (this.id === '') {
           e.target.disabled = false
           document.getElementById('id').focus()
+          return
+        }
+        let invalid = document.querySelector('.mdl-textfield.is-invalid')
+        if (invalid) {
+          e.target.disabled = false
+          invalid.querySelector('input').focus()
           return
         }
         let selling = document.getElementById('selling').value
