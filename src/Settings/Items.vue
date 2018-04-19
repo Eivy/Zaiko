@@ -139,7 +139,9 @@ export default {
         let collect = store.collection(path.join('Zaiko', this.user.uid, 'items'))
         let ref = collect.doc(this.id)
         ref.set(data, {merge: true}).then(() => {
-          this.clear_form()
+          if (!file) {
+            this.clear_form()
+          }
         }).catch((err) => {
           console.error(err)
         })
@@ -152,6 +154,7 @@ export default {
             ref.set({image: snapshot.metadata.downloadURLs[0]}, {merge: true})
             document.getElementById('preview').style.backgroundImage = ''
             e.target.disabled = false
+            this.clear_form()
           }).catch(err => {
             console.error(err)
           })
