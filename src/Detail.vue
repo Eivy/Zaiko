@@ -68,5 +68,8 @@ export default {
 <style scoped lang='scss'>
 #detail {
   margin: 2rem;
+  .mdl-list__item-avatar {
+    border-radius: 0;
+  }
 }
 </style>
