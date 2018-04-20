@@ -2,7 +2,7 @@
   <div>
     <div id='color' class='mdl-card mdl-js-card mdl-shadow--2dp'>
       <div class='mdl-card__title'>ユーザーID</div>
-      <div class='mdl-card__supporting-text'>{{user.uid}}</div>
+      <div class='mdl-card__supporting-text'><span>{{user.uid}}</span><Icon @click.native='copy' style='padding-left: 1rem'>content_copy</Icon></div>
     </div>
     <div id='color' class='mdl-card mdl-js-card mdl-shadow--2dp'>
       <div class='mdl-card__title'>配色</div>
@@ -71,7 +71,7 @@
             </div>
           </div>
         </div>
-        <div>あなたのデータへのリンク: <span>{{link}}</span></div>
+        <div>あなたのデータへのリンク: <span>{{link}}</span><Icon @click.native='copy' style='padding-left: 1rem'>content_copy</Icon></div>
       </div>
       <div class='mdl-card__actions'>
         <div class='mdl-textfield mdl-js-textfield' :class='{"is-disabled": !count.use}'>
@@ -95,6 +95,10 @@
         <DeleteButton @delete='delete_user()' id='すべてのデータ' class='mdl-color--red-A700' ></DeleteButton>
         <div id="auth"></div>
       </div>
+    </div>
+    <div id="copy_dialog" class="mdl-js-snackbar mdl-snackbar">
+      <div class="mdl-snackbar__text"></div>
+      <button class="mdl-snackbar__action" type="button"></button>
     </div>
   </div>
 </template>
@@ -210,6 +214,11 @@ export default {
           })
         }
       })
+    },
+    copy: function (event) {
+      document.getSelection().selectAllChildren(event.target.previousSibling)
+      document.execCommand('copy')
+      document.querySelector('#copy_dialog').MaterialSnackbar.showSnackbar({message: 'クリップボードにコピーしました'})
     }
   },
   computed: {
