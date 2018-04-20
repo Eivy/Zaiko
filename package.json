@@ -47,5 +47,8 @@
     "vue-template-compiler": "^2.5.13",
     "webpack": "^4.6.0",
     "webpack-cli": "^2.0.14"
+  },
+  "dependencies": {
+    "object-assign": "^4.1.1"
   }
 }

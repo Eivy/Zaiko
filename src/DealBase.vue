@@ -25,8 +25,8 @@
       </div>
     </header>
     <main>
-      <div v-if='Object.keys(items).length === 0' class='caution'><router-link to='/settings/items'>商品管理</router-link>で商品の登録をしてください</div>
-      <div v-else-if='Object.keys(filterd_items).length === 0' class='caution'>該当商品がありません</div>
+      <div v-if='objectKeys(items).length === 0' class='caution'><router-link to='/settings/items'>商品管理</router-link>で商品の登録をしてください</div>
+      <div v-else-if='objectKeys(filterd_items).length === 0' class='caution'>該当商品がありません</div>
       <div v-for='i in filterd_items' @click='increase_more(i.id)' class='mdl-card mdl-shadow--2dp mdl-badge mdl-badge--overlap' :style='{background: "url(" + i.image + ") center / cover"}' :data-badge='deal[i.id] ? deal[i.id].count : null'>
         <div class="mdl-card__title mdl-card--expand"></div>
         <div @click.stop='decrease_more(i.id)' class="mdl-card__supporting-text">
@@ -76,13 +76,14 @@
 </template>
 
 <script>
+import objectAssign from 'object-assign'
 import SubmitButton from './SubmitButton.vue'
 import Icon from './Icon.vue'
 
 let snapshot = []
 export default {
   components: { SubmitButton, Icon },
-  data: function () { return Object.assign({ confirm: false, dealer: '', deal: {}, filter: '', filter_category: [] }, this.$store.state) },
+  data: function () { return objectAssign({ confirm: false, dealer: '', deal: {}, filter: '', filter_category: [] }, this.$store.state) },
   mounted: function () {
     componentHandler.upgradeDom()
   },
@@ -93,7 +94,7 @@ export default {
     increase_more: function (id) {
       if (this.config.count && this.config.count.use) {
         if (!this.deal[id]) {
-          let data = Object.assign({}, this.items[id])
+          let data = objectAssign({}, this.items[id])
           data.count = 0
           Vue.set(this.deal, id, data)
         }
@@ -118,7 +119,7 @@ export default {
     },
     increase: function (id) {
       if (!this.deal[id]) {
-        let data = Object.assign({}, this.items[id])
+        let data = objectAssign({}, this.items[id])
         data.count = 0
         Vue.set(this.deal, id, data)
       }
@@ -139,6 +140,13 @@ export default {
         return
       }
       this.confirm = true
+    },
+    objectKeys: function (o) {
+      let a = []
+      for (let k in o) {
+        a.push(k)
+      }
+      return a
     }
   },
   computed: {
@@ -167,7 +175,7 @@ export default {
           }
         }
       } else {
-        Object.assign(r, this.items)
+        objectAssign(r, this.items)
       }
       let re = new RegExp('.*(' + this.filter.replace(/([[\]\\{}.?*+^$])/, '\\$1').split(new RegExp('[ 　]+')).join('|') + ').*')
       for (let k in r) {

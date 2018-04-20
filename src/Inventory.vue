@@ -1,5 +1,6 @@
 <script>
 import path from 'path'
+import objectAssign from 'object-assign'
 import DealBase from './DealBase.vue'
 const store = firebase.firestore()
 
@@ -16,7 +17,7 @@ export default {
     increase_more: function (id) {
       if (this.config.count && this.config.count.use) {
         if (!this.deal[id]) {
-          let data = Object.assign({}, this.items[id])
+          let data = objectAssign({}, this.items[id])
           data.count = 0
           Vue.set(this.deal, id, data)
         }
@@ -28,7 +29,7 @@ export default {
     },
     increase: function (id) {
       if (!this.deal[id]) {
-        let data = Object.assign({}, this.items[id])
+        let data = objectAssign({}, this.items[id])
         data.count = 0
         Vue.set(this.deal, id, data)
       }
@@ -80,7 +81,7 @@ export default {
       if (this.dealer === '' && this.filter === '' && this.filter_category.length === 0) {
         return this.items
       }
-      let r = Object.assign({}, this.items)
+      let r = objectAssign({}, this.items)
       if (this.dealer.id.length > 0) {
         for (let k in r) {
           if (r[k].seller !== '' && r[k].seller !== this.dealer.id) {

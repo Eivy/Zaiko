@@ -93,6 +93,7 @@
 
 <script>
 import path from 'path'
+import objectAssign from 'object-assign'
 
 import SubmitButton from '../SubmitButton.vue'
 import DeleteButton from '../DeleteButton.vue'
@@ -100,7 +101,7 @@ import CsvButton from './CsvButton.vue'
 
 export default {
   components: {SubmitButton, DeleteButton, CsvButton},
-  data: function () { return Object.assign({ id: '', input: { categories: [] } }, this.$store.state) },
+  data: function () { return objectAssign({ id: '', input: { categories: [] } }, this.$store.state) },
   mounted: function () {
     componentHandler.upgradeDom()
   },
