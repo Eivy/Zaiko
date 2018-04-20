@@ -73,7 +73,13 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             format_date: function (date) {
               if (date) {
-                return [date.getFullYear(), this.padding(date.getMonth(), 2), this.padding(date.getDay(), 2)].join('/') + ' ' + [this.padding(date.getHours(), 2), this.padding(date.getMinutes(), 2)].join(':')
+                let r = ''
+                r += date.getFullYear() + '年'
+                r += this.padding(date.getMonth()) + '月'
+                r += this.padding(date.getDate()) + '日 '
+                r += this.padding(date.getHours()) + '時'
+                r += this.padding(date.getMinutes()) + '分'
+                return r
               }
             },
             padding: function (s, n) {

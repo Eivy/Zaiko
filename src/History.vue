@@ -24,7 +24,7 @@
     <div v-for='v in history' class='mdl-card mdl-card-wide mdl-shadow--2dp'>
       <div class='mdl-card__title'>
         <Icon class='mdl-list__item-icon'>shopping_basket</Icon>
-        <router-link :to='detail(v.id)'>{{date_format(v.date)}}</router-link>
+        <router-link :to='detail(v.id)'>{{format_date(v.date)}}</router-link>
         <div class='mdl-layout-spacer'></div>
         合計: {{sum_price(v)}}円
       </div>
@@ -67,18 +67,6 @@ export default {
           self.history.push(data)
         })
       })
-    },
-    date_format: function (date) {
-      let r = ''
-      r += date.getFullYear() + '年'
-      r += this.padding(date.getMonth()) + '月'
-      r += this.padding(date.getDate()) + '日 '
-      r += this.padding(date.getHours()) + '時'
-      r += this.padding(date.getMinutes()) + '分'
-      return r
-    },
-    padding: function (str) {
-      return ('0'.repeat(2) + str).slice(-2)
     },
     list_item: function (items) {
       let r = ''
