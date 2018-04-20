@@ -13,7 +13,7 @@ export default {
   methods: {
     logout: function () {
       firebase.auth().signOut().then(function () {
-        location.reload()
+        location.pathname = '/'
       })
     },
     hide: function () {
