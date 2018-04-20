@@ -139,9 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('color').onSnapshot(function (d) {
           if (d.exists) {
-            document.head.querySelectorAll('link[href*="code.getmdl.io"]').forEach(function (l) {
-              l.setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + d.data().primary + '-' + d.data().accent + '.min.css')
-            })
+            document.head.querySelector('link[href*="code.getmdl.io"]').setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + d.data().primary + '-' + d.data().accent + '.min.css')
           }
           componentHandler.upgradeDom()
         })

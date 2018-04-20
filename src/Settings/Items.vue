@@ -212,7 +212,7 @@ export default {
         }
         document.getElementById('preview').style.backgroundImage = 'url(' + o.image + ')'
         setTimeout(function () {
-          document.querySelectorAll('input[type="checkbox"]').forEach(function (e) {
+          Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"]'), 0).forEach(function (e) {
             e.parentNode.MaterialCheckbox.checkToggleState()
           })
         }, 100)

@@ -16,7 +16,7 @@ export default {
       location.reload()
     },
     hide: function () {
-      document.querySelectorAll('.is-visible').forEach(function (e) { e.classList.remove('is-visible') })
+      Array.prototype.slice.call(document.querySelectorAll('.is-visible'), 0).forEach(function (e) { e.classList.remove('is-visible') })
     }
   }
 }
