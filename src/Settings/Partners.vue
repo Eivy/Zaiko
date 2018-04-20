@@ -76,10 +76,11 @@ export default {
   },
   methods: {
     submit: function (e) {
+      let self = this
       e.target.disabled = true
       setTimeout(function () {
         // data set
-        if (this.name === '') {
+        if (self.name === '') {
           e.target.disabled = false
           document.getElementById('name').focus()
           return
@@ -88,16 +89,16 @@ export default {
         let tel = document.getElementById('tel')
         let incharge = document.getElementById('incharge')
         let data = {}
-        data.id = this.name
+        data.id = self.name
         data.address = address.value
         data.tel = tel.value
         data.incharge = incharge.value
         data.time = new Date()
         const store = firebase.firestore()
-        let collect = store.collection(path.join('Zaiko', this.user.uid, this.$route.name))
-        let ref = collect.doc(this.name)
+        let collect = store.collection(path.join('Zaiko', self.user.uid, self.$route.name))
+        let ref = collect.doc(self.name)
         ref.set(data, {merge: true}).then(function () {
-          this.clear_form()
+          self.clear_form()
           e.target.disabled = false
         }).catch(function (err) {
           console.error(err)

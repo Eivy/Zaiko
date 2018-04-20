@@ -50,13 +50,14 @@ export default {
         document.getElementById('category').focus()
         return
       }
+      let self = this
       setTimeout(function () {
         // data set
         const store = firebase.firestore()
-        let collect = store.collection(path.join('Zaiko', this.user.uid, 'categories'))
-        let ref = collect.doc(this.name)
+        let collect = store.collection(path.join('Zaiko', self.user.uid, 'categories'))
+        let ref = collect.doc(self.name)
         ref.set({}).then(function () {
-          this.clear_form()
+          self.clear_form()
           e.target.disabled = false
         }).catch(function (err) {
           console.error(err)

@@ -115,10 +115,11 @@ export default {
       r.readAsDataURL(f)
     },
     submit: function (e) {
+      let self = this
       e.target.disabled = true
       setTimeout(function () {
         // data set
-        if (this.id === '') {
+        if (self.id === '') {
           e.target.disabled = false
           document.getElementById('id').focus()
           return
@@ -134,20 +135,20 @@ export default {
         let count = document.getElementById('count').value
         let seller = document.getElementById('seller').value
         let data = {
-          id: this.id,
+          id: self.id,
           selling: Number(selling),
           purchase: Number(purchase),
           count: Number(count),
           seller: seller,
-          categories: this.input.categories,
+          categories: self.input.categories,
           time: new Date()
         }
         const store = firebase.firestore()
-        let collect = store.collection(path.join('Zaiko', this.user.uid, 'items'))
-        let ref = collect.doc(this.id)
+        let collect = store.collection(path.join('Zaiko', self.user.uid, 'items'))
+        let ref = collect.doc(self.id)
         ref.set(data, {merge: true}).then(function () {
           if (!file) {
-            this.clear_form()
+            self.clear_form()
           }
         }).catch(function (err) {
           console.error(err)
@@ -156,12 +157,12 @@ export default {
         let file = document.getElementById('image').files[0]
         if (file) {
           let r = firebase.storage().ref()
-          let fileRef = r.child(path.join(this.user.uid, this.id))
+          let fileRef = r.child(path.join(self.user.uid, self.id))
           fileRef.put(file, {customMetadata: { 'thumbs': 1 }}).then(function (snapshot) {
             ref.set({image: snapshot.metadata.downloadURLs[0]}, {merge: true})
             document.getElementById('preview').style.backgroundImage = ''
             e.target.disabled = false
-            this.clear_form()
+            self.clear_form()
           }).catch(function (err) {
             console.error(err)
           })
