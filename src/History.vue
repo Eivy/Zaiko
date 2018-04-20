@@ -58,12 +58,13 @@ export default {
   },
   methods: {
     get: function (c) {
+      let self = this
       c.orderBy('date', 'desc').get().then(function (s) {
-        this.history.splice(0, this.history.length)
+        self.history.splice(0, self.history.length)
         s.forEach(function (d) {
           let data = d.data()
           data.id = d.id
-          this.history.push(data)
+          self.history.push(data)
         })
       })
     },

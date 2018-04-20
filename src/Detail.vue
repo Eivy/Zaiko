@@ -34,11 +34,12 @@ export default {
   props: ['id'],
   data: function () { return { date: null, items: [], buyer: null, seller: null } },
   created: function () {
+    let self = this
     let doc = firebase.firestore().collection(path.join('Zaiko', this.$store.state.user.uid, location.pathname.split('/')[1])).doc(this.id)
     doc.get().then(function (d) {
-      for (let k in d.data()) {
-        Vue.set(this, k, d.data()[k])
-      }
+      let data = d.data()
+      Vue.set(self, 'date', data.date)
+      Vue.set(self, 'items', data.items)
     })
   },
   methods: {

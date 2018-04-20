@@ -58,24 +58,25 @@ export default {
       return true
     },
     submit: function () {
-      this.confirm = false
-      let uid = this.$store.state.user.uid
-      let sales = store.collection(path.join('Zaiko', uid, this.$route.name))
+      let self = this
+      self.confirm = false
+      let uid = self.$store.state.user.uid
+      let sales = store.collection(path.join('Zaiko', uid, self.$route.name))
       let items = store.collection(path.join('Zaiko', uid, 'items'))
-      for (let id in this.deal) {
+      for (let id in self.deal) {
         items.doc(id).get().then(function (d) {
           let data = d.data()
-          data.count -= this.deal[id].count
+          data.count -= self.deal[id].count
           items.doc(id).set(data)
-          Vue.delete(this.deal, id)
+          Vue.delete(self.deal, id)
         })
       }
-      let data = {items: this.deal, date: new Date()}
-      if (this.dealer !== '') {
-        data.buyer = this.dealer
+      let data = {items: self.deal, date: new Date()}
+      if (self.dealer !== '') {
+        data.buyer = self.dealer
       }
       sales.add(data).then(function (d) {
-        this.$router.push({path: this.$route.path + '/detail/' + d.id})
+        self.$router.push({path: self.$route.path + '/detail/' + d.id})
       })
     }
   },
