@@ -7,15 +7,12 @@ import * as os from 'os'
 import * as fs from 'fs'
 admin.initializeApp();
 const gcs = storage({keyFilename: './credential.json'})
-exports.generateThumbs = functions.storage.object().onChange(async event => {
-  const object = event.data; // The Storage object.
-
+exports.generateThumbs = functions.storage.object().onFinalize(async (object, context) => {
   const fileBucket = object.bucket; // The Storage bucket that contains the file.
   const filePath = object.name; // File path in the bucket.
   const contentType = object.contentType; // File content type.
-  const resourceState = object.resourceState; // The resourceState is 'exists' or 'not_exists' (for file/folder deletions).
 
-  if (!contentType.startsWith('image/') || resourceState === 'not_exists' || !object.metadata) {
+  if (!contentType.startsWith('image/') || !object.metadata) {
     return null
   }
 
