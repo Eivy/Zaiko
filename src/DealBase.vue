@@ -262,6 +262,7 @@ main {
   justify-content: center;
   align-items: center;
   position: absolute;
+  top: 0;
   z-index:999;
   width: 100%;
   height: 100%;
@@ -273,7 +274,7 @@ main {
   }
   .mdl-card {
     width: 80%;
-    height: initial;
+    height: auto;
     max-width: 600px;
     max-height: 80%;
     background-color: white;
