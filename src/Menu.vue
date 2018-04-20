@@ -12,8 +12,9 @@
 export default {
   methods: {
     logout: function () {
-      firebase.auth().signOut()
-      location.reload()
+      firebase.auth().signOut().then(function () {
+        location.reload()
+      })
     },
     hide: function () {
       Array.prototype.slice.call(document.querySelectorAll('.is-visible'), 0).forEach(function (e) { e.classList.remove('is-visible') })
