@@ -232,7 +232,7 @@ export default {
       return data
     },
     link: function () {
-      return document.location.protocol + '//' + document.location.host + '/?' + this.user.uid
+      return document.location.protocol + '//' + document.location.host + '/?userid=' + this.user.uid
     }
   }
 }

@@ -18,7 +18,13 @@ document.addEventListener('DOMContentLoaded', function () {
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         if (location.search.length > 0) {
-          user = {uid: location.search.substring(1)}
+          let q = location.search.substring(1)
+          q.split('&').forEach(function (d) {
+            let i = d.indexOf('=')
+            if (d.substring(0, i) === 'userid') {
+              user = {uid: d.substring(i + 1)}
+            }
+          })
         }
         let router = new VueRouter({
           mode: 'history',
