@@ -77,7 +77,11 @@ document.addEventListener('DOMContentLoaded', function () {
               }
             },
             padding: function (s, n) {
-              return ('0'.repeat(n) + s).slice(-1 * n)
+              let z = ''
+              for (let i = 0; i < n; i++) {
+                z += '0'
+              }
+              return (z + s).slice(-1 * n)
             }
           }
         }
