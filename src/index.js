@@ -1,6 +1,7 @@
 import path from 'path'
 
 import Menu from './Menu.vue'
+import Auth from './Auth.vue'
 import Sales from './Sales.vue'
 import Inventory from './Inventory.vue'
 import Settings from './Settings.vue'
@@ -145,16 +146,11 @@ document.addEventListener('DOMContentLoaded', function () {
           componentHandler.upgradeDom()
         })
       } else {
-        const ui = new firebaseui.auth.AuthUI(firebase.auth())
-        ui.start('#firebase-auth-container', {
-          signInOptions: [
-            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-            firebase.auth.TwitterAuthProvider.PROVIDER_ID,
-            firebase.auth.GithubAuthProvider.PROVIDER_ID,
-            firebase.auth.EmailAuthProvider.PROVIDER_ID
-          ],
-          tosUrl: ''
+        let app = new Vue({
+          components: {Auth},
+          template: '<Auth></Auth>'
         })
+        app.$mount('#main')
       }
     })
   } catch (e) {
