@@ -5,12 +5,12 @@ const store = firebase.firestore()
 
 export default {
   mixins: [DealBase],
-  data () { return {title: '在庫'} },
+  data: function () { return {title: '在庫'} },
   methods: {
-    is_able_increment (id) {
+    is_able_increment: function (id) {
       return false
     },
-    count (id) {
+    count: function (id) {
       return this.items[id].count
     },
     increase_more: function (id) {
@@ -34,10 +34,10 @@ export default {
       }
       this.deal[id].count += 1
     },
-    is_valid_submit () {
+    is_valid_submit: function () {
       return true
     },
-    price (id) {
+    price: function (id) {
       return this.items[id].purchase
     },
     submit: function () {
@@ -46,7 +46,7 @@ export default {
       let sales = store.collection(path.join('Zaiko', uid, this.$route.name))
       let items = store.collection(path.join('Zaiko', uid, 'items'))
       for (let id in this.deal) {
-        items.doc(id).get().then((d) => {
+        items.doc(id).get().then(function (d) {
           let data = d.data()
           data.count += this.deal[id].count
           items.doc(id).set(data)
@@ -57,23 +57,23 @@ export default {
       if (this.dealer !== '') {
         data.seller = this.dealer
       }
-      sales.add(data).then(d => {
+      sales.add(data).then(function (d) {
         this.$router.push({path: this.$route.path + '/detail/' + d.id})
       })
     }
   },
   computed: {
-    sum_price () {
+    sum_price: function () {
       let sum = 0
       for (let id in this.deal) {
         sum += this.items[id].purchase * this.deal[id].count
       }
       return this.format_price(sum)
     },
-    use_dealer () {
+    use_dealer: function () {
       return true
     },
-    dealers () {
+    dealers: function () {
       return this.sellers
     },
     filterd_items: function () {

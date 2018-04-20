@@ -147,13 +147,13 @@ export default {
     componentHandler.upgradeDom()
   },
   methods: {
-    permit_user () {
+    permit_user: function () {
       let user = document.querySelector('#permit_user')
       this.permitted.users.push(user.value)
       user.value = ''
       this.change('permitted')
     },
-    remove_permit (i) {
+    remove_permit: function (i) {
       this.permitted.users.splice(i, 1)
       this.change('permitted')
     },
@@ -164,40 +164,41 @@ export default {
       for (let k in this.$store.state.config) {
         this[k] = this.$store.state.config[k]
       }
-      setTimeout(() => {
-        document.querySelectorAll('input[type="text"]').forEach(e => {
+      setTimeout(function () {
+        document.querySelectorAll('input[type="text"]').forEach(function (e) {
           e.parentNode.MaterialTextfield.checkDirty()
         })
-        document.querySelectorAll('input[type="checkbox"]').forEach(e => {
+        document.querySelectorAll('input[type="checkbox"]').forEach(function (e) {
           e.parentNode.MaterialSwitch.checkToggleState()
         })
       }, 100)
     },
-    delete_data () {
+    delete_data: function () {
       const store = firebase.firestore()
-      store.collection(path.join('Zaiko', this.user.uid, 'items')).get().then(s => {
-        s.forEach(d => {
-          firebase.storage().ref(this.user.uid).child(d.id).delete().catch(err => console.log(err))
-          firebase.storage().ref(this.user.uid).child('thumb_' + d.id).delete().catch(err => console.log(err))
+      store.collection(path.join('Zaiko', this.user.uid, 'items')).get().then(function (s) {
+        s.forEach(function (d) {
+          firebase.storage().ref(this.user.uid).child(d.id).delete().catch(function (err) { console.log(err) })
+          firebase.storage().ref(this.user.uid).child('thumb_' + d.id).delete().catch(function (err) { console.log(err) })
         })
       })
       let keys = ['config', 'items', 'buyers', 'sellers', 'sales', 'inventory']
-      for (let k of keys) {
-        store.collection(path.join('Zaiko', this.user.uid, k)).get().then(s => {
-          s.forEach(d => {
-            store.collection(path.join('Zaiko', this.user.uid, k)).doc(d.id).delete().catch(err => {
+
+      for (let k in keys) {
+        store.collection(path.join('Zaiko', this.user.uid, keys[k])).get().then(function (s) {
+          s.forEach(function (d) {
+            store.collection(path.join('Zaiko', this.user.uid, keys[k])).doc(d.id).delete().catch(function (err) {
               console.log(err)
             })
           })
         })
       }
     },
-    delete_user () {
+    delete_user: function () {
       this.delete_data()
-      this.user.delete().then(() => {
+      this.user.delete().then(function () {
         alert('ユーザーが削除されました')
         location.reload()
-      }).catch(err => {
+      }).catch(function (err) {
         if (err.code === 'auth/requires-recent-login') {
           alert('ユーザー削除の為に再認証が必要です.')
           const ui = new firebaseui.auth.AuthUI(firebase.auth())
@@ -230,7 +231,7 @@ export default {
       }
       return data
     },
-    link () {
+    link: function () {
       return document.location.protocol + '//' + document.location.host + '/?' + this.user.uid
     }
   }

@@ -32,20 +32,20 @@ import path from 'path'
 
 export default {
   props: ['id'],
-  data () { return { date: null, items: [], buyer: null, seller: null } },
-  created () {
+  data: function () { return { date: null, items: [], buyer: null, seller: null } },
+  created: function () {
     let doc = firebase.firestore().collection(path.join('Zaiko', this.$store.state.user.uid, location.pathname.split('/')[1])).doc(this.id)
-    doc.get().then(d => {
+    doc.get().then(function (d) {
       for (let k in d.data()) {
         Vue.set(this, k, d.data()[k])
       }
     })
   },
   methods: {
-    back () {
+    back: function () {
       this.$router.go(-1)
     },
-    price (k) {
+    price: function (k) {
       if (location.pathname.split('/')[1] === 'sales') {
         return this.items[k].selling
       } else {
@@ -54,7 +54,7 @@ export default {
     }
   },
   computed: {
-    sum_price () {
+    sum_price: function () {
       let sum = 0
       for (let id in this.items) {
         sum += (location.pathname.split('/')[1] === 'sales' ? this.items[id].selling : this.items[id].purchase) * this.items[id].count

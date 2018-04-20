@@ -77,7 +77,7 @@ export default {
   methods: {
     submit: function (e) {
       e.target.disabled = true
-      setTimeout(() => {
+      setTimeout(function () {
         // data set
         if (this.name === '') {
           e.target.disabled = false
@@ -96,10 +96,10 @@ export default {
         const store = firebase.firestore()
         let collect = store.collection(path.join('Zaiko', this.user.uid, this.$route.name))
         let ref = collect.doc(this.name)
-        ref.set(data, {merge: true}).then(() => {
+        ref.set(data, {merge: true}).then(function () {
           this.clear_form()
           e.target.disabled = false
-        }).catch((err) => {
+        }).catch(function (err) {
           console.error(err)
         })
       }, 200, e)
@@ -110,7 +110,7 @@ export default {
     },
     clear_form: function () {
       this.name = '';
-      ['id', 'address', 'tel', 'incharge'].forEach((s) => {
+      ['id', 'address', 'tel', 'incharge'].forEach(function (s) {
         document.getElementById(s).parentNode.MaterialTextfield.change('')
       })
     },
@@ -124,16 +124,16 @@ export default {
     load_value: function () {
       let o = this.items[this.name]
       if (o) {
-        ['address', 'tel', 'incharge'].forEach((s) => {
+        ['address', 'tel', 'incharge'].forEach(function (s) {
           document.getElementById(s).parentNode.MaterialTextfield.change(o[s])
         })
       }
     },
     read: function (data) {
       let collect = firebase.firestore().collection(path.join('Zaiko', this.user.uid, this.$route.name))
-      data.forEach((row) => {
+      data.forEach(function (row) {
         let id, address, tel, incharge
-        row.forEach((column, index) => {
+        row.forEach(function (column, index) {
           switch (index) {
             case 0:
               id = column
@@ -149,7 +149,7 @@ export default {
               break
           }
         })
-        collect.doc(id).set({id, address, tel, incharge}, {merge: true})
+        collect.doc(id).set({id: id, address: address, tel: tel, incharge: incharge}, {merge: true})
       })
     }
   }

@@ -134,7 +134,7 @@ export default {
         }
       }
     },
-    before_submit () {
+    before_submit: function () {
       if (!this.is_valid_submit()) {
         return
       }

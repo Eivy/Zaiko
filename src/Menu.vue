@@ -11,12 +11,12 @@
 <script>
 export default {
   methods: {
-    logout () {
+    logout: function () {
       firebase.auth().signOut()
       location.reload()
     },
-    hide () {
-      document.querySelectorAll('.is-visible').forEach(e => e.classList.remove('is-visible'))
+    hide: function () {
+      document.querySelectorAll('.is-visible').forEach(function (e) { e.classList.remove('is-visible') })
     }
   }
 }

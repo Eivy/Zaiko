@@ -58,9 +58,9 @@ export default {
   },
   methods: {
     get: function (c) {
-      c.orderBy('date', 'desc').get().then((s) => {
+      c.orderBy('date', 'desc').get().then(function (s) {
         this.history.splice(0, this.history.length)
-        s.forEach((d) => {
+        s.forEach(function (d) {
           let data = d.data()
           data.id = d.id
           this.history.push(data)
@@ -97,10 +97,10 @@ export default {
       }
       this.get(c)
     },
-    detail (id) {
+    detail: function (id) {
       return path.join('detail', id)
     },
-    sum_price (deal) {
+    sum_price: function (deal) {
       let sum = 0
       for (let k in deal.items) {
         sum += (this.$route.name.split('/')[1] === 'sales' ? deal.items[k].selling : deal.items[k].purchase) * deal.items[k].count

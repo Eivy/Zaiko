@@ -15,14 +15,14 @@ export default {
       let file = e.target.files[0]
       if (file) {
         var r = new FileReader()
-        r.onload = (e) => {
+        r.onload = function (e) {
           let data = []
-          r.result.split(/\r?\n/).forEach((row) => {
+          r.result.split(/\r?\n/).forEach(function (row) {
             if (row === '') {
               return
             }
             let rowArray = []
-            row.split(',').forEach((column, index) => {
+            row.split(',').forEach(function (column, index) {
               rowArray.push(column)
             })
             data.push(rowArray)

@@ -108,14 +108,14 @@ export default {
     preview_image: function (e) {
       let f = e.target.files[0]
       let r = new FileReader()
-      r.onload = (e) => {
+      r.onload = function (e) {
         document.getElementById('preview').style.backgroundImage = 'url(' + r.result + ')'
       }
       r.readAsDataURL(f)
     },
     submit: function (e) {
       e.target.disabled = true
-      setTimeout(() => {
+      setTimeout(function () {
         // data set
         if (this.id === '') {
           e.target.disabled = false
@@ -137,18 +137,18 @@ export default {
           selling: Number(selling),
           purchase: Number(purchase),
           count: Number(count),
-          seller,
+          seller: seller,
           categories: this.input.categories,
           time: new Date()
         }
         const store = firebase.firestore()
         let collect = store.collection(path.join('Zaiko', this.user.uid, 'items'))
         let ref = collect.doc(this.id)
-        ref.set(data, {merge: true}).then(() => {
+        ref.set(data, {merge: true}).then(function () {
           if (!file) {
             this.clear_form()
           }
-        }).catch((err) => {
+        }).catch(function (err) {
           console.error(err)
         })
         // file upload
@@ -156,12 +156,12 @@ export default {
         if (file) {
           let r = firebase.storage().ref()
           let fileRef = r.child(path.join(this.user.uid, this.id))
-          fileRef.put(file, {customMetadata: { 'thumbs': 1 }}).then(snapshot => {
+          fileRef.put(file, {customMetadata: { 'thumbs': 1 }}).then(function (snapshot) {
             ref.set({image: snapshot.metadata.downloadURLs[0]}, {merge: true})
             document.getElementById('preview').style.backgroundImage = ''
             e.target.disabled = false
             this.clear_form()
-          }).catch(err => {
+          }).catch(function (err) {
             console.error(err)
           })
         } else {
@@ -171,12 +171,12 @@ export default {
     },
     delete_item: function (id) {
       let collect = firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'items'))
-      firebase.storage().ref().child(path.join(this.user.uid, id)).delete().catch((err) => {
+      firebase.storage().ref().child(path.join(this.user.uid, id)).delete().catch(function (err) {
         if (err.t !== 'storage/object-not-found') {
           console.error(err)
         }
       })
-      firebase.storage().ref().child(path.join(this.user.uid, 'thumb_' + id)).delete().catch((err) => {
+      firebase.storage().ref().child(path.join(this.user.uid, 'thumb_' + id)).delete().catch(function (err) {
         if (err.t !== 'storage/object-not-found') {
           console.error(err)
         }
@@ -186,7 +186,7 @@ export default {
     clear_form: function () {
       this.id = ''
       this.input.categories = [];
-      ['id', 'selling', 'purchase', 'count', 'seller'].forEach((s) => {
+      ['id', 'selling', 'purchase', 'count', 'seller'].forEach(function (s) {
         document.getElementById(s).parentNode.MaterialTextfield.change('')
       })
       document.getElementById('image').value = null
@@ -202,7 +202,7 @@ export default {
     load_value: function () {
       let o = this.items[this.id]
       if (o) {
-        ['selling', 'purchase', 'count', 'seller'].forEach((s) => {
+        ['selling', 'purchase', 'count', 'seller'].forEach(function (s) {
           document.getElementById(s).parentNode.MaterialTextfield.change(o[s])
         })
         if (o.categories) {
@@ -211,8 +211,8 @@ export default {
           this.input.categories = []
         }
         document.getElementById('preview').style.backgroundImage = 'url(' + o.image + ')'
-        setTimeout(() => {
-          document.querySelectorAll('input[type="checkbox"]').forEach(e => {
+        setTimeout(function () {
+          document.querySelectorAll('input[type="checkbox"]').forEach(function (e) {
             e.parentNode.MaterialCheckbox.checkToggleState()
           })
         }, 100)
@@ -220,9 +220,9 @@ export default {
     },
     read: function (data) {
       let collect = firebase.firestore().collection(path.join('Zaiko', this.user.uid, 'items'))
-      data.forEach((row, index) => {
+      data.forEach(function (row, index) {
         let id, selling, purchase, count, seller
-        row.forEach((column, index) => {
+        row.forEach(function (column, index) {
           switch (index) {
             case 0:
               if (column === '') {
@@ -244,9 +244,9 @@ export default {
               break
           }
         })
-        let newData = {id, selling, purchase, count, seller, time: new Date()}
-        collect.doc(id).set(newData, {merge: true}).then(() => {
-        }).catch((e) => {
+        let newData = {id: id, selling: selling, purchase: purchase, count: count, seller: seller, time: new Date()}
+        collect.doc(id).set(newData, {merge: true}).then(function () {
+        }).catch(function (e) {
           console.error(e)
         })
       })

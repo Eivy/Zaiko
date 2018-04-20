@@ -5,15 +5,15 @@ const store = firebase.firestore()
 
 export default {
   mixins: [DealBase],
-  data () { return {title: '販売'} },
+  data: function () { return {title: '販売'} },
   methods: {
-    is_able_increment (id) {
+    is_able_increment: function (id) {
       return this.items[id].count === 0 || (this.deal[this.items[id].id] ? this.deal[this.items[id].id].count >= this.items[id].count : false)
     },
-    price (id) {
+    price: function (id) {
       return this.items[id].selling
     },
-    count (id) {
+    count: function (id) {
       return this.deal[id] ? this.items[id].count - this.deal[id].count : this.items[id].count
     },
     increase_more: function (id) {
@@ -48,7 +48,7 @@ export default {
         }
       }
     },
-    is_valid_submit () {
+    is_valid_submit: function () {
       let check = this.check()
       if (check) {
         alert(check + 'の在庫が足りません')
@@ -62,7 +62,7 @@ export default {
       let sales = store.collection(path.join('Zaiko', uid, this.$route.name))
       let items = store.collection(path.join('Zaiko', uid, 'items'))
       for (let id in this.deal) {
-        items.doc(id).get().then((d) => {
+        items.doc(id).get().then(function (d) {
           let data = d.data()
           data.count -= this.deal[id].count
           items.doc(id).set(data)
@@ -73,7 +73,7 @@ export default {
       if (this.dealer !== '') {
         data.buyer = this.dealer
       }
-      sales.add(data).then(d => {
+      sales.add(data).then(function (d) {
         this.$router.push({path: this.$route.path + '/detail/' + d.id})
       })
     }
@@ -86,10 +86,10 @@ export default {
       }
       return this.format_price(sum)
     },
-    use_dealer () {
+    use_dealer: function () {
       return this.config.buyer && this.config.buyer.use
     },
-    dealers () {
+    dealers: function () {
       return this.buyers
     }
   }

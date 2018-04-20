@@ -1,7 +1,6 @@
 import path from 'path'
 
 import Menu from './Menu.vue'
-import Auth from './Auth.vue'
 import Sales from './Sales.vue'
 import Inventory from './Inventory.vue'
 import Settings from './Settings.vue'
@@ -13,9 +12,9 @@ import History from './History.vue'
 import Detail from './Detail.vue'
 import Icon from './Icon.vue'
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function () {
   try {
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         if (location.search.length > 0) {
           user = {uid: location.search.substring(1)}
@@ -56,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
           'config': '設定'
         }
         var mixin = {
-          mounted () {
+          mounted: function () {
             this.updateTitle()
           },
           watch: {
@@ -65,18 +64,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           },
           methods: {
-            updateTitle () {
-              document.title = 'Zaiko - ' + this.$route.path.split('/').filter(i => i.length > 1).map(i => names[i]).join(' - ')
+            updateTitle: function () {
+              document.title = 'Zaiko - ' + this.$route.path.split('/').filter(function (i) { return i.length > 1 }).map(function (i) { return names[i] }).join(' - ')
             },
-            format_price (p) {
+            format_price: function (p) {
               return String(p).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
             },
-            format_date (date) {
+            format_date: function (date) {
               if (date) {
                 return [date.getFullYear(), this.padding(date.getMonth(), 2), this.padding(date.getDay(), 2)].join('/') + ' ' + [this.padding(date.getHours(), 2), this.padding(date.getMinutes(), 2)].join(':')
               }
             },
-            padding (s, n) {
+            padding: function (s, n) {
               return ('0'.repeat(n) + s).slice(-1 * n)
             }
           }
@@ -86,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         Vue.use(Vuex)
         Vue.component('Icon', Icon)
         var data = {
-          user,
+          user: user,
           config: {},
           items: {},
           sellers: {},
@@ -96,61 +95,66 @@ document.addEventListener('DOMContentLoaded', () => {
         let store = new Vuex.Store({
           state: data,
           mutations: {
-            push (state, payload) {
+            push: function (state, payload) {
               state[payload.name].push(payload.value)
             },
-            set (state, payload) {
+            set: function (state, payload) {
               Vue.set(state[payload.name], payload.value.id, payload.value.data())
             }
           }
         })
         let app = new Vue({
-          router,
-          store,
+          router: router,
+          store: store,
           template: '<router-view></router-view>'
         })
         app.$mount('#main')
         let menu = new Vue({
           components: {Menu},
           template: '<Menu></Menu>',
-          router
+          router: router
         })
         menu.$mount('#menu')
         if (window.location.pathname === '/') {
           router.push('/sales')
         }
-        ['config', 'items', 'buyers', 'sellers'].forEach(c => {
-          firebase.firestore().collection(path.join('Zaiko', user.uid, c)).onSnapshot(s => {
+        ['config', 'items', 'buyers', 'sellers'].forEach(function (c) {
+          firebase.firestore().collection(path.join('Zaiko', user.uid, c)).onSnapshot(function (s) {
             for (let k in data[c]) {
               Vue.delete(data[c], k)
             }
-            s.forEach(d => {
+            s.forEach(function (d) {
               var p = { name: c, value: d }
               store.commit('set', p)
             })
             componentHandler.upgradeDom()
           })
         })
-        firebase.firestore().collection(path.join('Zaiko', user.uid, 'categories')).onSnapshot(s => {
+        firebase.firestore().collection(path.join('Zaiko', user.uid, 'categories')).onSnapshot(function (s) {
           data.categories.splice(0, data.categories.length)
-          s.forEach(d => {
+          s.forEach(function (d) {
             store.commit('push', { name: 'categories', value: d.id })
           })
         })
-        firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('color').onSnapshot((d) => {
+        firebase.firestore().collection(path.join('Zaiko', user.uid, 'config')).doc('color').onSnapshot(function (d) {
           if (d.exists) {
-            document.head.querySelectorAll('link[href*="code.getmdl.io"]').forEach((l) => {
+            document.head.querySelectorAll('link[href*="code.getmdl.io"]').forEach(function (l) {
               l.setAttribute('href', 'https://code.getmdl.io/1.3.0/material.' + d.data().primary + '-' + d.data().accent + '.min.css')
             })
           }
           componentHandler.upgradeDom()
         })
       } else {
-        let app = new Vue({
-          components: {Auth},
-          template: '<Auth></Auth>'
+        const ui = new firebaseui.auth.AuthUI(firebase.auth())
+        ui.start('#firebase-auth-container', {
+          signInOptions: [
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+            firebase.auth.GithubAuthProvider.PROVIDER_ID,
+            firebase.auth.EmailAuthProvider.PROVIDER_ID
+          ],
+          tosUrl: ''
         })
-        app.$mount('#main')
       }
     })
   } catch (e) {
