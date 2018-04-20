@@ -14,7 +14,7 @@
     "@google-cloud/storage": "^1.6.0",
     "child-process-promise": "^2.2.1",
     "firebase-admin": "~5.8.1",
-    "firebase-functions": "^0.8.1"
+    "firebase-functions": "^1.0.1"
   },
   "devDependencies": {
     "tslint": "^5.8.0",
