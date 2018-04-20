@@ -52,7 +52,7 @@
         <SubmitButton :disabled='sum_count === 0' @click.native='before_submit()'></SubmitButton>
       </div>
     </footer>
-    <div id='confirm' v-if=confirm @click.stop='confirm = !confirm'>
+    <div id='confirm' :style='{display: confirm ? "flex" : "none"}' @click.stop='confirm = !confirm'>
       <div class='mdl-card mdl-shadown--2dp' @click.stop >
         <div class='mdl-card__title'><h4>以下の内容でよろしいですか?</h4></div>
         <div class='mdl-list'>
@@ -258,7 +258,6 @@ main {
   }
 }
 #confirm {
-  display: flex;
   justify-content: center;
   align-items: center;
   position: absolute;
