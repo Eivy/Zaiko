@@ -153,7 +153,7 @@ export default {
   methods: {
     permit_user: function () {
       let user = document.querySelector('#permit_user')
-      if (user === '') {
+      if (user.value === '') {
         return
       }
       this.permitted.users.push(user.value)
