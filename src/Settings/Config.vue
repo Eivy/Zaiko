@@ -153,6 +153,9 @@ export default {
   methods: {
     permit_user: function () {
       let user = document.querySelector('#permit_user')
+      if (user === '') {
+        return
+      }
       this.permitted.users.push(user.value)
       user.value = ''
       this.change('permitted')
