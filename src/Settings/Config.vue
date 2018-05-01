@@ -2,7 +2,7 @@
   <div>
     <div id='color' class='mdl-card mdl-js-card mdl-shadow--2dp'>
       <div class='mdl-card__title'>ユーザーID</div>
-      <div class='mdl-card__supporting-text'><span>{{user.uid}}</span><Icon @click.native='copy' style='padding-left: 1rem'>content_copy</Icon></div>
+      <div class='mdl-card__supporting-text'><span>{{user.uid}}</span><Icon class='copy_icon' @click.native='copy' style='padding-left: 1rem'>content_copy</Icon></div>
     </div>
     <div id='color' class='mdl-card mdl-js-card mdl-shadow--2dp'>
       <div class='mdl-card__title'>配色</div>
@@ -71,7 +71,7 @@
             </div>
           </div>
         </div>
-        <div>あなたのデータへのリンク: <span>{{link}}</span><Icon @click.native='copy' style='padding-left: 1rem'>content_copy</Icon></div>
+        <div>あなたのデータへのリンク: <span>{{link}}</span><Icon class='copy_icon' @click.native='copy' style='padding-left: 1rem'>content_copy</Icon></div>
       </div>
       <div class='mdl-card__actions'>
         <div class='mdl-textfield mdl-js-textfield' :class='{"is-disabled": !count.use}'>
@@ -264,5 +264,8 @@ export default {
 }
 .material-icons {
   font-size: inherit;
+}
+.copy_icon {
+  cursor: pointer;
 }
 </style>
