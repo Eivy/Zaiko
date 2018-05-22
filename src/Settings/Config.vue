@@ -105,7 +105,6 @@
 
 <script>
 import path from 'path'
-
 import DeleteButton from '../DeleteButton.vue'
 import SubmitButton from '../SubmitButton.vue'
 

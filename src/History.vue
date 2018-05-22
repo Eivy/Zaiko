@@ -39,7 +39,6 @@
 
 <script>
 import path from 'path'
-
 import SubmitButton from './SubmitButton.vue'
 
 const store = firebase.firestore()

@@ -32,7 +32,6 @@
 
 <script>
 import path from 'path'
-
 import SubmitButton from '../SubmitButton.vue'
 import DeleteButton from '../DeleteButton.vue'
 

@@ -58,7 +58,6 @@
 
 <script>
 import path from 'path'
-
 import SubmitButton from '../SubmitButton.vue'
 import DeleteButton from '../DeleteButton.vue'
 import CsvButton from './CsvButton.vue'
