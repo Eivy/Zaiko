@@ -1,5 +1,4 @@
 import path from 'path'
-
 import Menu from './Menu.vue'
 import Auth from './Auth.vue'
 import Sales from './Sales.vue'
